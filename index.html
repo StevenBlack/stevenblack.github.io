@@ -1,56 +1,21 @@
 ---
 layout: base
+ishomepage: true
+
 ---
-	<!-- Typography
-================================================== -->
-<section id="typography">
-	<div class="page-header">
-		<h1>Typography</h1>
-	</div>
-	<!-- Headings & Paragraph Copy -->
-	<div class="row">
-	<div class="span4">
-		<div class="well">
-			<h1>h1. Heading 1</h1>
-			<h2>h2. Heading 2</h2>
-			<h3>h3. Heading 3</h3>
-			<h4>h4. Heading 4</h4>
-			<h5>h5. Heading 5</h5>
-			<h6>h6. Heading 6</h6>
-		</div>
-	</div>
-	<div class="span4">
-		<h3>Example body text</h3>
-		<p>Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-		<p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec sed odio dui.</p>
-	</div>
-	<div class="span4">
-	<h3>Example addresses</h3>
-	<address>
-		<strong>Steven Black Consulting</strong><br>
-		57 Kenwoods Circle<br>
-		Kingston,  Ontario<br>
-		K7K 6Y1 Canada<br>
-		<abbr title="Phone">P:</abbr> (613) 542-3293
-	</address>
-	<address>
-		<strong>Steven Black</strong><br>
-		<a href="mailto:steveb@stevenblack.com">steveb@stevenblack.com</a>
-	</address>
-	</div>
-	</div>
-	<div class="row">
-	<div class="span6">
-		<blockquote>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-			<small>Someone famous in <cite title="Source Title">Source Title</cite></small>
-		</blockquote>
-	</div>
-	<div class="span6">
-	<blockquote class="pull-right">
-	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-	<small>Someone famous in <cite title="Source Title">Source Title</cite></small>
-	</blockquote>
-	</div>
-	</div>
-</section>
+<style>
+	.locators { float:left;  }
+	.locators div { display:block; float:left; background:#444; height:70px;  margin-bottom:10px; padding:0px; float:left; }
+	.locators div a { border-width:0px; color:#fff; display:block; padding:10px; height:50px;}
+	.locators div a:hover { background-color:maroon; }
+	.locators div a img { float:left; margin-right:10px; }
+	.ui-corner-all { -moz-border-radius: 4px/*{cornerRadius}*/; -webkit-border-radius: 4px/*{cornerRadius}*/; border-radius: 4px/*{cornerRadius}*/; }
+</style>
+
+<h3>Here's how to reach me</h3>
+<div id="locators" class="row locators"></div>
+
+<h3>Here are some of my past customers</h3>
+<div id="customers" class="row locators"></div>
+
+
