@@ -23,23 +23,23 @@
 
 <body class="preview" id="top" data-spy="scroll" data-target=".subnav" data-offset="80">
 
-<div class="container">
-	{% include header.html %}
+	<div class="container">
+		{% include header.html %}
 	
-	{{ content }}
+		{{ content }}
 	
-	{% include footer.html %}
-</div>
+		{% include footer.html %}
+	</div>
 
-<!-- Le javascript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-{% include analytics.html %}
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')</script>
-<script src="/bootstrap/js/bootstrap.min.js"></script>
-{% if page.ishomepage %}
-{% include homepagejs.html %}
-{% endif %}
+	<!-- Le javascript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script>window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')</script>
+	<script src="/bootstrap/js/bootstrap.min.js"></script>
+	{% for i in page.jsinclude %}
+	   {% varinclude i %}
+	{% endfor %}
+	{% include analytics.html %}
 </body>
 </html>
