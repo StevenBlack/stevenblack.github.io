@@ -1,0 +1,89 @@
+---
+layout: base
+title: Steven Black's INTL Toolkit
+permalink: /intlfaq/
+
+---
+<div class="row">
+
+<div class="span8">
+	<h1>INTL Frequently Asked</h1>
+</div>
+
+<div class="span4">
+	{% include intlbutton.html %}
+</div>
+
+<div class="span12">
+
+	<p><strong>Q. Do you have a Demo for the VFP versions of INTL?</strong></p>
+
+	<p><strong>A.</strong> Not at this time, though we are making one. INTL comes with a&nbsp;
+	30-day money back guarantee, so the cost of trial is essentially zero.</p>
+	<hr />
+
+	<p><strong>Q. What are the speed ramifications of using this Toolkit. Does it take longer
+	to load a form when the Caption property is read from a table rather than defined within the
+	object?</strong></p>
+
+	<p><strong>A.</strong> There is a run-time penalty, yes, dependent on the number of
+	controls and the configuration of INTL. If INTL is configured to localize strings (caption, tooltip,
+	statusbartext) only, then it's snappy. if intl is configured to localize strings, fonts, images, data
+	sources, and currencies, then it's proportionately slower.</p>
+
+	<p>Having said that, INTL can be tuned. As it ships, for every lookup, INTL checks to make
+	sure the lookup-table is open, that its order is set properly, and so on. If you are in a stable
+	environment, you can comment these tests and make INTL quicker.</p>
+	<hr />
+
+	<p><strong>Q. Does it handle all Captions i.e. Grid headers, Radio Buttons, Check boxes,
+	Form Captions, Tooltips, Menu options etc. In other words, what does it not handle?</strong></p>
+
+	<p><strong>A.</strong> INTL handles basically everything:<br />
+	*- Strings (by Default)<br />
+	*- Fonts (Optional)<br />
+	*- Images (Optional)<br />
+	*- Data sources (Optional)<br />
+	*- Currencies (Optional)<br />
+	*- Right-to-Left writing systems (Optional) (Right-to-left is in the VFP 5 version only.)</p>
+
+	<p>Menus are handled with a GEMENUX driver, and Reports are localized with a batch
+	routine.</p>
+	<hr />
+
+	<p><strong>Q. Is it possible to have it such that two users logging into the same network
+	using the same EXE file but one users property is that Captions to be in English whilst another users
+	property is German. Both read the same data tables etc, but one gets an Edit form (say) with English
+	captions whilst another get the German captions?</strong></p>
+
+	<p><strong>A.</strong> Yes.</p>
+	<hr />
+
+	<p><strong>Q. How can I update the STRINGS table with all the string references in my
+	application?</strong></p>
+	<p><strong>A.</strong> As follows:</p>
+	<pre>
+	<strong>SET PROC to &lt;Path\&gt;intltool.PRG
+	oIterator = create("CProjectIterator", cPjx)
+	oVisitor = create("CINTLUpdateVisitor")
+	oIterator.Accept(oVisitor)</strong>
+	</pre>
+	<hr />
+
+	<p><strong>Q. When I build the application into an EXE I ran into
+	some problems. First off, everything works great when running the app (via the main program or the EXE)
+	from within VFP. When I exit VFP and double click on the EXE from Explorer, the language isn't changing.
+	what gives?</strong></p>
+
+	<p><strong>A.</strong> Make sure you create your INTL object AFTER your application SET
+	PATH statement. If INTL can't find STRINGS.DBF, it won't complain.</p>
+	<hr />
+
+	<p><strong>Q. When I build the application into an EXE I ran into
+	some problems. First off, everything works great when running the app (via the main program or the EXE)
+	from within VFP. When I exit VFP and double click on the EXE from Explorer, the language isn't changing.
+	What gives?</strong></p>
+
+	<p><strong>A.</strong> Make sure you create your INTL object AFTER your application SET
+	PATH statement. If INTL can't find STRINGS.DBF, it won't complain.</p>
+</div>
