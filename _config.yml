@@ -6,6 +6,9 @@ title: "Steven Black Consulting - Software Developer, Team Mentor, and Project M
 permalink: /:year/:title.html
 analytics: UA-212713-3
 
+posts: posts
+
+
 # images
 image_default_alt: Steven Black Consulting
 

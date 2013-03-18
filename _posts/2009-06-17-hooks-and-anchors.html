@@ -1,0 +1,594 @@
+---
+layout: post
+title: "The Hooks and Anchors Design Pattern"
+author: "Steven Black"
+type: ""
+header_text: ""
+lead_text: ""
+excerpt: ""
+category: 
+tags: []
+
+---
+
+<h2>Introduction</h2> 
+
+<p>This document describes an object-oriented design pattern
+called Hooks and Anchors. Consider this a discussion document, an idea that may evolve into
+a &quot;real&quot; design pattern.&nbsp;</p>
+
+<p>Hooks and anchors are an abstract object society that I
+first designed in 1996 and used ever since. It has served me well in numerous desktop and internet
+applications.&nbsp;</p>
+
+<p>Here's how this paper goes: we start by examining the class structure of hooks and hook
+subclasses. Next we'll discuss the anchor class, which is a subclass of
+Hook.&nbsp;&nbsp;</p>
+
+<p>That's a conceptual nuance -- why would an Anchor be a subclass of
+Hook?&nbsp; The placement of hooks and anchors under a
+common hook superclass, is explained.&nbsp;</p>
+
+<p>Next well look at how particular design patterns are conducive to
+implementations involving with hooks and anchors.</p>
+
+<h3>Background</h3>
+
+<p>All object-oriented VFP frameworks can be described as skeletal
+structures
+designed for extension.&nbsp; Over time, developers grow their root framework(s)
+into one or more applications, refining and extending (evolving) their
+toolset over an extended period of time.&nbsp;</p>
+
+<p>Similarly, all the root frameworks give you so-called hot spots,
+known as Hook Methods or, as Gamma and Helm call them, Template Methods.
+To varying degrees, the&nbsp; framework(s) you use also supply a
+philosophy about usage and extension. Typically the suggested philosophy
+is: you hook the framework's hook methods to suit your implementation-specific
+needs.</p>
+
+<p>In the Hooks and Anchors design pattern, the hook is implemented with
+a hook object society, which is designed at the outset to fully
+encapsulate work of the hook method.&nbsp; The hook method, therefore,
+reduces to a <a href="PTN-Hook%20Operations.html"> hook operation</a> that delegates program flow to the society
+of hook objects.&nbsp;&nbsp;</p>
+
+<p>In other words, at the program's critical junctures, instead of adding code
+to specifically
+named hook methods, Hook and Anchor pattern implementations use a hook class instead,
+which hides a society of hooks and anchors, placing code in a&nbsp; polymorphically-named
+action methods of fine grained hook classes.</p>
+
+<p> In the Hooks and Anchors design presented here, the hook class provides a ::Process()
+method that is called by clients.&nbsp; The ::Process() method handles pre- and
+post-processing, calling a protected method named ::Execute() method wherein
+the hook's real deed is done.</p>
+
+<p><strong>Therefore</strong>, A Hooks and Anchors society is the sort of thing you call from a hot spot, usually instead of most or all the code you
+would normally place there.</p>
+
+<p>The crux of the matter is this:&nbsp; since we're talking about VFP here, the Hooks and Anchors
+society is, <em>of course</em>, natively engineered to be metadata-driven in both
+composition and execution.&nbsp;&nbsp;</p>
+
+
+<h2>Class Structure</h2>
+
+
+<p>This section focuses on the morphology of the Hooks and
+Anchors solution framework. We develop the concept of hook chains and anchors,
+and how they can be simply combined in the same class hierarchy.</p>
+
+<h3>UML Development</h3>
+
+<p>Using UML notation, Figure 1 illustrates an atomic concept
+of object-oriented software: two separate classes with a one-way, 1:1
+relationship between them. In this
+case, SomeClass holds a reference to SomeHook through the SomeClass.oHook member property </p>
+
+<p class="clearboth"><img width=227 height=57 src="/images/clip_image004.gif"></p>
+
+<p><strong><em>Figure 1.</em></strong><em> a fundamental object micro
+society.</em></p>
+
+<p>Figure 2 shows a variation of the relationship in Figure
+1, except now assume that two collaborating classes are descendents of a common
+Parent Class. This assumption may seem
+like a stretch. If the classes descend
+from a common parent, then the semantics of the relationship can easily be
+refactored and generalized into the parent class. If on the other hand the classes do not descend from a common
+parent, then we can get the same effect with code duplication. For now, lets agree to keep things simple,
+and descend from a common parent, if only for convenience.</p>
+
+<p class="clearboth"><img width=208 height=155 src="/images/clip_image006.gif"> </p>
+
+        <p><strong><em>Figure 2.</em></strong><em> First-pass generalization of
+the object micro society to a common ancestor.</em></p>
+
+<p>Into the Parent Class of Figure 2 we can now refactor
+upwards, moving the details of the relationship into the parent class, which
+leads to the hierarchy illustrated in Figure 3. Its not obvious upon first glance, but the hierarchy in Figure 3
+excels at providing components for object chains, like for example the one
+illustrated in Figure 4. The key to this is the self-referential relationship
+link on the Hook Parent Class as illustrated in Figure 3.</p>
+
+<p class="clearboth"><img width=420 height=168 src="/images/clip_image008.gif"></p>
+
+<p><em><strong>Figure 3.</strong> At left, all the descendants of the Hook Parent Class inherit the
+self-referential relationship, and this makes them easily assembled together
+into chains. The diagram thus reduces abstractly to the one on the right,
+representing a single class with self-referential semantics.</em></p>
+
+<p>In my experience great things can happen when you sensibly
+use self-referential structures like those of Figure 3 to create solutions that
+execute objects sequentially, as illustrated in the class diagram in Figure 4,
+and also illustrated in the corresponding stair-shaped sequence diagram
+illustrated in Figure 5.</p>
+
+<p class="clearboth"><img width=276 height=57 src="/images/clip_image010.gif"></p>
+
+<p><em><strong>Figure 4.</strong> A
+chain of N objects linked together. Normally control passes from instances of Hook1 to Hook2 to Hook3, and
+so on, normally without any intervention from a controlling object.</em></p>
+
+<p></p>
+
+<p class="clearboth"><img width=137 height=134 src="/images/clip_image012.gif"></p>
+
+<p><em><strong>Figure 5.</strong> The sequence diagram for a chain of objects exhibits a stair-shaped
+interaction pattern.</em></p>
+
+<h2>Implementation Qualities of Hook Chains</h2>
+
+<p>In this section we discuss the types of implementations
+that naturally lend themselves to solutions by hook chains, then well list
+some of the Gamma and Helm design patterns that can be created with hook
+chains, and finally well as list and explain some of the problems Ive
+encountered when implementing hook chains.</p>
+
+<h3>Applications of Hook Chains</h3>
+
+<p>According to Riel [2]. the stair shaped interaction of
+hook chains, as illustrated in Figure 5, is expected to be appropriate in the
+following situations.</p>
+
+
+<ul>
+	<li>
+		When operations have a strong connection
+		<ul>
+			<li>Consists-of hierarchy: country-state-city</li>
+			<li>Info hierarchy: document-section-topic</li>
+			<li>Temporal: ad-order-invoice-deliver</li>
+			<li>Conceptual: person-customer-key account</li>
+			<li>Operations always in the same order</li>
+		</ul>
+	</li>
+	<li>Decentralized programming is possible</li>
+</ul>
+
+<h3>Abstraction of Hook Chains into Fundamental Design Patterns</h3>
+
+<p>When we analyze an object chain of two or more objects, we
+see that it can be applied in several of the most common structural and
+behavioral Gamma and Helm Design Patterns, some of which are listed in Table 1.</p>
+
+<table class="table table-bordered table-striped">
+ <tr>
+  <th>
+	Gamma and Helm Pattern [1]
+  </th>
+  <th>
+Intent
+  </th>
+ </tr>
+ <tr>
+  <td>
+  <p><strong>Bridge</strong></p>
+  <p><img width=162 height=40 src="/images/clip_image014.gif"></p>
+  </td>
+  <td>
+  <p>Decouple an abstraction from its implementation so that
+  the two can vary independently.</p>
+  </td>
+ </tr>
+ <tr>
+  <td>
+  <p><strong>Chain of Responsibility</strong></p>
+  <p><img width=186 height=30 src="/images/clip_image016.gif"></p>
+  </td>
+  <td>
+  <p>Avoid coupling the sender of a request to its receiver by
+  giving more than one object a chance to handle the request. Chain the
+  receiving objects and pass the request along the chain until an object
+  handles it.</p>
+  </td>
+ </tr>
+ <tr>
+  <td>
+  <p><strong>Composite</strong><br>
+<img width=150 height=101 src="/images/clip_image018.gif"></p>
+  </td>
+  <td>
+  <p>Compose objects into tree structures to represent
+  part-whole hierarchies. Composite lets clients treat individual objects and
+  compositions of objects uniformly.</p>
+  <p></p>
+  </td>
+ </tr>
+ <tr>
+  <td>
+  <p><strong>Decorator</strong></p>
+  <p><img width=138 height=107 src="/images/clip_image020.gif" </p>
+  </td>
+  <td>
+  <p>Attach additional responsibilities to an object
+  dynamically. Decorators provide a flexible alternative to subclassing for
+  extending functionality.</p>
+  <p></p>
+  </td>
+ </tr>
+ <tr>
+  <td>
+  <p><strong>Strategy</strong></p>
+  <p><img width=185 height=106 src="/images/clip_image022.gif"></p>
+  </td>
+  <td>
+  <p>Define a family of algorithms, encapsulate each one, and
+  make them interchangeable. Strategy lets the algorithm vary independently
+  from clients that use it.</p>
+  <p align=center style='text-align:center'></p>
+  </td>
+ </tr>
+</table>
+
+<p><em><strong>Table 1</strong>. Some Patterns implementable with &quot;chained
+structures&quot; abstractions.</em></p>
+
+<h3>Some Notable Problems with Hook Chains</h3>
+
+<p>Given the usefulness of chained structures for creating a
+variety of micro- architectures, here is are some of the problems that come
+with using chains. These problems typically get worse as the chain gets longer
+and/or more diverse:</p>
+
+<ul>
+<li><p><strong>Creating and initializing the chain</strong>  Hook
+chains can be short or long, and regardless they need to be assembled,
+sequenced, and configured. This can be
+done with some sort of abstract factory, and be aided if the hooks know how to
+chain themselves together. Then
+consider the desirability of creating chains from metadata. Therefore the
+process of creating chains needs abstracting.</p>
+
+<li><p><strong>Chain execution control (pre-empting, escaping,
+re-entering)</strong>  looking at Figure 5, its hard to imagine invoking an
+automatic sequential chain of activity without all the control required to
+properly handle errors and other execution issues like escaping and re-entering
+the chain.</p>
+
+<li><p><strong>Coupling between chain elements</strong>  Coupling comes
+in many forms, like control coupling (when execution order is important),
+content coupling (when one object messes directly with the internals of
+another), data coupling (when specific data needs to be shared between
+objects), external coupling (when an object depends on other external objects),
+stamp coupling (when two components modify or access data in the same
+object). All these coupling hinder to
+some degree the integrity, flexibility, and reusability of the chain and its elements.</p>
+
+<li><p><strong>Selective iteration of the chain</strong>  The
+assumption that every object will fire does not always hold. How then to execute a particular sequence of
+objects if they are physically chained in another sequence?</p>
+
+<li><p><strong>Returning multiple values</strong>  How do you return
+multiple values, or aggregate the return values, from a single chain of
+execution that may be composed of several distinct operations.</p>
+
+<li><p><strong>Error and notification handling</strong>  How to handle
+errors and notifications in a hook chain?</p>
+</ul>
+
+<h2>Extending and Enhancing Hook Chains with Hook Anchors</h2>
+
+<p>In the previous section we show that hook chains have both
+good and not-so-good qualities. Can
+some of the not-so-good qualities be mitigated?</p>
+
+<p>The complement of the stair-shaped interaction diagram
+of Figure 5 is the fork-shaped interaction pattern, illustrated in Figure
+6. This illustrates a prototypical
+so-called god-object situation, where behavior is centralized in a single
+object that manipulates the other objects.</p>
+
+<p class="clearboth"><img width=137 height=127 src="/images/clip_image024.gif"></p>
+
+<p><em><strong>Figure 6.</strong><span>
+</span>When an object has direct control over other objects, the sequence
+diagram of the interaction exhibits a fork-shaped interaction pattern.</em></p>
+
+<p>Here are some of the situations that call for a
+god-objects fork interaction patterns:</p>
+
+<ul>
+	<li><p>When operations can change order</p>
+	<li><p>When new operations could be inserted</p>
+	<li><p>When centralized control is necessary and unavoidable</p>
+</ul>
+
+<p>Note as well that holding many concurrent references to
+external objects pretty much comes with being a god-object. </p>
+
+<p>Lets extend the class hierarchy of Figure 3 and enhance
+it with a new class for coordination and control purposes. In Figure 7, this new god-object class is
+the Hook Anchor class, which could possesses, among other things:</p>
+<ul>
+	<li><p>A .aHook member array (or if in VFP 8, a reference to
+	collection) to hold zero or more objects of any subclass of Hook Parent Class. Thus a chain of objects can be built in
+	two different ways: as a simple chain of independent objects, or aggregately
+	referenced by an instance of Hook Anchor which will iteratively invoke them. </p>
+
+	<li><p>A LOAD() method, called upon INIT(), which takes care of creating and assembling objects, or chains of objects.</p>
+
+	<li><p>The ability to iterate through a list of objects and,
+	between each, test whether to stop the hook iteration.</p>
+</ul>
+
+<p class="clearboth"><img width=496 height=268 src="/images/clip_image026.gif"></p>
+
+<p><em><strong>Figure 7.</strong> Extending the class hierarchy, this time introducing Anchors, which are
+designed to address the problems of free-form hook chains by providing the
+ability to concurrently hold many hook objects as well as iterate them in
+custom and controlled ways.</em></p>
+
+<p>A notable concept to grasp from Figure 7 is that Anchor
+classes are hooks. Since hooks can
+reference hooks, and hooks can be chained, all this applies to Anchors as well.</p>
+
+<h3>Abstraction of Hook Anchors into Fundamental Design Patterns</h3>
+
+<p>Table 2 below lists of the additional Gamma and Helm
+design patterns  especially the creational ones  that the Hook Anchor classes
+bring, to some degree, to the table. </p>
+
+<table class="table table-bordered table-striped">
+	<tr>
+		<td>
+		<p><strong>Gamma and Helm Pattern [1]</strong></p>
+		</td>
+		<td>
+		<p align=center style='text-align:center'><strong>Intent</strong></p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><strong>Abstract Factory</strong></p>
+		</td>
+		<td>
+		<p class=MsoNormal>Provide an interface for creating families of related or
+		dependent objects without specifying their concrete classes.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><strong>Builder</strong></p>
+		</td>
+		<td>
+		<p class=MsoNormal>Separate the construction of a complex object from its
+		representation so that the same construction process can create different
+		representations.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><strong>Factory Method</strong></p>
+		</td>
+		<td>
+		<p class=MsoNormal>Define an interface for creating an object, but let
+		subclasses decide which class to instantiate. Factory Method lets a class
+		defer instantiation to subclasses.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><strong>Iterator</strong></p>
+		</td>
+		<td>
+		<p class=MsoNormal>Provide a way to access the elements of an aggregate
+		object sequentially without exposing its underlying representation.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><strong>State</strong></p>
+		</td>
+		<td>
+		<p class=MsoNormal>Allow an object to alter its behavior when its internal
+		state changes. The object will appear to change its class.</p>
+		</td>
+	</tr>
+</table>
+
+<p><em><strong>Table 2</strong>. Additional Patterns implementable with
+Hook Anchor abstractions.</em></p>
+
+<h3>Interface</h3>
+
+<p>Here are some of the notable methods of the hook class
+hierarchy, and of the anchor branch of subclasses.</p>
+
+<table class="table table-bordered table-striped">
+	<tr>
+		<td>
+		<p><strong>Property or Method</strong></p>
+		</td>
+		<td>
+		<p align=center style='text-align:center'><strong>Reason</strong></p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><code>HookParent.oData</code></p>
+		</td>
+		<td>
+		<p>A member which stores a SCATTER NAME object of the
+		metadata record responsible for its creation.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><code>HookParent.oHook</code></p>
+		</td>
+		<td>
+		<p>A member to hold the next object in the hook chain.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><code>HookParent::Process(x)</code></p>
+		</td>
+		<td>
+		<p>This is the only method the clients will call.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><code>HookParent::PreProcess(x)</code></p>
+		</td>
+		<td>
+		<p>This method is called by the <code>::Process(x)</code>
+		method, and its logical return value ultimately decides if the hook applies
+		for this call.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><code>HookParent::PostProcess(x)</code></p>
+		</td>
+		<td>
+		<p>This method fires at the end of <code>::Process(x)</code>.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><code>HookParent::Execute(x)</code></p>
+		</td>
+		<td>
+		<p>The action method of the hook, wherein the hook actually
+		accomplishes what it is designed to do.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><code>HookParent::SetOHook(o)</code></p>
+		</td>
+		<td>
+		<p>This method is used to build the hook chain.<span  > </code>The semantics are as follows: If This.oHook
+		is an object, then pass the passed parameter to <code>This.oHook.SetoHook(o)</code>.<span  > </code>Otherwise, assign the passed object (or an
+		object implied by the passed parameter) to <span style='font-family:"Courier New";  mso-bidi-font-family:"Times New Roman"'>This.oHook</code>.<span  > </code>In this way, given a new object to chain,
+		an existing chain knows how to configure itself.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><code>HookAnchod.aHook</code></p>
+		</td>
+		<td>
+		<p>Array member of hook objects to anchor and iterate.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><code>HookAnchor::load(ccc)</code></p>
+		</td>
+		<td>
+		<p>Loads the hooks (or hook chains) from metadata specified
+		by the passed parameters.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><code>HookAnchor::Process(x)</code></p>
+		</td>
+		<td>
+		<p>Iterates through the collection of attached hooks and
+		hook chains, calling the Process() method of each.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><code>HookAnchor::ExitProcessLoop(x)</code></p>
+		</td>
+		<td>
+		<p>Provides an escape mechanism for exiting the iteration.</p>
+		</td>
+	</tr>
+	<tr>
+		<td>
+		<p><code>HookAnchor::SetaHook(x)</code></p>
+		</td>
+		<td>
+		<p>Adds an object to the collection of hooks.</p>
+		</td>
+	</tr>
+</table>
+
+<h2>Upsides</h2>
+
+<p>Here are some advantages of Hooks and Anchors</p>
+<ul>
+	<li>Runtime configurable.
+	<li>Process clones and variants are easily created.
+	<li>Modular design, construction, and implementation.
+</ul>
+<h2>Downsides</h2>
+
+<p>Here are some downsides with Hooks and Anchors as
+presented here.</p>
+
+<p>It takes some getting used to, and its not easy to
+abstract all the operations of a process into logical independent hooks, and to
+thereafter anchor them and iterate them properly.</p>
+
+<p>Its more complex than simple subclassing and filling
+hot-spot methods.</p>
+
+<p>Plugging in a new object involves steps that are
+vulnerable to configuration mistakes without tool support. Using BROWSE on a VFP configuration table is
+only good for those who already know what they are doing.</p>
+
+<h2>Applications  Putting it all together</h2>
+
+
+<p>This section serves as an outline of what will be discussed
+in the session, and quite probably be included with sample programs on the
+conference CD, or downloadable from my website at http://stevenblack.com.</p>
+
+<ul>
+<li><strong>Example:</strong> <a href="HooksAndAnchorsDesignPattern_CleaningUpHTML.html">Parsers -- Cleaning up HTML</a>
+  (sample with code)
+
+<li>Processes -- A Shopping Cart
+
+<li>Localization  INTL
+</ul>
+
+<h2>Conclusion</h2>
+
+<p>This paper briefly describes the major elements of the
+Hooks and Anchors solution framework. Approaching problems this in this way isnt for everyone, nor is
+suitable for all situations. For real hot spots, where your application can be
+expect evolution stress, it can be just the ticket.</p>
+
+
+<h2>Bibliography</h2>
+
+
+<p><strong>[1] </strong>Gamma, E., Helm, R., Johnson, R, and Vlissides,
+J. (1994), Design Patterns, Elements of Object Oriented Software, Addison
+Wesley, Reading, MA, ISBN 0-201-63361-2.</p>
+
+<p><strong>[2] </strong>Riel, A (1996), Object Oriented Design
+Heuristics, Addison Wesley, Reading, MA, ISBN 0-201-63385-X.</p>
+
+<p><strong>[3] </strong>Class Composition for Specifying Framework
+Design, S Demeyer, M Rieger, TD M, E Gelsema (<a href="http://www.iam.unibe.ch/~demeyer/Deme99b/paper.html">http://www.iam.unibe.ch/~demeyer/Deme99b/paper.html</a>)</p>
