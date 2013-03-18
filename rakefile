@@ -1,0 +1,156 @@
+# Where our Bootstrap source is installed. Can be overridden by an environment variable.
+BOOTSTRAP_SOURCE = ENV['BOOTSTRAP_SOURCE'] || File.expand_path("~/Dropbox/dev/css/bootstrap")
+
+# Where to find our custom LESS file.
+BOOTSTRAP_CUSTOM_LESS = 'bootstrap/less/custom.less'
+
+task :bootstrap => [:bootstrap_js, :bootstrap_css]
+
+task :bootstrap_js do
+  require 'uglifier'
+  require 'erb'
+
+  template = ERB.new %q{
+  <!-- AUTOMATICALLY GENERATED. DO NOT EDIT. -->
+  <% paths.each do |path| %>
+  <script type="text/javascript" src="/bootstrap/js/<%= path %>"></script>
+  <% end %>
+  }
+
+  paths = []
+  minifier = Uglifier.new
+  Dir.glob(File.join(BOOTSTRAP_SOURCE, 'js', '*.js')).each do |source|
+    base = File.basename(source).sub(/^(.*)\.js$/, '\1.min.js')
+    paths << base
+    target = File.join('bootstrap/js', base)
+    if different?(source, target)
+      File.open(target, 'w') do |out|
+        out.write minifier.compile(File.read(source))
+      end
+    end
+  end
+
+  File.open('_includes/bootstrap.js.html', 'w') do |f|
+    f.write template.result(binding)
+  end
+end
+
+task :bootstrap_css do |t|
+  puts "Copying LESS files"
+  Dir.glob(File.join(BOOTSTRAP_SOURCE, 'less', '*.less')).each do |source|
+    target = File.join('bootstrap/less', File.basename(source))
+    cp source, target if different?(source, target)
+  end
+
+  puts "Compiling #{BOOTSTRAP_CUSTOM_LESS}"
+  sh 'lessc', '--compress', BOOTSTRAP_CUSTOM_LESS, 'bootstrap/css/bootstrap.min.css'
+end
+
+task :default => :jekyll
+
+task :jekyll => :bootstrap do
+  sh 'jekyll'
+end
+
+task :verbose do
+  sh 'jekyll --no-server --no-auto'
+end
+
+desc "jekyll in development mode"
+task :dev do
+  sh 'jekyll --server --auto'
+end
+
+desc "Rebuild static files"
+task :rebuild do
+  exec "jekyll --no-auto"
+end
+
+SOURCE = "."
+
+CONFIG = {
+  'version' => "0.2.13",
+  'themes' => File.join(SOURCE, "_includes", "themes"),
+  'layouts' => File.join(SOURCE, "_layouts"),
+  'posts' => File.join(SOURCE, "_posts"),
+  'post_ext' => "md",
+  'theme_package_version' => "0.1.0"
+}
+
+
+# Usage: rake post title="A Title" [name="The File Name"] [date="2012-02-09"]
+desc "Begin a new post in #{CONFIG['posts']}"
+task :post do
+  abort("rake aborted: '#{CONFIG['posts']}' directory not found.") unless FileTest.directory?(CONFIG['posts'])
+  raise "Usage: provide a post file name; e.g., NAME=custom-rake-tasks.markdown" unless ENV['name']
+
+  title = ENV["title"] || "New Post"
+  name  = ENV["name"] || title
+  slug = name.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+
+  begin
+    date = (ENV['date'] ? Time.parse(ENV['date']) : Time.now).strftime('%Y-%m-%d')
+  rescue Exception => e
+    puts "Error - date format must be YYYY-MM-DD, please check you typed it correctly!"
+    exit -1
+  end
+  filename = File.join(CONFIG['posts'], "#{date}-#{slug}.#{CONFIG['post_ext']}")
+  if File.exist?(filename)
+    abort("rake aborted!") if ask("#{filename} already exists. Do you want to overwrite?", ['y', 'n']) == 'n'
+  end
+
+  puts "Creating new post: #{filename}"
+  open(filename, 'w') do |post|
+    post.puts "---"
+    post.puts "layout: post"
+    post.puts "title: \"#{title}\""
+    post.puts 'author: "Steven Black"'
+    post.puts 'type: ""'
+    post.puts 'header_text: ""'
+    post.puts 'lead_text: ""'
+    post.puts 'excerpt: ""'
+    post.puts 'category: '
+    post.puts "tags: []"
+		post.puts ""
+    post.puts "---"
+  end
+end # task :post
+
+
+# Usage: rake page name="about.html"
+# You can also specify a sub-directory path.
+# If you don't specify a file extention we create an index.html at the path specified
+desc "Create a new page."
+task :page do
+  name = ENV["name"] || "new-page.md"
+  filename = File.join(SOURCE, "#{name}")
+  filename = File.join(filename, "index.html") if File.extname(filename) == ""
+  title = File.basename(filename, File.extname(filename)).gsub(/[\W\_]/, " ").gsub(/\b\w/){$&.upcase}
+  if File.exist?(filename)
+    abort("rake aborted!") if ask("#{filename} already exists. Do you want to overwrite?", ['y', 'n']) == 'n'
+  end
+
+  mkdir_p File.dirname(filename)
+  puts "Creating new page: #{filename}"
+  open(filename, 'w') do |post|
+    post.puts "---"
+    post.puts "layout: page"
+    post.puts "title: \"#{title}\""
+    post.puts 'description: ""'
+    post.puts "---"
+  end
+end # task :page
+
+
+def different?(path1, path2)
+  require 'digest/md5'
+  different = false
+  if File.exist?(path1) && File.exist?(path2)
+    path1_md5 = Digest::MD5.hexdigest(File.read path1)
+    path2_md5 = Digest::MD5.hexdigest(File.read path2)
+    (path2_md5 != path1_md5)
+  else
+    true
+  end
+end
+
