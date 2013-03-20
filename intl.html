@@ -12,10 +12,10 @@ permalink: /intl/
 		<img src="images/INTL284.gif" class="floatright" />
 		<ul>
 			<li>INTL works in all versions of Visual FoxPro, including VFP 9.</li>
-			<li>INTL makes your apps multilingual in a <a href="INTLisHassleFree.html"title="INTL is truly a breeze to install">hassle-free</a> way.</li>
+			<li>INTL makes your apps multilingual in a <a href="#hasslefree"title="INTL is truly a breeze to install">hassle-free</a> way.</li>
 			<li>INTL makes for fast integration into existing applications.</li>
-			<li>INTL is <a href="INTLConfuguration.html" title="INTL is easily configured for your locales">totally configurable</a>.</li>
-			<li>INTL is <a href="intliscomponentware.html"title="INTL is modular and well packaged">componentware</a>.</li>
+			<li>INTL is <a href="/intldocs/#HowtoConfigureYourMainINTLObject" title="INTL is easily configured for your locales">totally configurable</a>.</li>
+			<li>INTL is <a href="#componentware"title="INTL is modular and well packaged">componentware</a>.</li>
 			<li>INTL localizes <a href="INTLReports.html" title="INTL uses batch tools to localize reports">reports</a> and <ahref="INTLMenus.html" title="INTL uses a GENMENUX driver to localize menus">menus</a>.</li>
 			<li>INTL comes with <a href="intlqualitysourcecode.html"title="INTL's sources are literate and well commented">full source code</a>.</li>
 			<li>INTL has a <a href="intlhowto.html#LocalizeForms" title="INTL is really nice to configure">clean, simpleprogramming interface</a>.</li>
@@ -34,5 +34,74 @@ permalink: /intl/
 	<div class="span4">
 		<h4>Price: US$599</h4>
 		{% include intlbutton.html %}
+	</div>
+</div>
+<div id="hasslefree" class="row">
+	<div class="span12">
+
+		<h3>Steven Black's INTL Toolkit is Hassle Free</h3>
+		<p>INTL is a snap to integrate into new and existing applications. Simply do the following things:</p>
+
+	</div>
+		<div class="span6">
+
+			<ul>
+				<li>Create an INTL object early in the application's startup/</li>
+
+				<li>Add a line to your baseform <code>INIT()</code> to message INTL</li>
+
+				<li>Make GENMENUX your menu generator</li>
+
+				<li>Build your application</li>
+
+				<li>Voila, you are basically done and ready to give a very credible demo to your boss or
+				customer!&nbsp;</li>
+			</ul>
+		</div>
+		<div class="span6">
+			<p>Other things that come up include finish and polish issues like:</p>
+
+			<ul>
+				<li>Some VFP services come from VFP, others from Windows, so you may need localized versions of these
+				in your final installations. See <a href="SBCPublicDomain.html">Downloads</a> for GOTCHAS, a
+				utillity that audits your project for instances of the known issues. These issues are also listed in my
+				<a href="/intl-vfp/">VFP International Issues page</a> to get an idea of some of the no-nos you may
+				have coded in your application. GOTCHAS will find all these for you.</li>
+
+				<li>Expunge hard-coded messages from your applcation. See&nbsp; <a
+				href="SBCPublicDomain.html">Downloads</a> for a public-domain version of MsgSvc to see how that
+				works.</li>
+			</ul>
+		</div>
+</div>
+<div id="componentware" class="row">
+	<div class="span12">
+		<h3>INTL retrofits easily into new and existing apps.</h3>
+
+		<p>INTL is a great component. It is both a complete back box you can use immediately, and also a highly
+		hooked and extendible component that you can tailor, extend, or subclass as you need.</p>
+
+		<p>INTL is a great component because:</p>
+
+		<ul>
+			<li>it comes will full annotated source code.</li>
+
+			<li>it is tuned for each version of VFP for maximum performance.</li>
+
+			<li>it has great documentation.</li>
+
+			<li>its classes are explicitly named for the design patterns it used so functionality is easily
+			unerstood.</li>
+
+			<li>it provides hooks for every action so you can easily change default behavior.</li>
+
+			<li>it provides a number of specialized localization strategies that you can add-on for particular
+			locales. For example, you would use the right-to-Left strategy to localize for the Middle-East and the
+			Orient, or add-in the multi-currency strategy on forms displaying financial data.</li>
+
+			<li>you can loalize strings, fonts, images, data sources, as required, with easy to configure add-in
+			strategies for each.</li>
+		</ul>
+		
 	</div>
 </div>
