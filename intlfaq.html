@@ -1,5 +1,6 @@
 ---
 layout: page
+title: IntlToolkit Frequently Asked Questions
 permalink: /intlfaq/
 
 ---
@@ -38,13 +39,15 @@ permalink: /intlfaq/
 		<p><strong>Q. Does it handle all Captions i.e. Grid headers, Radio Buttons, Check boxes,
 		Form Captions, Tooltips, Menu options etc. In other words, what does it not handle?</strong></p>
 
-		<p><strong>A.</strong> INTL handles basically everything:<br />
-		*- Strings (by Default)<br />
-		*- Fonts (Optional)<br />
-		*- Images (Optional)<br />
-		*- Data sources (Optional)<br />
-		*- Currencies (Optional)<br />
-		*- Right-to-Left writing systems (Optional) (Right-to-left is in the VFP 5 version only.)</p>
+		<p><strong>A.</strong> INTL handles basically everything:</p>
+		<ul>
+			<li>Strings (by Default)</li>
+			<li>Fonts (Optional)</li>
+			<li>Images (Optional)</li>
+			<li>Data sources (Optional)</li>
+			<li>Currencies (Optional)</li>
+			<li>Right-to-Left writing systems (Optional) (Right-to-left is in the VFP 5 version only.)\</li>
+		</ul>
 
 		<p>Menus are handled with a GEMENUX driver, and Reports are localized with a batch
 		routine.</p>
@@ -63,9 +66,9 @@ permalink: /intlfaq/
 		<p><strong>A.</strong> As follows:</p>
 		<pre>
 		<strong>SET PROC to &lt;Path\&gt;intltool.PRG
-		oIterator = create("CProjectIterator", cPjx)
-		oVisitor = create("CINTLUpdateVisitor")
-		oIterator.Accept(oVisitor)</strong>
+		oIterator = create( "CProjectIterator", cPjx )
+		oVisitor  = create( "CINTLUpdateVisitor" )
+		oIterator.Accept( oVisitor )</strong>
 		</pre>
 		<hr />
 
