@@ -1,3 +1,4 @@
+.readable{font-size:inherit;}
 .clearfix{*zoom:1;}.clearfix:before,.clearfix:after{display:table;content:"";line-height:0;}
 .clearfix:after{clear:both;}
 .hide-text{font:0/0 a;color:transparent;text-shadow:none;background-color:transparent;border:0;}
@@ -861,3 +862,6 @@ a.label:hover,a.label:focus,a.badge:hover,a.badge:focus{color:#ffffff;text-decor
 .locators div a:hover{background-color:maroon;}
 .locators div a img{float:left;margin-right:10px;}
 .ui-corner-all{-moz-border-radius:4px ;-webkit-border-radius:4px ;border-radius:4px ;}
+.locators div{background:#ccc;}
+.locators div a{color:#333;}
+.locators div a:hover{color:#eee;}

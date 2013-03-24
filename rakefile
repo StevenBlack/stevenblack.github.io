@@ -42,8 +42,14 @@ task :bootstrap_css do |t|
     cp source, target if different?(source, target)
   end
 
+  puts 'copying the theme variables file'
+  cp 'less/variables.less', 'bootstrap/less/variables.less'
+
   puts "Compiling #{BOOTSTRAP_CUSTOM_LESS}"
-  sh 'lessc', '--compress', BOOTSTRAP_CUSTOM_LESS, ' bootstrap/css/bootstrap.min.css'
+  # sh 'lessc', '--compress', BOOTSTRAP_CUSTOM_LESS, ' bootstrap/css/bootstrap.min.css'
+  syscmd = 'lessc --compress ' + BOOTSTRAP_CUSTOM_LESS + ' > bootstrap/css/bootstrap.min.css'
+  cp 'bootstrap/css/bootstrap.min.css', 'css/bootstrap.min.css'
+  system syscmd
 
 end
 
