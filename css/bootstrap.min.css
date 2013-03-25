@@ -856,12 +856,9 @@ a.label:hover,a.label:focus,a.badge:hover,a.badge:focus{color:#ffffff;text-decor
 .show{display:block;}
 .invisible{visibility:hidden;}
 .affix{position:fixed;}
-.locators{float:left;line-height:1em;}
-.locators div{display:block;background:#444;height:70px;margin-bottom:1.5em;padding:0px;float:left;}
-.locators div a{border-width:0px;color:#fff;display:block;padding:10px;height:50px;}
-.locators div a:hover{background-color:maroon;}
+.locators{float:left;line-height:1em;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;}
+.locators div{display:block;background:#ccc;height:70px;margin-bottom:1.5em;padding:0px;float:left;}
+.locators div a{border-width:0px;color:#333;display:block;padding:10px;height:50px;}
+.locators div a:hover{background-color:maroon;color:#eee;}
 .locators div a img{float:left;margin-right:10px;}
 .ui-corner-all{-moz-border-radius:4px ;-webkit-border-radius:4px ;border-radius:4px ;}
-.locators div{background:#ccc;}
-.locators div a{color:#333;}
-.locators div a:hover{color:#eee;}
