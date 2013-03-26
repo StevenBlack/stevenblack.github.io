@@ -862,3 +862,4 @@ a.label:hover,a.label:focus,a.badge:hover,a.badge:focus{color:#ffffff;text-decor
 .locators div a:hover{background-color:maroon;color:#eee;}
 .locators div a img{float:left;margin-right:10px;}
 .ui-corner-all{-moz-border-radius:4px ;-webkit-border-radius:4px ;border-radius:4px ;}
+@media (min-width:980px){.locators{font-size:14.45px;}}@media (min-width:768px){.locators{font-size:12.75px;}}
