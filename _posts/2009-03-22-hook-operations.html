@@ -1,0 +1,1057 @@
+---
+layout: post
+title: "Hook Operations"
+author: "Steven Black"
+type: ""
+header_text: ""
+lead_text: ""
+excerpt: ""
+category: 
+tags: []
+
+---
+<h2>Introduction</h2>
+
+<p>In this article, I'll introduce a new design pattern called hook operations, which
+defines mechanisms to make software flexible and extendible. this is the first design
+pattern i've ever created from scratch, so I welcome any comments or questions you may
+have about it.</p>
+
+<p>All software design patterns are born from the need for flexibility. But few patterns
+explicitly address the issue of how to make software extensible or configurable
+downstream or at run-time. Furthermore, the more a framework or component is reused, the
+more clients it serves (by definition) and the greater is the stress on it to adapt. Hook
+Operations are a way of adapting frameworks or components without stressing them
+unduly.</p>
+
+<p>Before proceeding, here are some definitions:</p>
+
+<p><strong>Hook:</strong> a call within software that's explicitly designated to provide
+future flexibility.</p>
+
+<p><strong>Hook Operation:</strong> code that implements a hook.</p>
+
+<p><strong>Hook Operation Design Pattern:</strong> defines interfaces and methodologies
+for hook operations.</p>
+
+<p>For the most part, the Hook Operation design pattern is applicable in both object and
+non-object oriented programming. I discuss both, but I only allude to the general
+implementation mechanisms of procedural hooks, and the code examples presented in this
+article focus only on object-oriented hooks. I'll cover procedural hooks in a future
+article.</p>
+
+<h2>Name</h2>
+
+<p>Hook Operation</p>
+
+<h2>Intent</h2>
+
+<p>The Hook Operation design pattern defines interfaces and mechanisms by which software
+is engineered to be flexible and extended by people other than its creators.</p>
+
+<h2>Motivation</h2>
+
+<p>Toolkits and frameworks are composed of general-purpose classes that are later adapted
+by others. Toolkits provide for code and component reuse, and frameworks provide for
+architectural reuse. In both cases, flexibility and extensibility are virtues. How to
+best provide this adaptability?</p>
+
+<p>In Visual FoxPro, instance programming is one way toolkits and frameworks are
+sometimes adapted. When you work in the Screen Designer, or in non-class objects in the
+Class Designer, you are instance programming; that is, you are adding user-code to object
+instances. This is usually fine and it works, but it means the following
+disadvantages:</p>
+
+<ul>
+<li>Source code is required,</li>
+
+<li>the changes requires recompiling, and</li>
+
+<li>"programming by exception" (example: "our Atlanta office does things slightly
+differently") isn't easily accommodated.</li>
+</ul>
+
+<p>Subclassing is another common way toolkits and frameworks are meant to be adapted.
+Adaptation by subclassing, however, presents similar problems:</p>
+
+<ul>
+<li>source code is required,</li>
+
+<li>specialized class knowledge is required to mitigate side-effects,</li>
+
+<li>the potential for over-enthusiastic subclassing, and</li>
+
+<li>possibility of creating difficult upgrade, support, and maintenance situations.</li>
+</ul>
+
+<p>Moreover downstream subclassing constrains framework creators in future releases. The
+framework creators have no control of framework subclassing. This puts framework creators
+in a difficult position: on one hand they want to perpetually improve their classes, but
+on the other hand each change may break somebody's code.</p>
+
+<p>Hook operations are usually a viable alternative to instance programming and
+subclassing.</p>
+
+<p>To illustrate a simple hook, consider a control with the click method in Listing 1.
+The built-in click method is preceded by the hook operation THIS.PreClickHook(). The
+PreClickHook() method is a good place for users to place custom processing in subclasses
+without polluting the built-in Click behavior.</p>
+<pre>
+	FUNCTION Click
+		THIS.PreClickHook()
+		WAIT WINDOW "Built-in Click Method Starts Now"
+		&lt;100 lines of code&gt;
+	ENDFUNC
+</pre>
+
+<p>Listing 1. A simple hook. In this example the user can either instance-program or
+subclass and place code in the PreClickHook() method. Later we'll see other alternatives
+to implement hooks.</p>
+
+<p>Subclassing, though, can be problematic. If we could implement hooks without
+subclassing, we would see the following benefits:</p>
+
+<ul>
+<li>Source code would not be required.</li>
+
+<li>Modifications would override or augment the original code, but not change it
+directly.</li>
+
+<li>Hooks would be less likely to be affected by future changes to the underlying
+framework classes.</li>
+
+<li>Adaptation would occur in places specifically designed for this purpose, but outside
+the class hierarchy, which is easier to support.</li>
+</ul>
+
+<p>Listing 2 shows how we could modify Listing 1 to engineer hooks without subclassing.
+Instead of delegating to a local method, the hook calls out to an object reference which
+can be dynamically configured.</p>
+<pre>
+	FUNCTION Click
+		oSomeObjectReference.ClickHook()
+		WAIT WINDOW "Built-in Click Method Starts Now"
+		&lt;100 lines of code&gt;
+	ENDFUNC
+</pre>
+
+<p>Listing 2. Another simple hook. In this example the hook is implemented by reference
+to another separate object.</p>
+
+<p>Hooks usually do nothing by default; they are used by exception, if at all. A hook is
+a separate and distinct method or process, reserved for adaptation, in a way separates
+the adaptation from built-in behavior. The hook is usually invoked in such a way that the
+built-in behavior can be enhanced or replaced without affecting the original source and
+without altering the built-in behavior provided by the class.</p>
+
+<p>The key thing to take from the above is hook operations are ubiquitous calls to
+external code and, by default and for the moment, that external code simply does
+nothing.</p>
+
+<p>Later in this article I'll illustrate 2 sorts of hook operations. I'll just describe
+them for now:</p>
+
+<p>Object Hooks are hooks that are fulfilled by attaching behavior objects to instances.
+See figure 1.</p>
+
+<p><img src="/images/Image27a.gif" /></p>
+
+<p>Figure 1: Object hooks illustrated, here for a single Click() method. In diagram A the
+instance is not hooked and functions as normal. In diagram B the instance is hooked by a
+hook object whose non-blank methods extend (or possibly override) the code in the
+instance.</p>
+<div class="clearboth"></div>
+<p>Procedural Hooks are hooks that are fulfilled procedurally. This fulfillment may be a
+straight program call, but it could also be metadata-driven. See figure 2.</p>
+
+<p><img src="/images/Image28.gif" /></p>
+
+<p>Figure 2: A metadata-based procedural hook illustrated. Here a call to a Hook Manager
+triggers a lookup which returns the name of a program to execute. Since hooks are used by
+exception, normally the lookup would return nothing.</p>
+<div class="clearboth"></div>
+<h2>Applicability -- where to put hooks</h2>
+
+<p>Hooks are appropriate in places where you want a program to be adaptable. Where might
+that be? Two conflicting forces determine this. On one hand, hook operations are most
+valuable at critical junctures in the program. On the other hand, usability suggests that
+hooks should be placed at predictable junctures.</p>
+
+<p>In object-oriented programs, critical junctures are commonly adjacent to significant
+state transformations. For example, in an accounting application, the place where
+transactions are posted is a critical juncture. One would hope for a hook either before
+and after such important state transitions.</p>
+
+<p>Critical junctures are difficult to identify, especially in frameworks -- criticality,
+after all, depends on the implementation. An irrelevant juncture in one application may
+be crucial in another. For completeness, all plausible junctures (all major state
+transformations) would need to be hooked (and documented). This is onerous.</p>
+
+<p>Predictable junctures, on the other hand, are architecturally predictable places. For
+example, predictable junctures could be defined as where methods begin and end.
+Predictable junctures are sometimes (but not always) located close to critical junctures,
+and their predictability makes them very usable.</p>
+
+<p>How close are predictable junctures to critical ones? This is a function code volume:
+The briefer the method code, the likelier predictable junctures are proximate to critical
+junctures.</p>
+
+<p>The tradeoff between critical and predictable junctures is a developer-education
+issue. If implementers are not able to identify where hook operations are placed, then
+they wont be able to engineer the adaptations they require. The main benefit of hooking
+at predictable junctures is the hooks are much easier to identify and document.</p>
+
+<p>I find it easiest to place hook operations at predictable junctures rather than fret
+about placing hooks at every critical juncture. But don't recommend hooking all
+predictable junctures. Every method of every object doesn't need a hook, and since the
+hook calls involve processing, it's best to use some common sense. Some common events I
+hook include Click(), DblClick(), RightClick(), DragDrop(), GotFocus() and a few others.
+For obvious reasons, I don't recommend hooking quasi-continuous events such as
+MouseMove() and Paint().</p>
+
+<h2>Structure</h2>
+
+<p>A number of hook structures are possible, depending on how the hook is engineered.</p>
+
+<p>Internally fulfilled hooks: When hooked objects handle fulfill their hooks by instance
+programming or by subclassing, the structure illustrated in Figure 3 is typical. This
+classic structure is well known and is the basis for the Template Method design pattern
+as described by Gamma, Helm et al in their Design Patterns book.</p>
+
+<p>Externally fulfilled hooks: If hook operations delegate to external hook
+implementations, this leads to many possible variants. Two examples: Figure 4 shows a
+case where the hook objects come from separate hook classes, and Figure 5 shows a case
+where the hook class is a superclass of the hooked class.</p>
+
+<p><img src="/images/Image29.gif" /></p>
+
+<p>Figure 3: What I call "self-sufficient hooks" have a structure similar to that of the
+Template Method design pattern. Here you use inheritance or instance programming to
+modify the default behavior.</p>
+<div class="clearboth"></div>
+<p><img src="/images/Image30.gif" /></p>
+
+<p>Figure 4: Supporting hooks are separate hook objects, here shown as separate classes
+from those they adorn.</p>
+<div class="clearboth"></div>
+<p><img src="/images/Image31.gif" /></p>
+
+<p>Figure 5: Hooked objects and their hooks can share the same interface, which implies
+that they can share the same class hierarchy. This is very handy from a maintenance
+perspective since the interfaces remain automatically in synch.</p>
+<div class="clearboth"></div>
+<p>Figure 5 deserves explanation because it is so counterintuitive and admittedly
+convoluted. One would think that a hook couldn't possibly be from a Parentclass of what
+we wish to modify. But it works great! Here's why:</p>
+
+<p>Hooked objects use the public interface of hook objects. Therefore giving both a
+common interface makes sense because of the polymorphic nature of the linkages.
+Furthermore if they are of the same class, then keeping the interfaces in synch is a
+cinch.</p>
+
+<p>If a hooked object is-a hook, then the concrete objects can use each other as hooks.
+Effectively, this means they can call each other's services as hook operations. For
+example, all the controls on a form could use the form's RightClick() services,
+preserving the RightClick() context of the form whilst the cursor is on a control.</p>
+
+<p>Since hooked objects can call hooks, and hook objects are hooks, this means they can
+be chained together. (I'll explain this later in the Implementation section).</p>
+
+<h2>Structure: Hook sequencing</h2>
+
+<p>Assuming we are free to sprinkle hook operations throughout our events and methods,
+how to best place them? To help answer this, here are our placement choices relative to
+the built-in behaviors we may wish to adapt:</p>
+
+<p>Pre-process hooks are invoked before the usual procedure code. Pre-process hooks are
+especially handy if they can override (or pre-empt or replace) built-in behavior.</p>
+
+<p>Post-process hooks are invoked after the usual procedure code. Unlike pre-process
+hooks, post-process hooks cannot control the execution of the procedure which invokes
+it.</p>
+
+<p>Mid-process hooks are invoked in mid-procedure. I won't discuss this option further,
+but bear in mind that these can be useful, especially within monolithic procedures.</p>
+
+<h2>Participants</h2>
+
+<p>There are two participants in the hook operation pattern. Note that the pattern can be
+extended, so one participant may play both roles.</p>
+
+<p>Hooked Object<br />
+Contains a template method which contains one or more hook operations.</p>
+
+<p>Hook Object<br />
+Not necessarily distinct from the Hooked Object<br />
+Implements the hook</p>
+
+<p>Collaborations</p>
+
+<p>The hooked object hook methods through hook operations.</p>
+
+<p>Hook objects may themselves be hooks.</p>
+
+<h2>Consequences</h2>
+
+<p>The advantages of Hook Operations include:</p>
+
+<ul>
+<li>Downstream developers can modify application behavior by adapting hook methods.</li>
+
+<li>Depending on the architecture, hook objects may be chained together.</li>
+</ul>
+
+<p>Some disadvantages are</p>
+
+<ul>
+<li>Hook operations are unconventional, and add somewhat to overall application
+complexity.</li>
+
+<li>Hook messaging overhead has performance expenses.</li>
+</ul>
+
+<h2>Implementation</h2>
+
+<p>This section briefly shows some ways hook operations can be implemented in Visual
+FoxPro</p>
+
+<h3>1. A simple pre-process hook</h3>
+
+<p>Listing 3 shows a simple call to a pre-process hook. This example uses the common
+convention of naming the pre-process with the prefix "pre", and similar hook operations
+are found in a number of VFP frameworks.</p>
+<pre>
+FUNCTION Click
+  *-- Pre-process hook
+  THIS.PreClick()
+  WAIT WINDOW "Click"
+  &lt;100 lines of code&gt;
+ENDFUNC
+</pre>
+
+<p>Listing 3. A pre-hook followed by standard method code.</p>
+
+<h3>2. A simple post-process hook</h3>
+
+<p>Listing 4 shows a simple post-processing hook. This example uses the common convention
+of naming the pre-process with the prefix "post"</p>
+<pre>
+FUNCTION Click
+  WAIT WINDOW "Click"
+  &lt;100 lines of code&gt;
+  *-- Post-process hook
+  THIS.PostClick()
+ENDFUNC
+</pre>
+
+<p>Listing 4. A post-process Click hook.</p>
+
+<h3>3. Combined simple pre and post-process hooks</h3>
+
+<p>As you may have guessed, pre and post-hooks can be combined, as shown in listing 5, in
+an attempt to achieve flexibility on both sides of the standard call. This is not
+recommended!</p>
+<pre>
+FUNCTION Click
+  THIS.oHook.PreClick()  &amp;&amp; Pre-hook
+  WAIT WINDOW "Click"
+  &lt;100 lines of code&gt;
+  THIS.oHook.PostClick() &amp;&amp; Post-hook
+ENDFUNC
+</pre>
+
+<p>Listing 5. Pre and post-hooks surround a standard method. If you intend this method to
+be subclassed, then avoid this!</p>
+
+<p>However you do it, combining pre and post-hooks, as in listing 5, is not recommended
+if the method is to be subclassed. If you subclass the click method of listing 5, and use
+DODEFAULT() or the scope resolution operator (::) to invoke this parent method, then
+youll fire both the pre and post-hook at that point. Depending on the hooks, this can
+cause unexpected results because both hooks will fire as part of the scope resolution
+invocation.</p>
+
+<h3>4. A delegated pre-process hook</h3>
+
+<p>In a generalization of Listing 3, we could substitute THIS.oHook to reference a
+specialized hook object, as illustrated in Listing 6.</p>
+<pre>
+FUNCTION Click
+  *-- Pre-process hook
+  THIS.oHook.PreClick()
+  WAIT WINDOW "Click"
+  &lt;100 lines of code&gt;
+ENDFUNC
+</pre>
+
+<p>Listing 6. A pre-hook method belonging to a hook object. This gives us flexibility to
+substitute behavior objects, as well as accomplish the same thing as Listing 3 by setting
+THIS.oHook=THIS.</p>
+
+<h3>5. A simple polymorphic pre-hook</h3>
+
+<p>Listing 7 improves on Listings 3 and 6 because it uses a clean implementation
+heuristic: Hooks are called polymorphically. In other words, the Click() method of an
+object calls the Click() method of its hook.</p>
+<pre>
+FUNCTION Click
+  *-- Pre-process hook
+  THIS.oHook.Click()
+  WAIT WINDOW "Click"
+  &lt;100 lines of code&gt;
+ENDFUNC
+</pre>
+
+<p>Listing 7. A cleaner version of Listings 3 and 6. Hook methods are called
+polymorphically.</p>
+
+<h3>6. A controlling pre-process hook</h3>
+
+<p>Listing 8 shows a flexible variant of listing 7 where the pre-processing hook's return
+value controls the standard method execution. This is a crude NODEFAULT-like
+implementation, controlled by the pre-hooks return value.</p>
+<pre>
+FUNCTION Click
+  IF THIS.oHook.Click() &amp;&amp; Pre hook
+    WAIT WINDOW "Click"
+    &lt;100 lines of code&gt;
+  ENDIF
+ENDFUNC
+</pre>
+
+<p>Listing 8. A pre-process hook method (in a separate object) controls the execution of
+the standard method.</p>
+
+<h3>7. Separated pre- and post-process hooks</h3>
+
+<p>Listing 9 dramatically improves on Listing 5 because it uses both pre and post hooks,
+allowing you to completely bracket transformations. Listing 9 uses the following
+heristic:</p>
+
+<ol>
+<li><strong>Events are pre-hooked,</strong></li>
+
+<li><strong>events then call a method, and</strong></li>
+
+<li><strong>that method is post-hooked.</strong></li>
+</ol>
+
+<p>In this separated "pre" and "post" architecture it is much safer to subclass the event
+or the method without scope-resolution (::) entanglement.</p>
+<pre>
+FUNCTION Click
+  *-- Pre-process hook
+  IF THIS.oHook.Click()
+    THIS.ClickImplementation()
+  ENDIF
+ENDFUNC
+FUNCTION ClickImplementation
+  *-- The actual click implementation
+  WAIT WINDOW "Click"
+  &lt;100 lines of code&gt;
+  *-- Post-process hook
+  THIS.oHook.ClickImplementation()
+ENDFUNC
+</pre>
+
+<p>Listing 9. A dramatically more flexible version of Listing 5. The pre-hook is called
+before the event code, the event code calls a method, and a post hook ends the method.
+Thus we have both pre- and post-hooks and few of the subclassing problems we'd have if
+both hooks were in the event code.</p>
+
+<p>I personally think that code structured like that of listing 9 is very slick. Note
+that the event (like click() and dblclick()) fires the "pre" hook predictably near the
+beginning of its execution, and the method (the thing invoked by event) fires the "post"
+hook predictably the end of its execution. Thus we have, in effect, a hook on the way in,
+and another on the way out. Other advantages:</p>
+
+<ul>
+<li>Code in the user-interface object's events is kept to a minimum, thus making it
+easier to reuse.</li>
+
+<li>The behavior of the user-interface object can be totally controlled by the
+pre-process hook.</li>
+
+<li>Pre and post hooks can coexist in the same process without any inherent subclassing
+problems.</li>
+
+<li>The locations of the all such hooks -- here and elsewhere -- is easily predictable
+with a simple heuristic: Events fire "pre" hooks, events then fire methods, and the
+methods fire "post" hooks..</li>
+</ul>
+
+<p>However I have just one problem with all this: the hooks in Listing 9 are dependent on
+the hook classes supporting a particular interface. One promising alternative is to
+vastly simplify the hook interface by having a single hook method to which we pass an
+appropriate context identifyer, like PROGRAM(). This leads to our last implementation
+topic, which is to use procedural hooks.</p>
+
+<h3>8. Separated pre and post-process hooks with a generic interface</h3>
+
+<p>Listing 10 shows a variant of Listing 9 that decouples the hook from its
+implementation.</p>
+<pre>
+DEFINE CLASS FullyHookedButton AS CommandButton
+  FUNCTION CLICK
+    IF oApp.HookMgr( PROGRAM())  &amp;&amp; The "Pre" hook
+      THISFORM.SomeMethod()
+    ENDIF
+ENDDEFINE
+DEFINE CLASS MyForm AS FORM
+  ADD OBJECT oCmd AS FullyHookedButton
+  FUNCTION SomeMethod
+    &lt;&lt; Your code here &gt;&gt;
+    THIS.oApp.HookMgr( PROGRAM())  &amp;&amp; The "Post" hook
+  ENDFUNC
+ENDDEFINE
+</pre>
+
+<p>Listing 10, a component with a hook before calling a Click implementation method. The
+Click implementation method contains its own hook at its conclusion. Note that the hook
+calls are made to a hook manager method which permits a clean and generic interface.</p>
+
+<p>The key here is the clean and invariant call, THIS.oApp.HookMgr( PROGRAM()), which
+allows us to have a single hook method serve for all application hooks. Of course,
+considerable logic may be required within the oApp::HookMgr() method but, on the other
+hand, this would allow us to table-base the hook operations, which is infinitely more
+flexible than hard-coding hooks. This mechanism is similar to the one used internally by
+the VFP Class Browser. More on this in the next article.</p>
+
+<h2>Known uses</h2>
+
+<p>VFP Class Browser: The VFP Class Browser is a real hookfest. By using its AddIn()
+method, and by specifying a method to hook, you can permanently register custom behavior
+for a variety of events. Registering the add-in is persistent because the AddIn() method
+creates a record in BROWSER.DBF, which lives in your HOME() directory.</p>
+
+<p>Markus Egger's PowerBrowser: The public-domain PowerBrowser tool is an example of how
+a fully hooked application like VFP's Class Browser can be considerably adapted.</p>
+
+<p>The INTL Toolkit: The INTL Toolkit, which I wrote, uses hook objects throughout.</p>
+
+<h2>Visual FoxPro Example</h2>
+
+<p>Here is a simple example of a hook system. Here we have a form with a textbox and a
+combobox connected by hooks as shown in figure 6.</p>
+
+<p>Some things of note in the sample code:</p>
+
+<p>Hooks are chained. The combobox, for example, chains through a number of objects,
+first picking up Dropdown() and Interactivechange() behavior, followed by the Form's
+hooks, which in this case attach a 2-part Rightclick() behavior.</p>
+
+<p>The Textbox's RightClick() is supplemented by the Form's RightClick() and that of the
+Form's hook, in this case some additional debug choices (full functionality not
+wired-in).</p>
+
+<p>Note the GarbageCollect() procedures which are woven into the Release() processes to
+clean up these pointers. Without this, the form will never release without CLEAR ALL. In
+some versions of VFP, expect a GPF without this pointer clean-up.</p>
+
+<p><img src="/images/Image32.gif" /></p>
+
+<p>Figure 6: The sample provided creates this system. The combobox hook chain starts is
+composed of two behavior objects before hooking to the form and its hook. The textbox
+hook chain is similarly extended by the form and its hook object.</p>
+
+<pre>
+*---------------------------------------------
+*-- Sample for Hook Operation design pattern
+*-- Copyright 1997 by Steven Black
+*-- Version 1.0 May 22 1997
+*---------------------------------------------
+*-- Create a hookable form
+oForm= Create("Frm")
+*-- Describe what the user should do
+oForm.Caption= "RightClick around to execute hooks"
+*-- add a hookable textbox
+oForm.AddObject("txt", "Txt")
+*-- add a hookable combobox
+oForm.AddObject("Cbo", "Cbo")
+oForm.Cbo.Top= 30
+*-- add dropdown and interactivechange behavior to
+*-- combobox by using hooks
+Local loTemp
+loTemp= Create("DropDown")
+oForm.Cbo.SetoHook( loTemp)
+loTemp= Create("Interactivechange")
+oForm.Cbo.SetoHook( loTemp)
+Release loTemp
+oForm.Cbo.ToolTipText= ;
+  "Make a selection to execute hooks"
+oForm.Cbo.StatusBarText= ;
+  "Make a selection to execute hooks"
+*-- Give all controls the Form's Right-click behavior
+oForm.txt.SetoHook( oForm)
+oForm.Cbo.SetoHook( oForm)
+*-- add a general shared debug utility object
+oForm.AddObject( "Debug", "DebugMenuHook")
+oForm.Debug.Top= 60
+*-- Give all controls the debug menu behavior
+*-- (via form, which is already in the hook chain)
+oForm.SetoHook( oForm.Debug)
+*-- Show the works, though you wouldn't normally
+*-- make the debug hook object visible
+oForm.SetAll("Visible", .T.)
+oForm.Show()
+Read Events
+</pre>
+<pre>
+**************************************************
+* Abstract Hook Behavior Class
+**************************************************
+*-- Class: abstracthook
+*-- ParentClass: label
+*-- BaseClass: label
+*-- Baseclass for hooks
+*
+Define Class abstracthook As Label
+  Caption = "Hook"
+  ohook = .Null.
+  Width= 150
+  BackColor= Rgb(0,255,0)
+  Name = "abstracthook"
+  Procedure Init
+*-- Say something smart
+  This.Caption= This.Class
+  Endproc
+  Procedure Release
+*-- Release from memory.
+  Release This
+  Endproc
+
+</pre>
+<pre>
+  Procedure GarbageCollect
+*-- Clean up pointers
+  This.ohook= .Null.
+  Endproc
+*=== Hooked Events and Methods ====
+* SetoHook( o)
+* RightClick()
+* PopUpMenu()
+* InteractiveChange()
+* DropDown()
+  Procedure SetoHook
+*-- Automate the hook setting process. If a hook
+*-- already exists, hook to it, thus adding to the
+*-- hook chain.
+  Parameters toPassed
+  If Type( "THIS.oHook")= "O" And ;
+      PEMSTATUS( This.ohook, "oHook", 5)
+    This.ohook.SetoHook( toPassed)
+  Else
+    This.ohook= toPassed
+  Endif
+  Endproc
+  Procedure RightClick
+  If Type( "THIS.oHook")= "O" And ;
+      PEMSTATUS( This.ohook, "RightClick", 5)
+
+    This.ohook.RightClick
+  Endif
+  Release Popups Shortcut
+  Define Popup Shortcut Shortcut Relative From Mrow(),Mcol()
+
+  This.PopupMenu()
+  If Cntbar( "Shortcut") &gt; 0
+    Activate Popup Shortcut
+  Endif
+  Endproc
+
+  Procedure PopupMenu
+*-- Delegate to the implementation chain
+  If ! Isnull( This.ohook) And ;
+      TYPE( "THIS.oHook") = "O" And ;
+      PEMSTATUS( This.ohook, "PopUpMenu", 5)
+    Return This.ohook.PopupMenu()
+  Endif
+  Endproc
+*-- Occurs when the user changes the value of a
+*-- control using the keyboard or the mouse.
+  Procedure InteractiveChange
+*-- Delegate to the implementation chain
+  If ! Isnull( This.ohook) And ;
+      TYPE( "THIS.oHook") = "O" And ;
+      PEMSTATUS( This.ohook, "InteractiveChange", 5)
+    Return This.ohook.InteractiveChange()
+  Endif
+  Endproc
+*-- Occurs when the list portion of a ComboBox
+*-- control is about to drop down after the drop-down ;
+*-- arrow is clicked.
+  Procedure DropDown
+*-- Delegate to the implementation chain
+  If ! Isnull( This.ohook) And ;
+      TYPE( "THIS.oHook") = "O" And ;
+      PEMSTATUS( This.ohook, "DropDown", 5)
+    Return This.ohook.DropDown()
+  Endif
+  Endproc
+Enddefine
+**************************************************
+* Developer's Debug Menu Behavior (partial)
+**************************************************
+*-- Class: debugmenuhook
+*-- ParentClass: abstracthook
+*-- BaseClass: label
+*-- Hook that produces debug choices in the
+*-- current shortcut menu
+*
+Define Class debugmenuhook As abstracthook
+  Name = "debugmenuhook"
+  Procedure PopupMenu
+  DoDefault()
+  Define Bar 1001 Of Shortcut Prompt "\-"
+  Define Bar 1002 Of Shortcut Prompt "Debug" ;
+    MESSAGE "Invokes the debug window"
+  Define Bar 1003 Of Shortcut Prompt "\&lt;Trace" ;
+    MESSAGE "Invokes the trace window"
+  Define Bar 1004 Of Shortcut Prompt "\&lt;Cancel" ;
+    MESSAGE "Cancel execution"
+  Define Bar 1005 Of Shortcut Prompt "\&lt;Suspend" ;
+    MESSAGE "Suspend execution"
+  Endproc
+Enddefine
+**************************************************
+* Drop Down Behavior
+**************************************************
+*-- Class: DropDown
+*-- ParentClass: abstracthook
+*-- BaseClass: label
+*-- Hook implementing dropdown eventbehavioor
+*
+Define Class DropDown As abstracthook
+  noldbackcolor = 0
+  Name = "DropDown"
+  Procedure Destroy
+  _Screen.BackColor= This.noldbackcolor
+  Endproc
+  Procedure Init
+  DoDefault()
+  This.noldbackcolor= _Screen.BackColor
+  Endproc
+  Procedure DropDown
+  _Screen.BackColor= Rand()*255^3
+  Endproc
+Enddefine
+**************************************************
+* Interactive Change Behavior
+**************************************************
+*-- Class: Interactivechange
+*-- ParentClass: abstracthook
+*-- BaseClass: label
+*-- Hook implementing interactivechange behavior
+*
+Define Class InteractiveChange As abstracthook
+  Name = "Interactivechange"
+  Procedure InteractiveChange
+  DoDefault()
+  Activate Screen
+  ?"Interactive Change Fires"
+  Endproc
+Enddefine
+
+**************************************************
+* Hookable Combobox
+**************************************************
+*-- Class: cbo
+*-- ParentClass: combobox
+*-- BaseClass: combobox
+*
+Define Class Cbo As ComboBox
+  Height = 23
+  Width = 200
+*-- Hook reference
+  ohook = .Null.
+  Name = "cbo"
+  Procedure Init
+  This.AddItem( "FoxTeach")
+  This.AddItem( "Great Lakes GREAT Database Workshop")
+  This.AddItem( "Minneapolis User's Confernence")
+  This.AddItem( "Devcon")
+  This.AddItem( "German FoxPro User's Conference")
+  This.AddItem( "Dutch FoxPro User's Conference")
+  This.AddItem( "Mid-Atlantic FoxPro Conference")
+  Endproc
+  Procedure GarbageCollect
+*-- Clean up pointers
+  This.ohook= .Null.
+  Endproc
+*-- Releases from memory.
+  Procedure Release
+  Release This
+  Endproc
+*=== Hooked Events and Methods ====
+* SetoHook( o)
+* RightClick()
+* PopUpMenu()
+* DblCLick()
+* Click()
+* InteractiveChange()
+* DropDown()
+  Procedure SetoHook
+*-- Automate the hook setting process. If a hook
+*-- already exists, hook to it, thus adding to the
+*-- hook chain.
+  Parameters toPassed
+  If Type( "THIS.oHook")= "O" And ;
+      PEMSTATUS( This.ohook, "oHook", 5)
+
+    This.ohook.SetoHook( toPassed)
+  Else
+    This.ohook= toPassed
+  Endif
+  Endproc
+  Procedure RightClick
+*-- Pre-process hook
+  If Type( "THIS.oHook")= "O" And ;
+      PEMSTATUS( This.ohook, "RightClick", 5)
+
+    This.ohook.RightClick
+  Endif
+*-- Define a shortcut menu
+  Release Popups Shortcut
+  Define Popup Shortcut Shortcut Relative ;
+    FROM Mrow(),Mcol()
+*-- Delegate to a shortcut builder
+  This.PopupMenu()
+
+*-- Activate the shortcut
+  If Cntbar( "Shortcut") &gt; 0
+    Activate Popup Shortcut
+  Endif
+  Endproc
+  Procedure PopupMenu
+*-- Delegate to the implementation chain
+  If ! Isnull( This.ohook) And ;
+      TYPE( "THIS.oHook") = "O" And ;
+      PEMSTATUS( This.ohook, "PopUpMenu", 5)
+    Return This.ohook.PopupMenu()
+  Endif
+  Endproc
+  Procedure DblClick
+  If ! Isnull( This.ohook) And ;
+      TYPE( "THIS.oHook") = "O" And ;
+      PEMSTATUS( This.ohook, "DblClick", 5)
+    This.ohook.DblClick
+  Endif
+  Endproc
+  Procedure Click
+  If ! Isnull( This.ohook) And ;
+      TYPE( "THIS.oHook") = "O" And ;
+      PEMSTATUS( This.ohook, "Click", 5)
+    Return This.ohook.Click()
+  Endif
+  Endproc
+  Procedure DropDown
+  If ! Isnull( This.ohook) And ;
+      TYPE( "THIS.oHook") = "O" And ;
+      PEMSTATUS( This.ohook, "DropDown", 5)
+    Return This.ohook.DropDown()
+  Endif
+  Endproc
+  Procedure InteractiveChange
+  If ! Isnull( This.ohook) And ;
+      TYPE( "THIS.oHook") = "O" And ;
+      PEMSTATUS( This.ohook, "InteractiveChange", 5)
+    Return This.ohook.InteractiveChange()
+  Endif
+  Endproc
+Enddefine
+**************************************************
+*-- Class: frm
+*-- ParentClass: form
+*-- BaseClass: form
+*-- Form with Rightmouse Behavior
+*
+Define Class frm As Form
+  DoCreate = .T.
+  Caption = "Hooked Form"
+  ohook = .Null.
+  AutoCenter= .T.
+  Name = "frm"
+  ShowTips= .T.
+  Procedure Release
+*-- Release from memory
+  This.GarbageCollect()
+  Release This
+  Endproc
+
+  Procedure GarbageCollect
+*-- Clean up pointers
+*-- ... recursively
+  Local lni
+  For lni= 1 To This.ControlCount
+    This.Controls[lni].GarbageCollect()
+  Endfor
+  This.ohook= .Null.
+  Endproc
+  Procedure QueryUnload
+*-- Clean up first
+  This.GarbageCollect()
+  Endproc
+
+  Procedure Destroy
+  Clear Events
+  Endproc
+
+*=== Hooked Events and Methods ====
+* SetoHook( o)
+* RightClick()
+* PopUpMenu()
+* InteractiveChange()
+* DropDown()
+  Procedure SetoHook
+*-- Automate the hook setting process. If a hook
+*-- already exists, hook to it, thus adding to the
+*-- hook chain.
+  Lparameters txPassed
+  If !Isnull( This.ohook)
+    This.ohook.SetoHook( txPassed)
+  Else
+    This.ohook= txPassed
+  Endif
+  Endproc
+  Procedure RightClick
+*-- Define a shortcut
+  Release Popups Shortcut
+  Define Popup Shortcut Shortcut Relative ;
+    FROM Mrow(),Mcol()
+*-- Delegate to a shortcut specialty method
+  This.PopupMenu()
+*-- Activate the shortcut
+  If Cntbar( "Shortcut") &gt; 0
+    Activate Popup Shortcut
+  Endif
+  Endproc
+  Procedure PopupMenu
+*-- 3 sample shortcut menu bars
+  Define Bar 100 Of Shortcut Prompt "Properties" ;
+    MESSAGE "Display the properties sheet"
+  Define Bar 200 Of Shortcut Prompt "Builders" ;
+    MESSAGE "Invoke custom builders"
+  Define Bar 300 Of Shortcut Prompt "Code" ;
+    MESSAGE "Edit underlying code"
+*-- Delegate to the implementation chain
+  If ! Isnull( This.ohook) And ;
+      TYPE( "THIS.oHook") = "O" And ;
+      PEMSTATUS( This.ohook, "PopUpMenu", 5)
+    Return This.ohook.PopupMenu()
+  Endif
+  Endproc
+  Procedure DropDown
+*-- Occurs when the list portion of a ComboBox
+*-- control is about to drop down after the
+*-- drop-down arrow is clicked.
+  If ! Isnull( This.ohook) And ;
+      TYPE( "THIS.oHook") = "O" And ;
+      PEMSTATUS( This.ohook, "DropDown", 5)
+    Return This.ohook.DropDown()
+  Endif
+  Endproc
+  Procedure InteractiveChange
+*-- Occurs when the user changes the value ;
+*-- of a control using the keyboard or the mouse.
+*-- Fire pre-process hook
+  If ! Isnull( This.ohook) And ;
+      TYPE( "THIS.oHook") = "O" And ;
+      PEMSTATUS( This.ohook, "InteractiveChange", 5)
+    Return This.ohook.InteractiveChange()
+  Endif
+  Endproc
+Enddefine
+**************************************************
+*-- Class: txt (c:\_workshop\hooks.vcx)
+*-- ParentClass: textbox
+*-- BaseClass: textbox
+*-- Textbox with Rightmouse Behavior
+*
+Define Class txt As TextBox
+  Height = 23
+  Width = 100
+*-- Hook reference
+  ohook = .Null.
+  Name = "txt"
+  Procedure GarbageCollect
+*-- Clean up pointers
+  This.ohook= .Null.
+  Endproc
+*-- Releases from memory.
+  Procedure Release
+  Release This
+  Endproc
+  Procedure PopupMenu
+  Define Bar _Med_cut Of Shortcut Prompt "Cu\&lt;t" ;
+    KEY CTRL+X, "Ctrl+X" ;
+    MESSAGE ;
+    "Removes the selection and places it onto the Clipboard"
+  Define Bar _Med_copy Of Shortcut Prompt "\&lt;Copy" ;
+    KEY CTRL+C, "Ctrl+C" ;
+    MESSAGE "Copies the selection onto the Clipboard"
+  Define Bar _Med_paste Of Shortcut Prompt "\&lt;Paste" ;
+    KEY CTRL+V, "Ctrl+V" ;
+    MESSAGE "Pastes the contents of the Clipboard"
+  Define Bar _Med_slcta Of Shortcut Prompt "Se\&lt;lect All" ;
+    KEY CTRL+A, "Ctrl+A" ;
+    MESSAGE "Selects all text or items in the current window"
+  Define Bar _Med_clear Of Shortcut Prompt "Cle\&lt;ar" ;
+    MESSAGE ;
+    "Removes the selection and does not place it onto the Clipboard"
+*-- Delegate to the implementation chain
+  loTemp= This.ohook
+  If ! Isnull( loTemp) And ;
+      TYPE( "loTemp") = "O" And ;
+      PEMSTATUS( loTemp, "PopUpMenu", 5)
+    Return loTemp.PopupMenu()
+  Endif
+  Endproc
+  Procedure SetoHook
+*-- Automate the hook setting process. If a hook
+*-- already exists, hook to it, thus adding to the
+*-- hook chain.
+  Parameters toPassed
+  If Type( "THIS.oHook.oHook")&lt;&gt; "U"
+    This.ohook.SetoHook( toPassed)
+  Else
+    This.ohook= toPassed
+  Endif
+  Endproc
+  Procedure Click
+  If ! Isnull( This.ohook)
+    This.ohook.Click
+  Endif
+  Endproc
+  Procedure RightClick
+  Release Popups Shortcut
+  Define Popup Shortcut Shortcut Relative ;
+    FROM Mrow(),Mcol()
+  This.PopupMenu()
+  If Cntbar( "Shortcut") &gt; 0
+    Activate Popup Shortcut
+  Endif
+  Endproc
+  Procedure DblClick
+  If ! Isnull( This.ohook)
+    This.ohook.DblClick
+  Endif
+  Endproc
+Enddefine
+</pre>
+
+<p>When you rightclick over the textbox, control is passed to the hook, which invokes a
+context sensitive shortcut menu. Some other things to draw from this example:</p>
+
+<p>The hooked objects and the hooks dont need to be of the same Baseclass. Hooks can be
+lightweight objects, like labels, lines, or even Relations (which are
+ultra-lightweight).</p>
+
+<p>Hooks can be shared by more than one object. There is nothing stopping us from having
+all the controls on our form pointing to the same hook.</p>
+
+<h2>Conclusion</h2>
+
+<p>Classes with code embedded with hook operations are generally more flexible than those
+that arent. If you define hook operations consistently and predictably throughout your
+application, then its usually possible to attach new behavior to satisfy the needs of a
+particular instance without subclassing. Moreover, hook operations can be reckoned and
+bound at run time.</p>&nbsp;

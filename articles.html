@@ -4,6 +4,12 @@ title: Articles
 permalink: /articles/
 
 ---
+{% for post in site.posts  %}
+<ul>
+<li>{{ post.date | date: "%d %B %Y" }}:  <a href="{{ post.url }}">{{ post.title }}</a></li>
+</ul>
+{% endfor %}
+
 
 {% for post in site.posts limit:5 %}
 <article>
