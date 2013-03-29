@@ -4,16 +4,16 @@ title: Articles
 permalink: /articles/
 
 ---
-{% for post in site.posts  %}
 <ul>
-<li>{{ post.date | date: "%d %B %Y" }}:  <a href="{{ post.url }}">{{ post.title }}</a></li>
-</ul>
+{% for post in site.posts  %}
+	<li>{{ post.date | date: "%d %B %Y" }}:  <a href="{{ post.url }}">{{ post.title }}</a></li>
 {% endfor %}
-
+</ul>
 
 {% for post in site.posts limit:5 %}
 <article>
 <h1>{{ post.title }}</h1>
+<p class="muted"><em>Last updated: {{ post.date | date: "%d %B %Y" }}</em></p>
 {{ post.content }}
 </article>
 {% endfor %}

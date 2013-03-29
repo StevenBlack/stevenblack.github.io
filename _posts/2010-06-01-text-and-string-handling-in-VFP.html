@@ -31,10 +31,10 @@ the conference CD as WarAndPeace.TXT, which along with thousands of works of lit
 
 <p>Here are a few things you need to know about VFP strings:</p>
 
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; In functional terms, there is no difference between a character field and a memo field. All functions
+<p> In functional terms, there is no difference between a character field and a memo field. All functions
 that work on characters also work on memos.</p>
 
-<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The maximum number of characters that VFP can handle in a string is 16, 777, 184.</p>
+<p> The maximum number of characters that VFP can handle in a string is 16, 777, 184.</p>
 
 <h2>Inbound</h2>
 
@@ -88,7 +88,7 @@ reads the entire contents of Tolstoys <em>War And Peace</em> from disk into memo
 </pre>
 
 <p>Given the similar execution times, I think we can conclude that internally, LLFF and <strong>FILETOSTR()</strong> are implemented similarly. However
-with the LLFF we also have fine control.&nbsp; For example, <strong>FGETS()</strong> allows us to read a line at a time. To illustrate, the following
+with the LLFF we also have fine control. For example, <strong>FGETS()</strong> allows us to read a line at a time. To illustrate, the following
 code reads the first 15 lines of <em>War And Peace</em> into array <strong>wpLines</strong>.</p>
 
 <pre>
@@ -271,7 +271,7 @@ and <strong>MLINE()</strong> functions. Like this:</p>
 	?"Using MLINE()", t2-t1, "seconds"  <strong>&amp;&amp; 22.151 seconds</strong>
 </pre>
 
-<p>Thats pathetic performance. 20+ seconds to iterate through 767 lines!&nbsp; Fortunately, theres a trick to using <strong>MLINE()</strong>, which is
+<p>Thats pathetic performance. 20+ seconds to iterate through 767 lines! Fortunately, theres a trick to using <strong>MLINE()</strong>, which is
 to pass the <strong>_MLINE</strong> system memory variable as the third parameter. Like this.</p>
 
 <pre>
@@ -291,10 +291,10 @@ to pass the <strong>_MLINE</strong> system memory variable as the third paramete
 	?"Using MLINE() with _MLINE", SECONDS()-z, "seconds"  <strong>&amp;&amp; 0.451 seconds</strong>
 </pre>
 
-<p>Now thats more like it a fifty-fold improvement.&nbsp; A surprising number of VFP developers dont know this idiom with <strong>_MLINE</strong> even
+<p>Now thats more like it a fifty-fold improvement. A surprising number of VFP developers dont know this idiom with <strong>_MLINE</strong> even
 though its been documented in the FoxPro help since version 2 at least.</p>
 
-<p>Starting in VFP 6 all this is obsolete, since <strong>ALINES()</strong> is a screaming new addition to the language.&nbsp; Lets see how these routines
+<p>Starting in VFP 6 all this is obsolete, since <strong>ALINES()</strong> is a screaming new addition to the language. Lets see how these routines
 look and perform with <strong>ALINES()</strong>.</p>
 
 <pre>
@@ -312,9 +312,9 @@ look and perform with <strong>ALINES()</strong>.</p>
 	?"Using ALINES() and traverse array:", t2-t1, "seconds"  <strong>&amp;&amp; 0.020 seconds</strong>
 </pre>
 
-<p>Another twenty-fold improvement in speed.&nbsp; I think the lesion is clear: If you are using <strong>MLINE()</strong> in your applications, and you
+<p>Another twenty-fold improvement in speed. I think the lesion is clear: If you are using <strong>MLINE()</strong> in your applications, and you
 are using VFP 6, then its time to switch to <strong>ALINES()</strong>. There are just two major differences: First, <strong>ALINES()</strong> is limited
-by VFPs 65, 000 array element limit, and second, successive lines with only <strong>CHR( 13 )</strong> carriage returns are considered as one line.&nbsp;
+by VFPs 65, 000 array element limit, and second, successive lines with only <strong>CHR( 13 )</strong> carriage returns are considered as one line.
 For example:</p>
 
 <pre>
@@ -365,7 +365,7 @@ contents to a memory variable, and were back in 3.4 seconds.</p>
 </pre>
 
 <p>So, on my Pentium 233 laptop using VFP 6, we can load <em>War and Peace</em> from disk into a 54, 000-item array in
-2.2 seconds.&nbsp; On my newer desktop machine, a Pentium 500, this task is subsecond.</p>
+2.2 seconds. On my newer desktop machine, a Pentium 500, this task is subsecond.</p>
 
 <h3>Traversing text word-by-word</h3>
 
@@ -377,7 +377,7 @@ functions, return the number of words and individual words respectively.</p>
 
 <div class="info">
 
-      <p>Prior to VFP 7, use the&nbsp; <strong>Words()</strong> and <strong>WordNum()</strong> functions, which are available to you when you load the
+      <p>Prior to VFP 7, use the <strong>Words()</strong> and <strong>WordNum()</strong> functions, which are available to you when you load the
       FoxTools.FLL library, return the number of words and individual words respectively.</p>
 </div>
 
@@ -407,7 +407,7 @@ word delimiters in the second parameter. How many sentences are there in <em>War
 	?"Using GETWORDCOUNT() countING sentences in W&amp;p", t2-t1, "seconds"<strong>&amp;&amp; 0.803 seconds</strong>
 </pre>
 
-<p><strong>GETWORDNUM()</strong> returns a specific word from a string. Whats the 666th word in War And Peace?&nbsp;
+<p><strong>GETWORDNUM()</strong> returns a specific word from a string. Whats the 666th word in War And Peace?
 What about the 500000th?</p>
 
 <pre>
@@ -475,7 +475,7 @@ to return a token from a string by specifying the delimiter. Whats the 2000th se
 	? "Words in W&amp;P:", WORDS( x )  <strong>&amp;&amp; 565168 words</strong>
 </pre>
 
-<p>So it appears that <strong>STRTRAN()</strong> both adds and removes strings with equal aplomb. What of <strong>CHRTRAN()</strong>, which swaps characters?&nbsp;
+<p>So it appears that <strong>STRTRAN()</strong> both adds and removes strings with equal aplomb. What of <strong>CHRTRAN()</strong>, which swaps characters?
 Lets, say, change all s to ch in <em>War and Peace</em>.</p>
 
 <pre>
@@ -573,7 +573,7 @@ to disk. The <strong>FPUTS()</strong> function outputs a single line from the st
 <p>Here again, the similar performance times between <strong>FWRITE()</strong> and <strong>STRTOFILE()</strong> are striking, just as they were when comparing
 <strong>FREAD()</strong> and <strong>FILETOSTR()</strong>.</p>
 
-<p>Heres an example of outputting <em>War And Peace</em> line-by-line using <strong>FPUTS()</strong>.&nbsp; Since were
+<p>Heres an example of outputting <em>War And Peace</em> line-by-line using <strong>FPUTS()</strong>. Since were
 using <strong>ALINES()</strong>, its not that onerous a task. In fact, its very slick!</p>
 
 <pre>
@@ -595,4 +595,4 @@ using <strong>ALINES()</strong>, its not that onerous a task. In fact, its very 
 <h2>Conclusion</h2>
 
 <p>So, there you have it, a cafeteria-style tour of VFPs text handling capabilities. I personally think that most of the code snippets Ive shown here
-have amazing and borderline unbelievable execution speeds. I hope Ive been able to show that VFP really excels at string handling.&nbsp;&nbsp; </p>
+have amazing and borderline unbelievable execution speeds. I hope Ive been able to show that VFP really excels at string handling. </p>

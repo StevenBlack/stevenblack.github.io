@@ -2,6 +2,7 @@
 layout: base
 titlespan: span12
 ---
+<article>
 {% if page.title %}
 <div class="row">
 	<div class="{{ page.titlespan }}">
@@ -12,6 +13,9 @@ titlespan: span12
 {% if page.author %}
 <p>By {{ page.author }}</p>
 {% endif %}
-Date not working!!!
+{% if post.date %}
 {{ post.date | date: "%d %B %Y" }}
+{% endif %}
+
 {{ content }}
+</article>
