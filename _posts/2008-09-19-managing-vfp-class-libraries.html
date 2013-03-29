@@ -1,0 +1,361 @@
+---
+layout: post
+title: "Managing VFP Class Libraries"
+author: "Steven Black"
+type: ""
+header_text: ""
+lead_text: ""
+excerpt: ""
+category: 
+tags: []
+
+---
+<p>The more applications you develop, and the bigger the teams that work on them, and the more often the
+software is revised, the more class library management skills are important. Face it: you can't ship a
+large application without good class management. as program size increases, proper structure becomes
+exponentially more important. this session, for advanced visual foxpro developers, is all about being an
+effective class librarian, and working smart with visual and code class libraries. we'll also talk about
+the conceptual and physical management of classes and class libraries, how the VFP Class Browser and
+Component Gallery play complementary roles in class library management, and how library structures are
+related to component architecture. Time permitting, we'll also look at tools to aid in library
+engineering, documentation, information dissemination, and tactics for version control.</p>
+
+<p>I'm writing this document to share some sensible practices for dealing with VFP Class Libraries. Be
+aware that if you work alone, or if you are working on a small project, what I suggest herein matters
+much less than if you are developing a larger system, and collaborating with several other developers.
+That's because experience suggests that the complexity of managing Visual FoxPro classes and class
+libraries varies with the size of the project, the intensity of development activities, the complexity of
+the project's class design, and on the number of developers involved.</p>
+
+<p>Like the old saying goes, to build a 1-meter high tower, all you need is a few undamaged beer cans.
+But to build a 10-meter or 100-meter high tower, you need a plan, and you need to pay attention to
+process and structure. That's what this paper is about: how to structure your class libraries so they can
+scale, at least a little bit.</p>
+
+<p>So, without further ado</p>
+
+<p><strong>Major Rule: Use your own classes as the basis for the controls in your
+applications.</strong></p>
+
+<p>Figure 1 illustrates a class hierarchy spawned directly from a VFP base class. This is a classic
+rookie mistake. The problem here is this hierarchy culminates with a read-only class, a Visual FoxPro
+built-in base class. To make a global change to the hierarchy you'll need change all the first-level
+subclasses since the culmination class is read-only, so many of the so-called benefits from using an
+inheritance hierarchy are largely lost.</p>
+
+<p><img class="clearboth top" src="Managi1.gif" /></p>
+
+<p><em>Figure 1. A class hierarchy spawned directly from a VFP base class.</em></p>
+
+<p>Compare Figure 1 with Figure 2, which shows a class hierarchy wherein the classes culminate with a
+class of your own making. To make a global change to the hierarchy you can make a change to the
+culmination class (class _Textbox, in Figure 2) and, as long as the subclasses are properly implemented,
+they will inherit its changes.</p>
+
+<p><img class="clearboth top" src="Managi2.gif" /></p>
+
+<p><em>Figure 2. A class hierarchy spawned from your own base class.</em></p>
+
+<p>Using your own base classes between your operational classes and the VFP read-only base classes gives
+a buffer between your classes and the VFP base classes, protecting the class against changes in VFP base
+class behavior. It also gives you a way to integrate your own standards into the roots of all your
+classes.</p>
+
+<p><strong>Minor Rule: Use insulation classes to protect you from version changes.</strong></p>
+
+<p>Arguably the classes provided by third parties should be considered de-facto read-only, even if
+you possess the source code. Third party classes can be unpredictably volatile. If you make code
+changes to original third-party sources, you have a problem: how do you reliably integrate your changes
+in the event of new versions? Moreover consider the parallel problem of how to manage both
+enterprise-wide and application-specific alterations, and not touch this third-party source.</p>
+
+<p>Insulation layers (Figure 3), sometimes colloquially known as I-Layers, are an artificial culmination
+point that allow centralized access to framework and other volatile subclassable structures. Reading
+upwards in figure 3, application-specific classes can vary from project to project, and the insulation
+layer can normally serve simultaneously as an enterprise feature layer and as a framework isolation
+layer.</p>
+
+<p><img class="clearboth top" src="Managi3.gif" /></p>
+
+<p><em>Figure 3. Insulation layers protect you from framework changes at the price of an extra
+inheritance layer.</em></p>
+
+<p class="clearboth">Insulation layers are not without obvious expenses. Foremostly they add layers to
+your class hierarchies, which makes things like debugging more tedious.</p>
+
+<p>If you create software for multiple client, consider creating a layer for each company. This only
+makes sense in the case where a software company will be working repeatedly for a group of customers. The
+basic structure is a follows:</p>
+<pre>
+VFP base classes
+</pre>
+<pre>
+Your VFP insulation layer
+</pre>
+<pre>
+Customer 1 classes
+</pre>
+<pre>
+Application 1 classes
+</pre>
+<pre>
+Application 2 classes
+</pre>
+<pre>
+Customer 2 classes
+</pre>
+<pre>
+Application 3 classes
+</pre>
+<pre>
+Application 4 classes
+</pre>
+
+<p>So an insulation layer is a good architectural idea that comes at the cost of slightly deeper
+hierarchies. Now, if you're following along, you see that we soon have all these classes in all these
+layers! How best to deal with them?</p>
+
+<p><strong>Good Practice: Know the VFP Class Browser and Component Gallery, and understand what each does
+best.</strong></p>
+
+<p>A class library is a <em>physical</em> package of classes. For managing visual class libraries (VCXes)
+you use the Class Browser. But classes can -- and should -- be abstracted in a variety of other ways. For
+this we can use the Component Gallery, to organize them, be they VCXes or PRGs, along with all the other
+elements of our software. The Component Gallery is great for creating virtual and abstract groupings of
+related items in a way that personally suits a particular situation.</p>
+
+<p>Separate white papers on using the Class Browser and Component Gallery are available for download from
+<a href="http://www.msdn.microsoft.com/vfoxpro">http://www.msdn.microsoft.com/vfoxpro</a>.</p>
+
+<p><strong>Good Practice: Use Ken Levy's superclass tool; it lets you see exactly what your
+inheriting.</strong></p>
+
+<p>The deeper your class hierarchies, the more you'll appreciate tools like SuperCls.PRG, which now ships
+with Visual FoxPro. Supercls gives you the ability to see and edit superclass code while working in the
+class designer's code editing windows.</p>
+
+<p><strong>Good Practice: Go to Tools|Options|Field Mapping and set your own base classes as the
+defaults, this integrates your classes into VFP's IDE</strong></p>
+
+<p>You can use Tools/Options/Field Mapping to create a set of default classes that VFP will instance when
+dragging fields from the Data Environment. John Petersen has a utility that helps manage field mapping
+for different projects to different classlibs/classes. Alternately you can use the REGEDT32 program and
+save the key</p>
+<pre>
+HKCU\Software\Microsoft\VisualFoxPro\5.0\Options\IntelliDrop
+</pre>
+
+<p class="Code">to a file in each project folder. To switch project mappings all you have to do is double
+click the file in explorer.</p>
+
+<p><strong>Minor Rule: Minimize the number of classes stored in each class library.</strong></p>
+
+<p>Visual SourceSafe only lets one person check out a class library at the same time. Individual classes,
+be they stored in VCX or .PRG files, cannot be individually checked out. So checking out a class means
+checking out the library wherein the class lives.</p>
+
+<p>Moreover the probability of finding that a particular library is not available for immediate exclusive
+use rises with the intensity of development, the number of concurrent developers, and with the number of
+classes in each library. These forces imply that you should, as much as possible, shoot for small class
+libraries.</p>
+
+<p>Remember that Visual Class libraries, VCX files, are units of physical distribution. It's a good
+idea to use class libraries to package things that should be packaged together. If this is so, then
+checking out a class library should give you exclusive access to things that are functionally related. So
+when designing class libraries, think cohesion instead of type. In this sense, unless you work
+alone or in a very small team, having a class library for "buttons" or "forms" makes little sense.</p>
+
+<p><strong>Major Rule: Logically store your classes to minimize coupling.</strong></p>
+
+<p>At first glance segmenting classes into libraries appears simple: Keep first-level subclasses in one
+VCXes, all forms together in one VCX, cool controls together in another, with other VCXes for, say,
+composite classes, forms, toolbars, and so on. Everything is straightforward and, if anything, things are
+easy to find.</p>
+
+<p>But the guiding principle of class library segmentation is coupling. Physically arrange your classes
+so that distributing and reusing them is not hampered by external dependencies. Classes that depend on
+each other should probably be stored together, or proximately in related class libraries.</p>
+
+<p>Also, if you can avoid .H files, then do so. H files are a pain in Visual FoxPro.</p>
+
+<p><strong>Minor Rule: Don't store customized classes with "base classes" in the same
+library.</strong></p>
+
+<p>If you follow the general design rule that all classes should spawn from read/write culmination
+classes, then these culmination classes are required by all the classes in your application. Now to later
+reuse these classes, you'll want to minimize unnecessary baggage and detritus when referencing superclass
+class libraries. Do this by keeping superclass libraries very lean.</p>
+
+<p>Consider also segmenting your base classes into visible and non-visible base class libraries, and
+other divisions as well. That way, if you need to reuse an abstract non-visual class somewhere
+else, you don't need to link-in the unrelated visual classes that just happen to be in the same package
+as its superclass.</p>
+
+<p><strong>Good Practice: Prefer short class names - _txt vs _textbox</strong></p>
+
+<p>Visual FoxPro's compiler just checks syntax. It doesn't check for proper use of things like class,
+field, and variable names. The longer your class names, the greater the probability of a typo.</p>
+
+<p><strong>Good Practice: Don't go overboard naming your classes according to their
+pedigree.</strong></p>
+
+<p>While it's generally a good idea to prefix or suffix class names according to a (or any) sensible
+naming convention, I don't recommend going overboard with hierarchical naming conventions. In other
+words, avoid naming classes like this:</p>
+<pre>
+Txt
+txtLevel1
+txtLevel1Level2
+txtLevel1Level2Level3
+</pre>
+
+<p>The reason for this is evident the minute you start redefining classes, which invariably happens if
+your class design isn't perfect.</p>
+
+<p><strong>Good Practice: Know when to store classes in PRGs, and when to store them in
+VCXes</strong></p>
+
+<p><strong>Pros of PRG class libraries:</strong></p>
+
+<ul>
+	<li>PRG file is a single package, VCX is two (counting the VCT).</li>
+
+	<li>Using a PRG allows it to be compiled while read-only.</li>
+
+	<li>Using a PRG allows multiple developers to work in the same class although care should be taken when</li>
+	<li>merging during check-in as VSS merge dialog is less than clear about its intentions.</li>
+
+	<li>Allows a developer to easily see the difference between different versions</li>
+
+	<li>Supports conditional exclusion of methods (and properties) using compiler directives--very helpful in</li>
+	<li>debugging by optionally removing an error handler.</li>
+
+	<li>Can easily add comments to individual properties.</li>
+</ul>
+
+<p><strong>Cons of PRG class libraries:</strong></p>
+
+<ul>
+	<li>Makes class structure much harder to understand due to the lack of a property sheet and class browser.</li>
+
+	<li>Many developers are less comfortable in code.</li>
+
+	<li>Can't use any of the ClassBrowser services</li>
+
+	<li>Automated parsing of VCXes is far, far easier than parsing PRG, so many advanced maintenance functions
+	are much easier with VCXes.</li>
+
+	<li>Some of these cons will be addressed in VFP 7, as suggested by the direction indicated in the preview we saw at DevCon.</li>
+</ul>
+<p><strong>Good Practice: Know the VFP metadata structures</strong></p>
+
+<p>VFP's VCX files are but DBFs by another name. In this light, all of Visual FoxPro's designers (class
+designer, form designer, menu designer, report writer, and project manager) are just data entry program
+to fill VCX, SCX, MNX, FRX, and PJX structures.</p>
+
+<p>Sometimes the most efficient way of doing something is to open and edit the class library as a normal
+table. This means USE xxx.vcx EXCLUSIVE, then edit the contents of something like the ClassLoc field
+directly and close the file. Then execute 'COMPILE FORM xxxx' (if you are hacking a .SCX) or 'COMPILE
+CLASSLIB XXX' (if you are hacking a VCX).</p>
+
+<p>Back the files up before you try this - if you make a mistake you could lose the whole structure.</p>
+
+<p>A cool thing to do is write batch programs that can manipulate directories full of forms in one go.
+Something like the following code which re-pointers the class library location attribute for all the
+forms in a directory.</p>
+<pre>
+lnFormCount = ADIR( laForms, '*.SCX' )
+FOR lnCnt = 1 TO lnFormCount
+USE ( laForms[lnCnt] ) EXCLUSIVE
+REPLACE ALL classloc WITH &lt;newpath&gt; ;
+FOR classloc = &lt;oldpath&gt;
+USE
+COMPILE FORM ( laForms[lnCnt] )
+NEXT
+</pre>
+
+<p><strong>Major Rule: The "class" of a VFP composite class applies only to the underlying
+container.</strong></p>
+
+<p>Visual FoxPro supports a variety of containership abstractions. Formsets can contain forms, forms
+contain controls, grids contain columns which contain controls, optiongroups contain optionbuttons, and
+containers and custom classes can contain almost anything.</p>
+
+<p>You can have, for example, an address visual class used to display addresses that contain textboxes
+and labels and perhaps some interactive behavior. But don't be fooled by appearances: The only pure
+classy thing about a container of objects is the container. The objects in the container are
+<em>instances</em> of other classes.</p>
+
+<p>When you put a textbox class in another container class, you are not creating a subclass of the
+textbox, you are creating an instance of it. A subclass of your container will contain textboxes
+that inherit from your base textbox class, not from changes you make in the textboxes in the superclass
+container.</p>
+
+<p>Read Drew Speedie's article, 'Dangers of Composite Classes in Development' (FoxPro Advisor, Feb
+1998). The general rule is only create composite classes that you intend to instantiate, not that
+you intend to subclass.</p>
+
+<p><strong>Minor Rule: Use your own classes in your VFP grids and commandgroups.</strong></p>
+
+<p>Add your textbox classes to the grid columns and remove the FoxPro base textboxes. Just drag
+your textbox from the forms control toolbar into the column, then to eradicate the original text box by
+selecting the FoxPro base textbox and press delete.</p>
+
+<p><strong>Minor Rule: Understand when you should, and shouldn't, bundle VCXes in your app.</strong></p>
+
+<p>Do you have to distribute class libraries within executables? No! You can choose to exclude any file
+from a project and as long as it is along SET PATH then VFP will find it at run-time. Of course, you'll
+have to remember to distribute the proper files, but this strategy buys you great update and
+customization flexibility.</p>
+
+<p><strong>Major Rule: Use Source Control to Protect Your Class Libraries</strong></p>
+
+<p>Henceforth I talk about Visual Source Safe, but what I say applies to PVCS or any other leading source
+control systems you might be using.</p>
+
+<p><strong>Good Practice: If you are in experimental mode, coding from the seat of your pants, use the
+Source Safe safety net.</strong></p>
+
+<p>I often find that I would like to be able to copy a class so that I can experiment with it without
+committing any changes. This is the sort of thing Visual SourceSafe lets you do. You can, at any time,
+rollback to any previous version.</p>
+
+<p><strong>Guideline: Realize that Source Control Integration comes with baggage</strong></p>
+
+<p>Visual FoxPro comes with source code integration, but you don't have to use it that way. In fact many
+developers I respect eschew source control integration and use the source control products interactively.
+There are many reasons for this. Foremostly you'll notice that Source Safe gets progressively slower as
+its source database gets larger. Secondly the VFP integration provides few of the features and control
+available with using the Source Safe client interactively. Third, irritating Source Safe dialogs
+come up and clutter your VFP desktop, and forth the integration is managed with poorly documented
+intermediate files that are prone to being forgotten or erased as you copy files around in your
+development environment.</p>
+
+<p><strong>Guideline: Occasionally clean out your Source Safe project.</strong></p>
+
+<p>Source control is overhead. If you are using source control integration and you find that response
+time for opening a file is beginning to lag, consider cleaning out your source control database. I
+suspect, but can't be sure, that Source Safe response time varies inversely with the size of the Source
+Safe database, which increases every time you check something in.</p>
+
+<p><strong>Good Practice: Be aware of some common problems with Interactive Source Control.</strong></p>
+
+<p>If every time you open a project you get the message: <strong>"An unspecified registry error
+occurred"</strong>. This means the project is controlled by Visual SourceSafe, but you don't have
+VSS activated in VFP, or don't have it installed at all. If you really don't need the SourceSafe link,
+you can clear the SCCDATA field in the PJX file and set the LOCAL field to .T.</p>
+
+<p><strong>Guideline: VFP needs Read/Write privileges in order to compile its structures.</strong></p>
+
+<p>If you have a project that does not allow building, and you get the error message <strong>"Cannot
+Write to Read-Only Cursor"</strong>, usually this means a read only file. You probably have of your SCX
+or VCX files is still set to read-only but not marked as checked into SourceSafe in the project file.</p>
+
+<p>In order to compile forms and classes, those files have to be read/write. This is because VFP stores
+the compiled code in the VCT or SCT. You probably don't have some VCX or SCX files checked out so they
+are read only on your drive.</p>
+
+<p>If you are using Source Safe interactively, when you do a Get Latest Version on all files in the
+project (including tables) make sure you have 'Make Writeable' box option checked. VFP needs many of its
+structures to be writeable since object code is stored as part of its metadata.</p>
+
