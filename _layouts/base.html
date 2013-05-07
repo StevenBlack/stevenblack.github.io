@@ -19,6 +19,11 @@
 		margin: 0 15px 5px 0;
 	}
 	</style>
+	{% if page.style %}
+	 <style type="text/css">
+	     {{ page.style }}
+	 </style>
+	{% endif %}
 </head>
 
 <body class="preview" id="top" data-spy="scroll" data-target=".subnav" data-offset="80">
