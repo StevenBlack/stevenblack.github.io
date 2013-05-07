@@ -16,9 +16,9 @@ permalink: /intl/
 			<li>INTL makes for fast integration into existing applications.</li>
 			<li>INTL is <a href="/intldocs/#HowtoConfigureYourMainINTLObject" title="INTL is easily configured for your locales">totally configurable</a>.</li>
 			<li>INTL is <a href="#componentware"title="INTL is modular and well packaged">componentware</a>.</li>
-			<li>INTL localizes <a href="INTLReports.html" title="INTL uses batch tools to localize reports">reports</a> and <ahref="INTLMenus.html" title="INTL uses a GENMENUX driver to localize menus">menus</a>.</li>
-			<li>INTL comes with <a href="intlqualitysourcecode.html"title="INTL's sources are literate and well commented">full source code</a>.</li>
-			<li>INTL has a <a href="intlhowto.html#LocalizeForms" title="INTL is really nice to configure">clean, simpleprogramming interface</a>.</li>
+			<li>INTL localizes <a href="/intldocs/#HowToLocalizeReports" title="INTL uses batch tools to localize reports">reports</a> and <a href="/intldocs/#HowToLocalizeMenus" title="INTL uses a GENMENUX driver to localize menus">menus</a>.</li>
+			<li>INTL comes with <a href="#qualitysource"title="INTL's sources are literate and well commented">full source code</a>.</li>
+			<li>INTL has a <a href="/intldocs/#HowToLocalizeForms" title="INTL is really nice to configure">clean, simpleprogramming interface</a>.</li>
 			<li>INTL has a <a href="intlhowto.html#HowtoConfigureYourMainINTLObject"title="INTL loads functionality incrementally comesurate with your needs">clean, modular architecture</a>.</li>
 			<li>INTL configurably localizes <a href="intlhowto.html#HowToLocalizeStrings"title="INTL localises VFP and Activex controls">interface strings</a> and messages.</li>
 			<li>INTL can localize <a href="intlhowto.html#HowToLocalizeFonts" title="INTL does fonts">fonts</a>,<a href="intlhowto.html#HowToLocalizePictures" title="INTL does images">images</a>, and <ahref="intlhowto.html#HowToLocalizeDataSources" title="INTL does data sources">datasources</a>.</li>
@@ -38,41 +38,39 @@ permalink: /intl/
 </div>
 <div id="hasslefree" class="row">
 	<div class="span12">
-
 		<h3>Steven Black's INTL Toolkit is Hassle Free</h3>
 		<p>INTL is a snap to integrate into new and existing applications. Simply do the following things:</p>
-
 	</div>
-		<div class="span6">
+	<div class="span6">
 
-			<ul>
-				<li>Create an INTL object early in the application's startup/</li>
+		<ul>
+			<li>Create an INTL object early in the application's startup/</li>
 
-				<li>Add a line to your baseform <code>INIT()</code> to message INTL</li>
+			<li>Add a line to your baseform <code>INIT()</code> to message INTL</li>
 
-				<li>Make GENMENUX your menu generator</li>
+			<li>Make GENMENUX your menu generator</li>
 
-				<li>Build your application</li>
+			<li>Build your application</li>
 
-				<li>Voila, you are basically done and ready to give a very credible demo to your boss or
-				customer!&nbsp;</li>
-			</ul>
-		</div>
-		<div class="span6">
-			<p>Other things that come up include finish and polish issues like:</p>
+			<li>Voila, you are basically done and ready to give a very credible demo to your boss or
+			customer!&nbsp;</li>
+		</ul>
+	</div>
+	<div class="span6">
+		<p>Other things that come up include finish and polish issues like:</p>
 
-			<ul>
-				<li>Some VFP services come from VFP, others from Windows, so you may need localized versions of these
-				in your final installations. See <a href="SBCPublicDomain.html">Downloads</a> for GOTCHAS, a
-				utillity that audits your project for instances of the known issues. These issues are also listed in my
-				<a href="/intl-vfp/">VFP International Issues page</a> to get an idea of some of the no-nos you may
-				have coded in your application. GOTCHAS will find all these for you.</li>
+		<ul>
+			<li>Some VFP services come from VFP, others from Windows, so you may need localized versions of these
+			in your final installations. See <a href="SBCPublicDomain.html">Downloads</a> for GOTCHAS, a
+			utillity that audits your project for instances of the known issues. These issues are also listed in my
+			<a href="/intl-vfp/">VFP International Issues page</a> to get an idea of some of the no-nos you may
+			have coded in your application. GOTCHAS will find all these for you.</li>
 
-				<li>Expunge hard-coded messages from your applcation. See&nbsp; <a
-				href="SBCPublicDomain.html">Downloads</a> for a public-domain version of MsgSvc to see how that
-				works.</li>
-			</ul>
-		</div>
+			<li>Expunge hard-coded messages from your applcation. See&nbsp; <a
+			href="SBCPublicDomain.html">Downloads</a> for a public-domain version of MsgSvc to see how that
+			works.</li>
+		</ul>
+	</div>
 </div>
 <div id="componentware" class="row">
 	<div class="span12">
@@ -103,5 +101,24 @@ permalink: /intl/
 			strategies for each.</li>
 		</ul>
 		
+	</div>
+</div>	
+<div id="qualitysource" class="row">
+	<div class="span12">
+		<h3>INTL is high-quality source code</h3>
+
+		<blockquote>
+			<p>"...the source code itself is a treasure. I get to see a
+			lot of source, and Steven's is among the best I've seen."</p>
+
+			<p class="pull-right">Whil Hentzen, Editor, FoxTalk Magazine</p>
+		</blockquote>
+
+	    <p>Steven Black's INTL Toolkit is a great example of literate programming. It is designed
+	    in such a way as to teach you the maximum about itself, and also about FoxPro.</p>
+
+	    <p>Much of INTL's architecture is named explicitly after the design patterns it emulates.
+	    The result is a black box tool that'll easily become a white box in the unlikely event you need to change
+	    it to your particular circumstances.</p>
 	</div>
 </div>

@@ -92,7 +92,23 @@ permalink: /intldocs/
 <hr />
 <a id="How To Localize Forms" name="HowToLocalizeForms"></a>
 <h2>How To Localize Forms</h2>
-<!--webbot bot="Include" u-include="HowToLocalizeForms.htm" tag="BODY" startspan --><strong>[HowToLocalizeForms.htm]</strong><!--webbot bot="Include" i-checksum="59610" endspan -->
+
+<p>Forms (and any other container) can be localized by passing it to the oINTL.Localize()
+method. Localize forms by passing their object references to the Localize() method of an
+INTL class object.</p>
+
+<pre>
+	<font color="#008000">*-- Configure oINTL to another language</font>
+	<font color="#FF0000">_SCREEN.oINTL.SetLanguage( "French" )</font>
+	<font color="#008000">*-- Instantiate a form. If the form calls INTL in</font>
+	<font color="#008000">*-- its INIT() method, then the form</font>
+	<font color="#008000">*-- appears in French...</font>
+	<font color="#FF0000">DO FORM MyForm Name MyForm</font>
+
+	<font color="#008000">*-- ...or you can localize the form on the fly.</font>
+	<font color="#FF0000">_SCREEN.oINTL.Localize( MyForm )</font>
+</pre>
+
 <hr />
 <a name="AutoLoc" id="AutoLoc"></a>
 <h2>How to Get Automatic Form Localization</h2>
