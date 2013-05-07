@@ -47,7 +47,6 @@ task :bootstrap_css do |t|
   puts 'copying the custom.less file'
   cp 'less/custom.less', 'bootstrap/less/custom.less'
 
-
   puts "Compiling #{BOOTSTRAP_CUSTOM_LESS}"
   # sh 'lessc', '--compress', BOOTSTRAP_CUSTOM_LESS, ' bootstrap/css/bootstrap.min.css'
   syscmd = 'lessc --compress ' + BOOTSTRAP_CUSTOM_LESS + ' > bootstrap/css/bootstrap.min.css'
