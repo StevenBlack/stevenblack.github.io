@@ -1,43 +1,36 @@
 ---
 layout: page
 permalink: /intldocs/
-
+title: INTL Toolkit Documentation
 ---
 <div class="row">
-
-<div class="span8">
-	<h1>INTL Documentation</h1>
-</div>
-
-<div class="span4">
-	{% include intlbutton.html %}
-</div>
 
 <div class="span8">
 
 <p>See also: <a href="intlfaq.html">INTL FAQ</a> and <a href="/intlpurchase">How to purchase INTL</a>.</p>
 <h2>Contents</h2>
 <ul>
-	<li><a href="#InctanceIntl">Instancing INTL</a><br /></li>
-	<li><a href="#HowToLocalizeForms">Localizing forms</a><br /></li>
-	<li><a href="#AutoLoc">Automatic form localizaton</a><br /></li>
-	<li><a href="#HowToLocalizeMenus">Localizing menus</a><br /></li>
-	<li><a href="#ChangeLanguage">Changing languages</a><br /></li>
-	<li><a href="#SwapOnFly">Changing languages on the fly</a><br /></li>
-	<li><a href="#HowtoConfigureYourMainINTLObject">Configuring INTL objects</a><br /></li>
-	<li><a href="#HowtoConfigureStrategies">Configuring INTLs strategies</a><br /></li>
-	<li><a href="#HowToBatch-UpdateStrings.DBF">Updating resource files automatically</a><br /></li>
-	<li><a href="#HowToLocalizeReports">Localizing reports</a><br /></li>
-	<li><a href="#HowToLocalizeStrings">Localizing strings</a><br /></li>
-	<li><a href="#HowToLocalizeFonts">Localizing fonts</a><br /></li>
-	<li><a href="#HowToLocalizeDataSources">Localizing data sources</a><br /></li>
-	<li><a href="#HowToLocalizePictures">Localizing images</a><br /></li>
-	<li><a href="#HowToLocalizeCurrencies">Localizing currencies</a><br /></li>
-	<li><a href="#HowtoGetRight-To-LeftLocalization">Localizing for right-to-left writing systems</a><br /></li>
-	<li><a href="#HowtoConfigureYourMainINTLObject">Customizing strategies</a><br /></li>
-	<li><a href="#HowtoMakeINTLIgnoreanObject">Ignoring a particular object</a><br /></li>
-	<li><a href="#HowToWorkWithLocales">How to work with locales</a><br /></li>
-	<li><a href="#FilePlacement">File placement</a><br /></li>
+	<li><a href="#InctanceIntl">Instancing INTL</a></li>
+	<li><a href="#HowToLocalizeForms">Localizing forms</a></li>
+	<li><a href="#AutoLoc">Automatic form localizaton</a></li>
+	<li><a href="#HowToLocalizeMenus">Localizing menus</a></li>
+	<li><a href="#ChangeLanguage">Changing languages</a></li>
+	<li><a href="#SwapOnFly">Changing languages on the fly</a></li>
+	<li><a href="#HowtoConfigureYourMainINTLObject">Configuring INTL objects</a></li>
+	<li><a href="#HowtoConfigureStrategies">Configuring INTLs strategies</a></li>
+	<li><a href="#HowToBatch-UpdateStrings.DBF">Updating resource files automatically</a></li>
+	<li><a href="#HowToLocalizeReports">Localizing reports</a></li>
+	<li><a href="#HowToLocalizeStrings">Localizing strings</a></li>
+	<li><a href="#HowToLocalizeFonts">Localizing fonts</a></li>
+	<li><a href="#HowToLocalizeDataSources">Localizing data sources</a></li>
+	<li><a href="#HowToLocalizeImages">Localizing images</a></li>
+	<li><a href="#HowToLocalizeCurrencies">Localizing currencies</a></li>
+	<li><a href="#HowtoGetRight-To-LeftLocalization">Localizing for right-to-left writing systems</a></li>
+	<li><a href="#HowtoConfigureYourMainINTLObject">Customizing strategies</a></li>
+	<li><a href="#HowtoMakeINTLIgnoreanObject">Ignoring a particular object</a></li>
+	<li><a href="#HowToWorkWithLocales">How to work with locales</a></li>
+	<li><a href="#HowtoConfigureYourMainINTLObject">How to Configure Your Main INTL Object</a></li>
+	<li><a href="#FilePlacement">File placement</a></li>
 	<li><a href="#HowtoDistributeINTLFiles">Distributing INTL files</a></li>
 </ul>
 <a name="FilePlacement" id="FilePlacement"></a>
@@ -114,7 +107,7 @@ INTL class object.</p>
 <h2>How to Get Automatic Form Localization</h2>
 <p>
 	Place a call to oINTL in your Form.Init() hierarchy. To make your forms localize themselves automatically
-	call the oINTL.Localize() method in your form class hierarchy. To do so, place the following code in the INIT()
+	call the <code>oINTL.Localize()</code> method in your form class hierarchy. To do so, place the following code in the <code>INIT()</code>
 	method of your form class definition.
 </p>
 <pre>
@@ -162,7 +155,7 @@ INTL class object.</p>
 <a name="ChangeLanguage" id="ChangeLanguage"></a>
 <h2>How to Change the Current Language</h2>
 <p>
-	The structure of STRINGS.DBF determines which languages you support. Use the SetLanguage() method to change
+	The structure of STRINGS.DBF determines which languages you support. Use the <code>SetLanguage()</code> method to change
 	INTLs language.
 </p>
 <p>
@@ -174,7 +167,7 @@ INTL class object.</p>
 	just change the structure of STRINGS.DBF.
 </p>
 <p>
-	To change the current localization language, use the SetLanguage() method. Say we want a form to be in
+	To change the current localization language, use the <code>SetLanguage()</code> method. Say we want a form to be in
 	French. First set the language, then we localize the form:
 </p>
 <pre>
@@ -187,7 +180,7 @@ INTL class object.</p>
 <p>
 	Nothing demos better than swapping the display language on the fly. To swap languages on the fly, which is
 	always a success in a demo ( do it even if it isn't required it's so easy ), create a mechanism in your
-	application to configure the INTL object with SetLanguage(), as follows.
+	application to configure the INTL object with <code>SetLanguage()</code>, as follows.
 </p>
 <pre>
 	<font color="#FF0000">_SCREEN.oINTL.SetLanguage( "German" )</font> <font color="#008000">&amp;&amp; Configure
@@ -266,17 +259,15 @@ INTL class object.</p>
 <hr />
 <a id="How to Configure Your Main INTL Object" name="HowtoConfigureYourMainINTLObject"></a>
 <h2>How to Configure Your Main INTL Object</h2>
-<!--webbot bot="Include" u-include="HowToConfigureINTL.htm" tag="BODY" startspan -->
 <p>
-	I recommend making a main INTL object named _SCREEN.oINTL. It's possible to have
+	I recommend making a main INTL object named <code>_SCREEN.oINTL</code>. It's possible to have
 	several separate INTL objects co-exist together. Each INTL object is itself an amalgam of
 	other INTL objects called hooks or strategies. Your main INTL object is the master INTL
-	object in your environment, and whichever it happens to be, I assume here that it's called<font> </font>
-	<font size="2" face="Courier New">_SCREEN.oINTL</font>
-	<font>.</font>
+	object in your environment, and whichever it happens to be, I assume here that it's called 
+	<code>_SCREEN.oINTL</code>.
 <p>
-	Use the SetConfig( n ) method to configure your main INTL
-	object. You configure INTL with a _SCREEN.oINTL.SetConfig( n ) method, where n is a bitwise
+	Use the <code>SetConfig( n )</code> method to configure your main INTL
+	object. You configure INTL with a <code>_SCREEN.oINTL.SetConfig( n )</code> method, where n is a bitwise
 	integer value with the following interpretation:
 </p>
 <table class="table">
@@ -303,7 +294,7 @@ INTL class object.</p>
 		</td>
 	</tr>
 </table>
-<p>Configuration integers for the ::SetConfig() method for the various INTL classes.</p>
+<p>Configuration integers for the <code>.SetConfig()</code> method for the various INTL classes.</p>
 <p>Example: create an INTL object that localizes strings and fonts</p>
 <pre>
 	<font color="#008000">*-- create an INTL object</font>
@@ -313,7 +304,7 @@ INTL class object.</p>
 </pre>
 <p>
 	The operative language and locale of the main INTL object are configured with the
-	SetLanguage() and SetLocale() methods.
+	<code>SetLanguage()</code> and <code>SetLocale()</code> methods.
 </p>
 <hr>
 <a name="How to Configure Strategies"></a>
@@ -397,14 +388,14 @@ INTL class object.</p>
 	</tr>
 </table>
 <p>
-	Configuration integers for the ::SetConfig() method for the various INTL classes.</p>
+	Configuration integers for the <code>SetConfig()</code> method for the various INTL classes.</p>
 <p>
 	To get a handle on a loaded strategy, use the ::GetStrategy() method. Thereafter, use
-	the handle's SetConfig() method to configure the strategy.
+	the handle's <code>SetConfig()</code> method to configure the strategy.
 </p>
 <p>
 	Example: create an INTL object that localizes strings but not Tooltips. Use the
-	oINTL.GetStrategy() method to get an object reference, then use its SetConfig() method to
+	oINTL.GetStrategy() method to get an object reference, then use its <code>SetConfig()</code> method to
 	configure it.
 </p>
 <pre>
@@ -519,7 +510,7 @@ INTL class object.</p>
 	</tr>
 </table>
 <p>
-	Configure the String Strategy with its SetConfig() method. The INTL String strategy, like all strategies, is
+	Configure the String Strategy with its <code>SetConfig()</code> method. The INTL String strategy, like all strategies, is
 	bitwise-configured. You can control the string strategy object as follows:
 </p>
 <p>Example: to disable font processing for the ToolTipText property:</p>
@@ -593,7 +584,7 @@ INTL class object.</p>
 	So there are two ways to do it.</p>
 <p>
 	Fonts can be localized by providing translations in STRINGS.DBF. Font specifications are prefixed with the
-	identifier "((Font))", like for example:
+	identifier <code>"((Font))"</code>, like for example:
 </p>
 <table class="table">
 	<tr>
@@ -610,11 +601,11 @@ INTL class object.</p>
 	</tr>
 </table>
 <p>
-	Configure the Font Strategy with its SetConfig() method. The INTL Font strategy, like all strategies, is
+	Configure the Font Strategy with its <code>SetConfig()</code> method. The INTL Font strategy, like all strategies, is
 	bitwise-configured. You can control the font strategy object as follows:
 </p>
 <p>
-	Example: to disable font processing for DynamicFont and DynamicFontSize, which will slightly improve the
+	Example: to disable font processing for <code>DynamicFont</code> and <code>DynamicFontSize</code>, which will slightly improve the
 	font strategy performance:
 </p>
 <pre>
@@ -692,7 +683,7 @@ INTL class object.</p>
 <p>So there are two ways to do it.</p>
 <p>
 	Data elements can be localized by providing translations in STRINGS.DBF. Data specifications are prefixed
-	with the identifier "((Data))", like for example:
+	with the identifier <code>"((Data))"</code>, like for example:
 </p>
 <table class="table">
 	<tr>
@@ -705,7 +696,7 @@ INTL class object.</p>
 	</tr>
 </table>
 <p>
-	Configure the Data Strategy with its SetConfig() method. The INTL data strategy, like all strategies, is
+	Configure the Data Strategy with its <code>SetConfig()</code> method. The INTL data strategy, like all strategies, is
 	bitwise-configured. You can control the picture strategy object as follows:
 </p>
 <p>Example: Localize ControlSource properties.</p>
@@ -720,8 +711,8 @@ INTL class object.</p>
 	<font color="#FF0000">oPicture.SetConfing( 2 )</font>
 </pre>
 <hr />
-<a id="How To Localize Pictures" name="HowToLocalizePictures"></a>
-<h2>How To Localize Pictures</h2>
+<a id="How To Localize Images" name="HowToLocalizeImages"></a>
+<h2>How To Localize Images</h2>
 <p>
 	Images can be locale-specific. Some of the icons and images we use every day may not be appropriate in other
 	locales. INTL provides a way to change the displayed images when we change locales. The Picture strategy works
@@ -779,8 +770,8 @@ INTL class object.</p>
 </pre>
 <p>So there are two ways to do it.</p>
 <p>
-	Pictures can be localized by providing translations in STRINGS.DBF. Picture specifications are prefixed with
-	the identifier "((Picture))", like for example:
+	Images can be localized by providing translations in STRINGS.DBF. Picture specifications are prefixed with
+	the identifier <code>"((Picture))"</code>, like for example:
 </p>
 <table class="table">
 	<tr>
@@ -797,7 +788,7 @@ INTL class object.</p>
 	</tr>
 </table>
 <p>
-	Configure the Picture Strategy with its SetConfig() method. The INTL picture strategy, like all strategies,
+	Configure the Picture Strategy with its <code>SetConfig()</code> method. The INTL picture strategy, like all strategies,
 	is bitwise-configured. You can control the picture strategy object as follows:
 </p>
 <p>Example: Localize Picture, DownPicture, and Icon properties.</p>
@@ -854,7 +845,7 @@ INTL class object.</p>
 	oINTL.SetStratrgy( "Currency", "cINTLCurrency" )</font>
 </pre>
 <p>
-	An alternate ( and more cryptic ) way is to use INTL's SetConfig() method to make INTL invoke the
+	An alternate ( and more cryptic ) way is to use INTL's <code>SetConfig()</code> method to make INTL invoke the
 	currencystrategy as follows:
 </p>
 <pre>
@@ -938,12 +929,12 @@ INTL class object.</p>
 	</tr>
 </table>
 <p>So activate the right-to-left strategy as follows:</p>
-<p>Use oINTL.SetConfig() or oINTL.SetStrategy() to load the right-to-left strategy.</p>
+<p>Use <code>oINTL.SetConfig()</code> or <code>oINTL.SetStrategy()</code> to load the right-to-left strategy.</p>
 <pre>
 	<font color="#FF0000">oINTL= _SCREEN.oINTL
 	oINTL.SetStratrgy( "RightToLeft", "cINTLRightToLeft" )</font>
 </pre>
-<p>An alternate ( and more cryptic ) way is to use INTL's SetConfig() method to make INTL invoke the
+<p>An alternate ( and more cryptic ) way is to use INTL's <code>SetConfig()</code> method to make INTL invoke the
 	right-to-left strategy as follows:
 </p>
 <pre>
@@ -975,7 +966,7 @@ INTL class object.</p>
 	<li>You can make INTL ignore an object or a container object by placing the string "INTL Ignore" in the
 		object's comment property. This string is not case sensitive.
 	</li>
-	<li>If you can, give your object's class an INTL property, and assign it logical .F.</li>
+	<li>If you can, give your object's class an INTL property, and assign it logical <code>.F.</code></li>
 	<li>If you can, give your object's class an INTL property, and assign it a numeric value of less than 0.</li>
 </ul>
 <hr />
@@ -989,15 +980,14 @@ INTL class object.</p>
 <a id="How To Localize Reports" name="HowToLocalizeReports"></a>
 <h2>How To Localize Reports</h2>
 
-VFP report structures are not generated or compiled &#151; they are bound into your
+<p>VFP report structures are not generated or compiled &#151; they are bound into your
 application "as-is". Reports must therefore be transformed before the .APP or
-.EXE is created. INTL has tools to do this automatically.
+.EXE is created. INTL has tools to do this automatically.</p>
 <p>
 	The transformation process
 	turns your report labels into report expressions containing a call to INTL's I() function.
-	For example the report label "Name:" becomes expression I( "Name:" ).
+	For example the report label <code>"Name:"</code> becomes expression <code>I( "Name:" )</code>.
 </p>
-<!--webbot bot="Include" i-checksum="13169" endspan -->
 <hr />
 <a id="How to Distribute INTL Files" name="HowtoDistributeINTLFiles"></a>
 <h2>How to Distribute INTL Files</h2>
@@ -1042,6 +1032,11 @@ application "as-is". Reports must therefore be transformed before the .APP or
 	course, be read-only.
 </p>
 </div>
+
+<div class="span3">
+	{% include intlbutton.html %}
+</div>
+
 <aside class="span3 alert alert-info">
 	<p><strong>More info about VFP localization:</strong></p>
 	<ul>
