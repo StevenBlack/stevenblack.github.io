@@ -1,12 +1,11 @@
 title: Steven Black Consulting
 url: http://stevenblack.com
-metakeywords: "Steven Black, INTL, INTL Toolkit, Visual FoxPro, Object Oriented Analysis and Design, OOAD, OOP, Mentoring, Multilingual Application Development, Client/Server Databases, Project Leadership, Training, Consulting"
-metadescription: "Website of Steven Black"
+metakeywords: "Steven Black, Project Manager, Project Turnarounds, Web Developer, Wiki Meister, INTL, INTL Toolkit, Visual FoxPro, Object Oriented Analysis and Design, OOAD, OOP, Mentoring, Multilingual Application Development, Client/Server Databases, Project Leadership, Training, Consulting"
+metadescription: "Website of Steven Black Consulting"
 permalink: /:year/:title.html
 analytics: UA-212713-3
 
 posts: posts
-
 
 # images
 image_default_alt: Steven Black Consulting

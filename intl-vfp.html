@@ -101,7 +101,7 @@ width: 75%
 		</tr>
 		<tr>
 		<td class="col1st"><span class="emphBlock">ODBC error messages vary with the localized language of VFP.</span></td>
-		<td>Similarly, when an ODBC error numbered 1526 occurs , then <code>ArrayName[2]</code> contains the text of the VFP error message (&quot;Connectivity error:&quot;), and <code>ArrayName[3]</code>
+		<td>Similarly, when an ODBC error numbered 1526 occurs, then <code>ArrayName[2]</code> contains the text of the VFP error message (&quot;Connectivity error:&quot;), and <code>ArrayName[3]</code>
 		contains the text of the ODBC error message.
 		<p class="warning"><strong>Internationalization Gotcha:</strong> Both the VFP and ODBC error messages vary with the localization of VFP.</p>
 		</td>
@@ -320,7 +320,7 @@ width: 75%
 		<h4>COPY TO ... AS nCodePage</h4>
 		<p><code>COPY TO</code> creates a new file from the contents of the currently selected table.</p>
 		<p class="warning"><strong>Internationalization Gotcha</strong>: <code>AS nCodePage</code>  specifies the code page for the new file. VFP copies the contents of the currently selected table, and, as it copies the
-		data, automatically converts the data to the code page you specify for the new table or file. If possible, VFP marks the newly created table or file with the code page you specify. If you omit</font> <code>AS nCodePage</code> , the newly created table
+		data, automatically converts the data to the code page you specify for the new table or file. If possible, VFP marks the newly created table or file with the code page you specify. If you omit</font> <code>AS nCodePage</code>, the newly created table
 		or file is converted to the current VFP code page.</font></p>
 			<hr />
 		<a id="COPY_PROCEDURES_____AS_nCodePage" name="COPY_PROCEDURES_____AS_nCodePage"></a>
@@ -774,7 +774,7 @@ width: 75%
 		<p><code>EXPORT TO</code> copies data from a VFP table to a file in a different format.</p>
 		<p class="warning"><strong>Internationalization Gotcha:</strong> <code>AS nCodePage</code> specifies the code page for the file <code>EXPORT</code>  creates. VFP copies the contents of
 		the currently selected table and, as it copies the data, automatically converts the data to the code page you specify for the new file. If possible, VFP marks the newly created file with the code page you specify.</font></p>
-		<p>If you omit <code>AS nCodePage</code> , no code page conversion occurs. If possible, VFP marks the newly created file with the code page of the table from which the data is copied. If nCodePage is 0, no code page conversion occurs
+		<p>If you omit <code>AS nCodePage</code>, no code page conversion occurs. If possible, VFP marks the newly created file with the code page of the table from which the data is copied. If nCodePage is 0, no code page conversion occurs
 		and the new file is not marked with a code page.</font></p>
 			<hr />
 		<a id="FDATE_cFileName_" name="FDATE_cFileName_"></a>
@@ -948,7 +948,7 @@ width: 75%
 		<a id="LEFTC_cExpression__nExpression_" name="LEFTC_cExpression__nExpression_"></a>
 
 		<h4>LEFTC( cExpression, nExpression )</h4>
-		<p><code>LEFTC()</code>from a character expression containing , which is similar to <code>LEFT()</code> , returns a specified number of characters any combination of single-byte and double-byte characters,
+		<p><code>LEFTC()</code>from a character expression containing, which is similar to <code>LEFT()</code>, returns a specified number of characters any combination of single-byte and double-byte characters,
 		starting with the leftmost character.</font></p>
 			<hr />
 		<a id="LENC__" name="LENC__"></a>
@@ -959,7 +959,7 @@ width: 75%
 		<a id="LIKEC__" name="LIKEC__"></a>
 
 		<h4>LIKEC()</h4>
-		<p><code>LIKEC()</code>, which is similar to <code>LIKE()</code> , determines if a character expression matches another character expression. The character expressions can contain any combination of single-byte
+		<p><code>LIKEC()</code>, which is similar to <code>LIKE()</code>, determines if a character expression matches another character expression. The character expressions can contain any combination of single-byte
 		and double-byte characters.</font></p>
 			<hr />
 		<a id="LIST____" name="LIST____"></a>
@@ -999,7 +999,7 @@ width: 75%
 			<h4>MESSAGEBOX( cMsgText [, nDialogType [, cTitleBarText]] )</h4>
 			<p><code>MESSAGEBOX()</code> displays a user-defined dialog box.</p>
 			<p><span class="emphBlock">You can't directly localize the buttons in MESSAGEBOX().</span> For example, the following line yields the box below wherein the &quot;Yes&quot; and &quot;No&quot; button captions cannot be touched.</p>
-			<p><code>?MESSAGEBOX(&quot;cMsgText&quot; , 4, &quot;cTitleBarText&quot;)</code></p>
+			<p><code>?MESSAGEBOX(&quot;cMsgText&quot;, 4, &quot;cTitleBarText&quot;)</code></p>
 			<p><img src="/images/SampleMessagebox.png" /></p>
 			<p><em>A MESSAGEBOX() dialog.</em></p>
 				<hr />
@@ -1146,7 +1146,7 @@ width: 75%
 			</tr>
 			</table>
 			<p>For example, the following line:</p>
-			<p><code>?PUTFILE(&quot;cCustomText&quot; , &quot;cFileName&quot; , &quot;Ext&quot;)</code></p>
+			<p><code>?PUTFILE(&quot;cCustomText&quot;, &quot;cFileName&quot;, &quot;Ext&quot;)</code></p>
 			<p>creates this dialog. We basically can't localize this.</p>
 			<p><img src="/images/image8.gif" width="483" height="304" /></p>
 			<p><em>The PUTFILE() dialog.</em></p>
@@ -1154,7 +1154,7 @@ width: 75%
 			<a id="RATC_cSearchExpression__cExpressionSearc" name="RATC_cSearchExpression__cExpressionSearc"></a>
 
 			<h4>RATC( cSearchExpression, cExpressionSearched [, nOccurrence] )</h4>
-			<p><code>RATC()</code>, which is similar to <code>RAT()</code> , returns the numeric position of the last occurrence of a character expression or memo field within another character expression or memo field.
+			<p><code>RATC()</code>, which is similar to <code>RAT()</code>, returns the numeric position of the last occurrence of a character expression or memo field within another character expression or memo field.
 			The character expressions or memo fields can contain any combination of single-byte and double-byte characters.</font></p>
 				<hr />
 			<a id="RATLINE_cSearchExpression__cExpressionSe" name="RATLINE_cSearchExpression__cExpressionSe"></a>
@@ -1180,7 +1180,7 @@ width: 75%
 			<a id="RIGHTC__" name="RIGHTC__"></a>
 
 			<h4>RIGHTC()</h4>
-			<p><code>RIGHTC()</code>, which is similar to <code>RIGHT()</code> , returns the specified number of rightmost characters from a character string. The character expressions or memo fields can consist of
+			<p><code>RIGHTC()</code>, which is similar to <code>RIGHT()</code>, returns the specified number of rightmost characters from a character string. The character expressions or memo fields can consist of
 			any combination of single-byte and double-byte characters.</font></p>
 				<hr />
 			<a id="SET_COLLATE_TO_cSequenceName" name="SET_COLLATE_TO_cSequenceName"></a>
@@ -1230,7 +1230,7 @@ width: 75%
 			<td class="col2nd">Unique Weight</td>
 			</tr>
 			</table>
-			<p>Note that when <code>SET COLLATE TO</code> is set to something other than <code>&quot;Machine&quot;</code> , each index character takes two bytes, effectively reducing the maximum index key
+			<p>Note that when <code>SET COLLATE TO</code> is set to something other than <code>&quot;Machine&quot;</code>, each index character takes two bytes, effectively reducing the maximum index key
 			length from 240 to 120.</font></p>
 				<hr />
 			<a id="SET_CPCOMPILE_TO__nCodePage_" name="SET_CPCOMPILE_TO__nCodePage_"></a>
@@ -1406,7 +1406,7 @@ width: 75%
 			<td width="87%">The first week has seven days.</td>
 			</tr>
 			</table>
-			<p>If you omit <code>nExpression</code> , the first-week-of-the-year is reset to 1 (the first week contains January 1st). The first-week-of-the-year can also be set with the First Week of Year list box in the International tab of
+			<p>If you omit <code>nExpression</code>, the first-week-of-the-year is reset to 1 (the first week contains January 1st). The first-week-of-the-year can also be set with the First Week of Year list box in the International tab of
 			the Options dialog.</font></p>
 				<hr />
 			<a id="SET_HELP_TO__FileName_" name="SET_HELP_TO__FileName_"></a>
@@ -1458,7 +1458,7 @@ width: 75%
 			<h4>SET SYSFORMATS ON | OFF</h4>
 			<p><code>SET SYSFORMATS</code> specifies if VFP system settings are updated with the current Windows system settings.</p>
 			<p class="warning"><strong>Internationalization Gotcha:</strong> by default the VFP system settings are not updated when the Windows system settings are changed.</p>
-			<p>The Windows system settings are specified in International option of the Windows Control Panel. When <code>SET SYSFORMATS</code> is <code>ON</code> , the following SET commands
+			<p>The Windows system settings are specified in International option of the Windows Control Panel. When <code>SET SYSFORMATS</code> is <code>ON</code>, the following SET commands
 			can be used to override the current system settings. However, changing the Windows system settings when</font> <code>SET SYSFORMATS</code> is <code>ON</code> overrides these SET commands.</p>
 			<p>When VFP is started, the Visual FoxPro system settings are the default settings of these SET commands. To use the Windows system settings when VFP is started, place the following line in your VFP CONFIG.FPW configuration file:</p>
 			<p><code>SYSFORMATS = ON<br />
@@ -1541,7 +1541,7 @@ width: 75%
 			<table>
 			<tr>
 			<td class="col1st"><span class="emphBlock">STUFFC() is like STUFF(), only it seamlessly handles double-byte characters.</span></td>
-			<td class="col2nd"><code>STUFFC(),</code> which is similar to <code>STUFF()</code> , returns a character string created by replacing a specified number of characters in a character expression
+			<td class="col2nd"><code>STUFFC(),</code> which is similar to <code>STUFF()</code>, returns a character string created by replacing a specified number of characters in a character expression
 			with another character expression. The character expressions can consist of any combination of single-byte and double-byte characters.</font> </td>
 			</tr>
 			</table>
