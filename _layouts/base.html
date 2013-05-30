@@ -11,9 +11,12 @@
 	<!--[if lt IE 9]>
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	<link href="/css/bootstrap.min.css" rel="stylesheet">
-	<link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
-	<link href="/css/font-awesome.min.css" rel="stylesheet">
+
+  {% css_asset_tag global %}
+  - /css/bootstrap.min.css
+  - /css/bootstrap-responsive.min.css
+  - /css/font-awesome.min.css
+  {% endcss_asset_tag %}
 	<style type="text/css">
 	img.sblogo {
 		margin: 0 15px 5px 0;
@@ -25,14 +28,10 @@
 	 </style>
 	{% endif %}
 </head>
-
 <body class="preview" id="top" data-spy="scroll" data-target=".subnav" data-offset="80">
-
 	<div class="container">
 		{% include header.html %}
-
 		{{ content }}
-	
 		{% include footer.html %}
 	</div>
 
