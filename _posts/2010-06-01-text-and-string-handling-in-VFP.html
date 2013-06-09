@@ -6,7 +6,7 @@ type: ""
 header_text: ""
 lead_text: ""
 excerpt: ""
-category: 
+category:
 tags: []
 pygments: true
 ---
@@ -45,14 +45,14 @@ that work on characters also work on memos.</p>
 
 <p>To <strong>retrieve text from a table field</strong>, simply assign it to a memory variable.</p>
 
-{% highlight XBase%}
-	CREATE TABLE Ships ( Name C( 40 ), Desc M )
-	INSERT INTO Ships ( Name, Desc ) VALUES ( "Exxon Valdez", "Billions unpaid!" )
-	LOCAL lcShip, lcDesc
-	lcShip= Ship.Name
-	lcDesc= Ship.Desc
+{% highlight XBase linenos=table %}
+CREATE TABLE Ships ( Name C( 40 ), Desc M )
+INSERT INTO Ships ( Name, Desc ) VALUES ( "Exxon Valdez", "Billions unpaid!" )
+LOCAL lcShip, lcDesc
+lcShip= Ship.Name
+lcDesc= Ship.Desc
 
-	* Note that it doesn't matter if the field is type Character or Memo.
+* Note that it doesn't matter if the field is type Character or Memo.
 {% endhighlight %}
 
 <h3>Inbound from text files</h3>
@@ -62,13 +62,13 @@ that work on characters also work on memos.</p>
 <p><code>FILETOSTR( cFileName )</code> is used to place the contents of a disk file into a string memory variable. This is among my favorite new functions
 in VFP 6. Its both useful and fast. For example, the following code executes in one-seventh of a second on my 220Mhz Pentium laptop.</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x
-	t1= SECONDS()
-	x= FILETOSTR( WarAndPeace.TXT )   && 3.2 mb in size
-	t2= SECONDS()
-	?t2-t1, seconds    && 0.140 ( seconds )
-	?len( x )   && 3271933
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x
+t1= SECONDS()
+x= FILETOSTR( WarAndPeace.TXT )   && 3.2 mb in size
+t2= SECONDS()
+?t2-t1, seconds    && 0.140 ( seconds )
+?len( x )   && 3271933
 {% endhighlight %}
 
 <p>In other words, on a very modest laptop ( by todays standards ) VFP can load the full text from Tolstoys <em>War And
@@ -77,55 +77,55 @@ Peace</em> in one-seventh of a second.</p>
 <p><strong>Low Level File Functions ( LLFF )</strong> are somewhat more cumbersome but offer great control. LLFF are also very fast. The following example
 reads the entire contents of Tolstoys <em>War And Peace</em> from disk into memory:</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x, h
-	t1= SECONDS()
-	h= FOPEN( "WarAndPeace.TXT" )   && 3.2 mb in size
-	x= FREAD( h, 4000000 )
-	t2= SECONDS()
-	?t2-t1, "seconds"  && 0.140 seconds
-	?LEN( x )   && 3271933
-	FCLOSE( h )
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x, h
+t1= SECONDS()
+h= FOPEN( "WarAndPeace.TXT" )   && 3.2 mb in size
+x= FREAD( h, 4000000 )
+t2= SECONDS()
+?t2-t1, "seconds"  && 0.140 seconds
+?LEN( x )   && 3271933
+FCLOSE( h )
 {% endhighlight %}
 
 <p>Given the similar execution times, I think we can conclude that internally, LLFF and <code>FILETOSTR()</code> are implemented similarly. However
 with the LLFF we also have fine control. For example, <code>FGETS()</code> allows us to read a line at a time. To illustrate, the following
 code reads the first 15 lines of <em>War And Peace</em> into array <code>wpLines</code>.</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, i, h
-	LOCAL ARRAY wpLines[15]
-	CLEAR
-	t1= SECONDS()
-	h= FOPEN( "WarAndPeace.TXT" )   && 3.2 mb in size
-	FOR i= 1 TO ALEN( wpLines )
-	  wpLines[i]= FGETS( h )
-	ENDFOR
-	t2= SECONDS()
-	?t2-t1, "seconds"   && 0.000 seconds
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, i, h
+LOCAL ARRAY wpLines[15]
+CLEAR
+t1= SECONDS()
+h= FOPEN( "WarAndPeace.TXT" )   && 3.2 mb in size
+FOR i= 1 TO ALEN( wpLines )
+  wpLines[i]= FGETS( h )
+ENDFOR
+t2= SECONDS()
+?t2-t1, "seconds"   && 0.000 seconds
 
-	FOR i= 1 TO ALEN( wpLines )
-	  ? wpLines[i]
-	ENDFOR
-	FCLOSE( h )
+FOR i= 1 TO ALEN( wpLines )
+  ? wpLines[i]
+ENDFOR
+FCLOSE( h )
 {% endhighlight %}
 
 <p>We can also retrieve a segment from <em>War And Peace. </em><code>FSEEK()</code> moves the LLFF pointer, and
 the <code>FREAD()</code> function is used to read a range. Lets read, say, 1000 bytes about half way through the book.</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x, h
-	LOCAL ARRAY wpLines[15]
-	CLEAR
-	t1= SECONDS()
-	h= FOPEN( "WarAndPeace.TXT" )   && 3.2 mb in size
-	FSEEK( h, 1500000 )  && Move the pointer
-	x=FREAD( h, 1000 )  && Read 1000 bytes
-	t2= SECONDS()
-	?t2-t1, "seconds"   && 0.000 seconds
-	SET MEMOWIDTH TO 8000
-	?x
-	FCLOSE( h )
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x, h
+LOCAL ARRAY wpLines[15]
+CLEAR
+t1= SECONDS()
+h= FOPEN( "WarAndPeace.TXT" )   && 3.2 mb in size
+FSEEK( h, 1500000 )  && Move the pointer
+x=FREAD( h, 1000 )  && Read 1000 bytes
+t2= SECONDS()
+?t2-t1, "seconds"   && 0.000 seconds
+SET MEMOWIDTH TO 8000
+?x
+FCLOSE( h )
 {% endhighlight %}
 
 <h3>Inbound from text files, with pre-processing</h3>
@@ -138,15 +138,14 @@ of each line. How can we create a streaming document that we can actually format
 file formats. The strategy always works something like this: You create a single-field table, and you use <code>APPEND FROM ... TYPE SDF</code> to
 load it</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2
-	CLEAR
-	t1= SECONDS()
-	CREATE TABLE Temp ( cLine C ( 254 ))
-	APPEND FROM WarAndPeace.Txt TYPE SDF
-	t2= SECONDS()
-{% endhighlight %}
-{% highlight XBase %} 
+{% highlight XBase linenos=table %}
+LOCAL t1, t2
+CLEAR
+t1= SECONDS()
+CREATE TABLE Temp ( cLine C ( 254 ))
+APPEND FROM WarAndPeace.Txt TYPE SDF
+t2= SECONDS()
+
 ?t2-t1, "seconds"  && 1.122 seconds
 {% endhighlight %}
 
@@ -162,51 +161,47 @@ muck with it.</p>
 <p>There are many ways to determine if a sub-string exists in a string. The <code>$</code> command returns True or False if a sub-string is contained
 in a string. This command is fast. Try this:</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x
-	x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-	t1= SECONDS()
-	? "THE END" $ x
-	t2= SECONDS()
-	?[ "THE END" $ x], t2-t1, "seconds"    && 0.180 seconds
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x
+x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1= SECONDS()
+? "THE END" $ x
+t2= SECONDS()
+?[ "THE END" $ x], t2-t1, "seconds"    && 0.180 seconds
 {% endhighlight %}
 
 <p>The <code>AT()</code>and <code>ATC()</code>functions are also great for determining if a sub-string exists, the former having the advantage
 of being case insensitive and, moreover, their return values gives you an exact position of the sub-string.</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x, lnAtPos
-	x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-	t1= SECONDS()
-	lnAtPos=ATC( "the end", x )
-	t2= SECONDS()
-{% endhighlight %}
-{% highlight XBase %} 
-	?lnAtPos           && 97837
-	?[ATC( "the end", x )], t2-t1, "seconds"    && 0.110 seconds
-	?SUBS( x, lnAtPos, 20 )   &&  the end of it...
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x, lnAtPos
+x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1= SECONDS()
+lnAtPos=ATC( "the end", x )
+t2= SECONDS()
+?lnAtPos           && 97837
+?[ATC( "the end", x )], t2-t1, "seconds"    && 0.110 seconds
+?SUBS( x, lnAtPos, 20 )   &&  the end of it...
 {% endhighlight %}
 
 <p>The <code>OCCURS()</code> function will also tell you if a sub-string exists, and moreover tell you how many times the sub-string occurs. This
 code will count the number of occurrences of a variety of sub-strings in <em>War And Peace</em>.</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x, i
-	LOCAL ARRAY aStrings[5]
-	aStrings[1]= "Russia"  && 775 occurences
-	aStrings[2]= "Anna"    && 293 occurences
-	aStrings[3]= "Czar"    && 4 occurences
-	aStrings[4]= "windows" && 23 occurences
-	aStrings[5]= "Pentium" && 0 occurences
-{% endhighlight %}
-{% highlight XBase %} 
-	x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-	FOR i = 1 TO ALEN( aStrings )
-		t1= SECONDS()
-		?OCCURS( aStrings[i], x )
-		t2= SECONDS()
-		?[OCCURS( "]+aStrings[i]+[", x )], t2-t1, "seconds"  && 0.401 seconds avg
-	ENDFOR
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x, i
+LOCAL ARRAY aStrings[5]
+aStrings[1]= "Russia"  && 775 occurences
+aStrings[2]= "Anna"    && 293 occurences
+aStrings[3]= "Czar"    && 4 occurences
+aStrings[4]= "windows" && 23 occurences
+aStrings[5]= "Pentium" && 0 occurences
+x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+FOR i = 1 TO ALEN( aStrings )
+	t1= SECONDS()
+	?OCCURS( aStrings[i], x )
+	t2= SECONDS()
+	?[OCCURS( "]+aStrings[i]+[", x )], t2-t1, "seconds"  && 0.401 seconds avg
+ENDFOR
 {% endhighlight %}
 
 <p>Locating sub-strings in strings is something VFP does really well.</p>
@@ -219,28 +214,28 @@ from the left ( <code>AT()</code> ), from the right ( <code>RAT()</code> ), both
 and <code>RATC()</code> ). All these functions are very fast and scale well with file size. For example, lets go look for THE END in
 <em>War And Peace</em>.</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x
-	x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-	t1= SECONDS()
-	?AT( "THE END", x )   && 3271915
-	t2= SECONDS()
-	?[AT( "THE END", x )], t2-t1, , "seconds"    && 0.180 seconds
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x
+x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1= SECONDS()
+?AT( "THE END", x )   && 3271915
+t2= SECONDS()
+?[AT( "THE END", x )], t2-t1, , "seconds"    && 0.180 seconds
 {% endhighlight %}
 
 <p>You can also check for the <code>n</code>th occurrence of a sub-string, as illustrated below where we find the 1st, 101st, 201st...701st occurrence
 of the word Russia in <em>War And Peace</em>.</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x, i, nOcc
-	x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-	FOR i= 0 TO 7
-	  nOcc= i*100+1
-	  t1= SECONDS()
-	  ?AT( "Russia", x, nOcc  )
-	  t2= SECONDS()
-	  ?[AT( "Russia", x, ]+Transform( nOcc )+[ )], t2-t1  && 0.180 sec on average
-	ENDFOR
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x, i, nOcc
+x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+FOR i= 0 TO 7
+  nOcc= i*100+1
+  t1= SECONDS()
+  ?AT( "Russia", x, nOcc  )
+  t2= SECONDS()
+  ?[AT( "Russia", x, ]+Transform( nOcc )+[ )], t2-t1  && 0.180 sec on average
+ENDFOR
 {% endhighlight %}
 
 <p>Two other functions are useful for locating strings: <code>ATLINE()</code> and <code>ATCLINE()</code>. These return the line number of the
@@ -248,7 +243,7 @@ first occurrence of a string. </p>
 
 <div class="info">
 	<p>
-		Note: Prior to VFP 7, functions that are sensitive to <code>SET MEMOWIDTH</code>, 
+		Note: Prior to VFP 7, functions that are sensitive to <code>SET MEMOWIDTH</code>,
 		like <code>ATLINE()</code> and <code>ATCLINE()</code>, among
 		others, are dog-slow on larger strings and so do not scale well at all.
 	</p>
@@ -259,40 +254,32 @@ first occurrence of a string. </p>
 <p>Iterating through text, one line at a time, is a common task. Heres the way VFP developers have been doing it for years: Using the <code>MEMLINES()</code>
 and <code>MLINE()</code> functions. Like this:</p>
 
-{% highlight XBase %} 
-	LOCAL x, y, i, t1, t2
-	SET MEMOWIDTH TO 8000
-	x=FILETOSTR( home()+"Genhtml.prg" )  && 767 lines
-{% endhighlight %}
-{% highlight XBase %} 
-	t1=SECONDS()
-	FOR i= 1 TO MEMLINES( x )
-		y=MLINE( x, i )
-	ENDFOR
-{% endhighlight %}
-{% highlight XBase %} 
-	t2=SECONDS()
-	?"Using MLINE()", t2-t1, "seconds"  && 22.151 seconds
+{% highlight XBase linenos=table %}
+LOCAL x, y, i, t1, t2
+SET MEMOWIDTH TO 8000
+x=FILETOSTR( home()+"Genhtml.prg" )  && 767 lines
+t1=SECONDS()
+FOR i= 1 TO MEMLINES( x )
+	y=MLINE( x, i )
+ENDFOR
+t2=SECONDS()
+?"Using MLINE()", t2-t1, "seconds"  && 22.151 seconds
 {% endhighlight %}
 
 <p>Thats pathetic performance. 20+ seconds to iterate through 767 lines! Fortunately, theres a trick to using <code>MLINE()</code>, which is
 to pass the <code>_MLINE</code> system memory variable as the third parameter. Like this.</p>
 
-{% highlight XBase %} 
-	LOCAL x, y, i, t1, t2
-	SET MEMOWIDTH TO 8000
-	x=FILETOSTR( home()+"Genhtml.prg" )  && 767 lines
-{% endhighlight %}
-{% highlight XBase %} 
-	t1=SECONDS()
-	_mline=0
-	FOR i= 1 TO MEMLINES( x )
-		y=MLINE( x, 1, _MLINE )
-	ENDFOR
-{% endhighlight %}
-{% highlight XBase %} 
-	t2=SECONDS()
-	?"Using MLINE() with _MLINE", SECONDS()-z, "seconds"  && 0.451 seconds
+{% highlight XBase linenos=table %}
+LOCAL x, y, i, t1, t2
+SET MEMOWIDTH TO 8000
+x=FILETOSTR( home()+"Genhtml.prg" )  && 767 lines
+t1=SECONDS()
+_mline=0
+FOR i= 1 TO MEMLINES( x )
+	y=MLINE( x, 1, _MLINE )
+ENDFOR
+t2=SECONDS()
+?"Using MLINE() with _MLINE", SECONDS()-z, "seconds"  && 0.451 seconds
 {% endhighlight %}
 
 <p>Now thats more like it a fifty-fold improvement. A surprising number of VFP developers dont know this idiom with <code>_MLINE</code> even
@@ -301,19 +288,18 @@ though its been documented in the FoxPro help since version 2 at least.</p>
 <p>Starting in VFP 6 all this is obsolete, since <code>ALINES()</code> is a screaming new addition to the language. Lets see how these routines
 look and perform with <code>ALINES()</code>.</p>
 
-{% highlight XBase %} 
-	LOCAL x, i, y, ti, t2
-	LOCAL ARRAY laArray[1]
-	x=FILETOSTR( home()+"Genhtml.prg" )  && 767 lines
+{% highlight XBase linenos=table %}
+LOCAL x, i, y, ti, t2
+LOCAL ARRAY laArray[1]
+x=FILETOSTR( home()+"Genhtml.prg" )  && 767 lines
 
+t1=SECONDS()
+FOR i= 1 TO ALINES( laArray, x )
+ y=laArray[i]
+ENDFOR
+t2=SECONDS()
 
-	t1=SECONDS()
-	FOR i= 1 TO ALINES( laArray, x )
-	 y=laArray[i]
-	ENDFOR
-	t2=SECONDS()
-
-	?"Using ALINES() and traverse array:", t2-t1, "seconds"  && 0.020 seconds
+?"Using ALINES() and traverse array:", t2-t1, "seconds"  && 0.020 seconds
 {% endhighlight %}
 
 <p>Another twenty-fold improvement in speed. I think the lesion is clear: If you are using <code>MLINE()</code> in your applications, and you
@@ -321,36 +307,36 @@ are using VFP 6, then its time to switch to <code>ALINES()</code>. There are jus
 by VFPs 65, 000 array element limit, and second, successive lines with only <code>CHR( 13 )</code> carriage returns are considered as one line.
 For example:</p>
 
-{% highlight XBase %} 
-	lcSource = "How~~Many~~Lines?~"
-	lcString = STRTRAN( lcSource, "~", CHR( 13 ))
-	?ALINES( aParms, lcstring )   && 3
+{% highlight XBase linenos=table %}
+lcSource = "How~~Many~~Lines?~"
+lcString = STRTRAN( lcSource, "~", CHR( 13 ))
+?ALINES( aParms, lcstring )   && 3
 {% endhighlight %}
 
 <p>But if you use carriage return + line feed, <code>CHR( 13 )+CHR( 10 )</code>, youll get the results you expect.</p>
 
-{% highlight XBase %} 
-	lcSource = "How~~Many~~Lines?~"
-	lcString = STRTRAN( lcSource, "~", CHR( 13 )+CHR( 10 ))
-	?ALINES( aParms, lcstring )   && 5
+{% highlight XBase linenos=table %}
+lcSource = "How~~Many~~Lines?~"
+lcString = STRTRAN( lcSource, "~", CHR( 13 )+CHR( 10 ))
+?ALINES( aParms, lcstring )   && 5
 {% endhighlight %}
 
 <p>This is a bit unnerving if blank lines are important, so beware and use <code>CHR( 13 )+CHR( 10 ) </code>to avoid this problem.</p>
 
 <p>Now, just for fun, lets rip through <em>War And Peace</em> using <code>ALINES()</code>.</p>
 
-{% highlight XBase %} 
-	LOCAL x, i, y, z, k
-	LOCAL ARRAY laArray[1]
-	x=FILETOSTR( "WarAndPeace.TXT" )
+{% highlight XBase linenos=table %}
+LOCAL x, i, y, z, k
+LOCAL ARRAY laArray[1]
+x=FILETOSTR( "WarAndPeace.TXT" )
 
-	t1=SECONDS()
-	FOR i= 1 TO ALINES( laArray, x )   && 54, 227 array elements
-		y=laArray[i]
-	ENDFOR
+t1=SECONDS()
+FOR i= 1 TO ALINES( laArray, x )   && 54, 227 array elements
+	y=laArray[i]
+ENDFOR
 
-	t2=SECONDS()
-	?"Using ALINES() and traverse", t2-t1, "seconds"  && 3.395 seconds
+t2=SECONDS()
+?"Using ALINES() and traverse", t2-t1, "seconds"  && 3.395 seconds
 {% endhighlight %}
 
 <p>Excuse me, but wow, considering were creating a 54, 337 element array from a file on disk, then were traversing the entire array assigning each elements
@@ -358,14 +344,14 @@ contents to a memory variable, and were back in 3.4 seconds.</p>
 
 <p>What about just creating the array of <em>War And Peace</em>:</p>
 
-{% highlight XBase %} 
-	LOCAL x, t1, t2
-	LOCAL ARRAY laArray[1]
-	x=FILETOSTR( "WarAndPeace.TXT" )
-	t1=SECONDS()
-	?ALINES( laArray, x )     && 54, 227 array elements
-	t2=SECONDS()
-	?"Using ALINES() to load War and Peace", t2-t1, "seconds" && 2.203 seconds
+{% highlight XBase linenos=table %}
+LOCAL x, t1, t2
+LOCAL ARRAY laArray[1]
+x=FILETOSTR( "WarAndPeace.TXT" )
+t1=SECONDS()
+?ALINES( laArray, x )     && 54, 227 array elements
+t2=SECONDS()
+?"Using ALINES() to load War and Peace", t2-t1, "seconds" && 2.203 seconds
 {% endhighlight %}
 
 <p>So, on my Pentium 233 laptop using VFP 6, we can load <em>War and Peace</em> from disk into a 54, 000-item array in
@@ -387,63 +373,59 @@ functions, return the number of words and individual words respectively.</p>
 
 <p>Lets see how they perform. Lets first count the words in <em>War And Peace</em>.</p>
 
-{% highlight XBase %} 
-	LOCAL x, t1, t2
-	LOCAL ARRAY laArray[1]
-	x=FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
-	t1=SECONDS()
-	?GETWORDCOUNT( x )   && 565412
-	t2=SECONDS()
+{% highlight XBase linenos=table %}
+LOCAL x, t1, t2
+LOCAL ARRAY laArray[1]
+x=FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
+t1=SECONDS()
+?GETWORDCOUNT( x )   && 565412
+t2=SECONDS()
 
-	?"Using GETWORDCOUNT() on War and Peace", t2-t1, "seconds"  && 0.825 seconds
+?"Using GETWORDCOUNT() on War and Peace", t2-t1, "seconds"  && 0.825 seconds
 {% endhighlight %}
 
 <p>The <code>GETWORDCOUNT()</code> function is also useful for counting all sorts of tokens since you can pass the
 word delimiters in the second parameter. How many sentences are there in <em>War And Peace</em>?</p>
 
-{% highlight XBase %} 
-	LOCAL x, t1, t2
-	LOCAL ARRAY laArray[1]
-	x=FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
-	t1=SECONDS()
-	?GETWORDCOUNT( x, "." )   && ( Note the "." )    26673
-	t2=SECONDS()
+{% highlight XBase linenos=table %}
+LOCAL x, t1, t2
+LOCAL ARRAY laArray[1]
+x=FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
+t1=SECONDS()
+?GETWORDCOUNT( x, "." )   && ( Note the "." )    26673
+t2=SECONDS()
 
-	?"Using GETWORDCOUNT() countING sentences in W&amp;p", t2-t1, "seconds"&& 0.803 seconds
+?"Using GETWORDCOUNT() countING sentences in W&P", t2-t1, "seconds"&& 0.803 seconds
 {% endhighlight %}
 
 <p><code>GETWORDNUM()</code> returns a specific word from a string. Whats the 666th word in War And Peace?
 What about the 500000th?</p>
 
-{% highlight XBase %} 
-	LOCAL x, t1, t2
-	x=FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
-	t1=SECONDS()
-	?GETWORDNUM( x, 666 )  && Anna
-	t2=SECONDS()
-{% endhighlight %}
-{% highlight XBase %} 
-	?"Finding the 666th word in W&amp;P", t2-t1, "seconds"  && 0.381 seconds
-	t1=SECONDS()
-	?GETWORDNUM( x, 500000 )  && his
-	t2=SECONDS()
+{% highlight XBase linenos=table %}
+LOCAL x, t1, t2
+x=FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
+t1=SECONDS()
+?GETWORDNUM( x, 666 )  && Anna
+t2=SECONDS()
+?"Finding the 666th word in W&P", t2-t1, "seconds"  && 0.381 seconds
+t1=SECONDS()
+?GETWORDNUM( x, 500000 )  && his
+t2=SECONDS()
 
-
-	?"Finding the 500000th word in W&amp;P", t2-t1, "seconds"  && 1.001 seconds
+?"Finding the 500000th word in W&P", t2-t1, "seconds"  && 1.001 seconds
 {% endhighlight %}
 
 <p>Similarly to <code>GETWORDCOUNT()</code>, we can use <code>GETWORDNUM()</code>
 to return a token from a string by specifying the delimiter. Whats the 2000th sentence in War And Peace? </p>
 
-{% highlight XBase %} 
-	LOCAL x, t1, t2
-	x=FILETOSTR( "WarAndPeace.TXT" )   <code> && 3.2 mb in size
-	t1=SECONDS()
-	?GETWORDNUM( x, 2000, "." )
-	t2=SECONDS()
+{% highlight XBase linenos=table %}
+LOCAL x, t1, t2
+x=FILETOSTR( "WarAndPeace.TXT" )   <code> && 3.2 mb in size
+t1=SECONDS()
+?GETWORDNUM( x, 2000, "." )
+t2=SECONDS()
 
-
-	?"Finding the 2000th sentence in W&amp;P", t2-t1, "seconds"&& 0.391 seconds
+?"Finding the 2000th sentence in W&P", t2-t1, "seconds"&& 0.391 seconds
 {% endhighlight %}
 
 <h3>Substituting text</h3>
@@ -454,42 +436,42 @@ to return a token from a string by specifying the delimiter. Whats the 2000th se
 <p><code>STRTRAN()</code> replaces occurrences of a string with another. For example, lets change all occurrences of Anna to the McBride twins in
 <em>War And Peace</em>.</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x
-	x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-	? "Words in W&amp;P:", WORDS( x )   && 565412 words
-	t1= SECONDS()
-	x=STRTRAN( x, "Anna", "the McBride twins" )
-	t2= SECONDS()
-	? t2-t1, "seconds"    && 2.314 seconds
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x
+x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+? "Words in W&P:", WORDS( x )   && 565412 words
+t1= SECONDS()
+x=STRTRAN( x, "Anna", "the McBride twins" )
+t2= SECONDS()
+? t2-t1, "seconds"    && 2.314 seconds
 
-	?Occurs( "the McBride twins", x ), "occurences"  && 293 Occurences
-	? "Words in W&amp;P:", WORDS( x )   && 565412 words
+?Occurs( "the McBride twins", x ), "occurences"  && 293 Occurences
+? "Words in W&P:", WORDS( x )   && 565412 words
 {% endhighlight %}
 
 <p>Thats over 125 replacements per second, which is phenomenal. What about removing strings?</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x
-	x= FILETOSTR( "WarAndPeace.TXT" )      && 3.2 mb in size
-	? "Words in W&amp;P:", WORDS( x )      && 565412 words
-	t1= SECONDS()
-	x=STRTRAN( x, "Anna" )
-	t2= SECONDS()
-	? t2-t1, "seconds"    && 2.293 seconds
-	? "Words in W&amp;P:", WORDS( x )  && 565168 words
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x
+x= FILETOSTR( "WarAndPeace.TXT" )      && 3.2 mb in size
+? "Words in W&P:", WORDS( x )      && 565412 words
+t1= SECONDS()
+x=STRTRAN( x, "Anna" )
+t2= SECONDS()
+? t2-t1, "seconds"    && 2.293 seconds
+? "Words in W&P:", WORDS( x )  && 565168 words
 {% endhighlight %}
 
 <p>So it appears that <code>STRTRAN()</code> both adds and removes strings with equal aplomb. What of <code>CHRTRAN()</code>, which swaps characters?
 Lets, say, change all s to ch in <em>War and Peace</em>.</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x
-	x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-	t1= SECONDS()
-	x=CHRTRAN( x, "s", "ch" )
-	t2= SECONDS()
-	? t2-t1, "seconds"    && 0.521 seconds
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x
+x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1= SECONDS()
+x=CHRTRAN( x, "s", "ch" )
+t2= SECONDS()
+? t2-t1, "seconds"    && 0.521 seconds
 {% endhighlight %}
 
 <p>Which isnt bad considering that there are 159, 218 occurrences of character s in <em>War And Peace</em>.</p>
@@ -502,40 +484,38 @@ circumstances is terrible. If you need to suppress sub-strings, use <code>STRTRA
 <p>VFP has tremendous concatenation speed if you use it in a particular way. Since many common tasks, like building web pages, involve building documents
 one element at a time, you should know that string expressions of the form <code>x=x+y</code> are very fast in VFP. Consider this:</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x
-	x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-	t1= SECONDS()
-	x= x+ "&lt;b&gt;Drink Milk!&lt;/b&gt;"
-	t2= SECONDS()
-	? t2-t1, "seconds"    && 0.000 seconds
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x
+x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1= SECONDS()
+x= x+ "&lt;b&gt;Drink Milk!&lt;/b&gt;"
+t2= SECONDS()
+? t2-t1, "seconds"    && 0.000 seconds
 {% endhighlight %}
 
 <p>The same type of performance applies if you build strings small chunks at a time, which is a typical scenario in dynamic Web pages whether a template
 engine or raw output is used. For example:</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x, y, count
-	t1= SECONDS()
-	x = ""
-	y = "VFP Strings are fast"
-	FOR count = 1 to 10000
-	    x = x + y
-	ENDFOR
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x, y, count
+t1= SECONDS()
+x = ""
+y = "VFP Strings are fast"
+FOR count = 1 to 10000
+    x = x + y
+ENDFOR
 
-	t2= SECONDS()
-	? t2-t1, "seconds"    && 0.030 seconds
-	? len( x )            && 200,000 chars
-
-RETURN
+t2= SECONDS()
+? t2-t1, "seconds"    && 0.030 seconds
+? len( x )            && 200,000 chars
 {% endhighlight %}
 
 <p>This full optimization occurs as long as the string is adding something to itself and as long as the string concatenated is stored in a variable. Using
 class properties is somewhat less efficient. String optimization does not occur if the first expression on the right of the = sign is not the same as
 the string being concatenated. So:</p>
 
-{% highlight XBase %} 
-	x = "" + x  + y
+{% highlight XBase linenos=table %}
+x = "" + x  + y
 {% endhighlight %}
 
 <p>is not optimized in this fashion. The above line, placed in the example above, takes 25 seconds! So appending strings to strings is blazingly fast
@@ -548,13 +528,13 @@ in most common situations.</p>
 <p>Foremostly theres the new <code>STRTOFILE()</code> function which creates a disk file wit the contents of a string. Lets write
 <em>War And Peace</em> to disk.</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x
-	x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-	t1= SECONDS()
-	STRTOFILE( x, "Junk.txt" )
-	t2= SECONDS()
-	? t2-t1, "seconds"    && 0.480 seconds
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x
+x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1= SECONDS()
+STRTOFILE( x, "Junk.txt" )
+t2= SECONDS()
+? t2-t1, "seconds"    && 0.480 seconds
 {% endhighlight %}
 
 <p>Which means that you can dish 3+ Mb to disk in about a half-second.</p>
@@ -562,17 +542,17 @@ in most common situations.</p>
 <p>You can also use <strong>Low Level File Functions ( LLFF )</strong> to output text. The <code>FWRITE()</code> function dumps all or part of a string
 to disk. The <code>FPUTS()</code> function outputs a single line from the string, and moves the pointer</p>
 
-{% highlight XBase %} 
-	LOCAL t1, t2, x
-	x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-	t1= SECONDS()
-	h=FCREATE( "Junk.txt" )
-	FWRITE( h, x )
-	FCLOSE( h )
+{% highlight XBase linenos=table %}
+LOCAL t1, t2, x
+x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1= SECONDS()
+h=FCREATE( "Junk.txt" )
+FWRITE( h, x )
+FCLOSE( h )
 
-	t2= SECONDS()
+t2= SECONDS()
 
-	? t2-t1, "seconds"    && 0.451 seconds
+? t2-t1, "seconds"    && 0.451 seconds
 {% endhighlight %}
 
 <p>Here again, the similar performance times between <code>FWRITE()</code> and <code>STRTOFILE()</code> are striking, just as they were when comparing
@@ -581,20 +561,20 @@ to disk. The <code>FPUTS()</code> function outputs a single line from the string
 <p>Heres an example of outputting <em>War And Peace</em> line-by-line using <code>FPUTS()</code>. Since were
 using <code>ALINES()</code>, its not that onerous a task. In fact, its very slick!</p>
 
-{% highlight XBase %} 
-	LOCAL x, h, i, t1, t2
-	LOCAL ARRAY laArray[1]
+{% highlight XBase linenos=table %}
+LOCAL x, h, i, t1, t2
+LOCAL ARRAY laArray[1]
 
-	x=FILETOSTR( "WarAndPeace.TXT" ) && 3.2 mb in size
-	t1=SECONDS()
-	h=FCREATE( "Junk.txt" )
-	FOR i= 1 TO ALINES( laArray, x )
-	 FPUTS( h, laArray[i] )
-	ENDFOR
-	FCLOSE( h )
+x=FILETOSTR( "WarAndPeace.TXT" ) && 3.2 mb in size
+t1=SECONDS()
+h=FCREATE( "Junk.txt" )
+FOR i= 1 TO ALINES( laArray, x )
+ FPUTS( h, laArray[i] )
+ENDFOR
+FCLOSE( h )
 
-	t2=SECONDS()
-	?"Total time:", t2-t1, "seconds"  && 3.595 seconds
+t2=SECONDS()
+?"Total time:", t2-t1, "seconds"  && 3.595 seconds
 {% endhighlight %}
 
 <h2>Conclusion</h2>
