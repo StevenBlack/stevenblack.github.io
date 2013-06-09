@@ -18,7 +18,11 @@
   - /css/font-awesome.min.css
   {% endcss_asset_tag %}
 	<style type="text/css">
+
 	</style>
+	{% if page.pygments %}
+		<link rel="stylesheet" href="/css/pygments.css" />
+	{% endif %}
 	{% if page.style %}
 	 <style type="text/css">
 	     {{ page.style }}
