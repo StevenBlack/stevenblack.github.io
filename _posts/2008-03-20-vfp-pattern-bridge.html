@@ -1,0 +1,317 @@
+---
+layout: post
+title: "VFP Design Pattern - Bridge"
+author: "Steven Black"
+type: ""
+header_text: ""
+lead_text: ""
+excerpt: ""
+category: 
+tags: []
+pygments: true
+
+---
+<h2>Context</h2>
+
+<p>You are designing a new class, or adapting an existing class to make it more reusable. You anticipate
+future extensions to object's form or function and you want to avoid extending a class hierarchy for the
+sake of new implementations. perhaps you'd like to choose a specific behavior at run-time.</p>
+
+<h2>Problem</h2>
+<p>To achieve reuse, some classes need to adapt either their implementations, their interfaces, or both.
+How to structure a class so that either (or both) can be easily modified?</p>
+
+<h2>Forces</h2>
+<ul>
+	<li>The existing codebase may constrain what we can do with a class's implementation.</li>
+	<li>Reuse could mean reuse by other systems that may expect or require a different interface than the
+	one currently provided by our existing class.</li>
+	<li class="bottom">We may need to adapt a class's interface, implementation, or both.</li>
+</ul>
+
+<h2>Solution</h2>
+<p>Decouple an object's public interface ("form") from its implementation (its "function"), using two (or
+more) objects where otherwise one might less flexibly suffice.</p>
+<p>Separate a class's interface from its implementation by making each a separate but tightly coupled
+objects. This way each can be varied independently of the other.</p>
+<p>The workings among the players in a Bridge should be direct and simple: the interface object forwards
+client requests to the appropriate implementation object. Tight coupling within the Bridge structure is
+both common and desirable. The tight coupling is much easier to manage when all the implementation
+objects come from the same class, as illustrated in the Codebook example illustrated below.</p>
+
+<h2>Resulting Context</h2>
+<p>A Bridge is a decoupling of an abstraction (interface) from its implementation so the two can vary
+independently. Bridges are scale-independent structures that apply in many object oriented situations. A
+Bridge also serves as an atomic element player in other design patterns.</p>
+
+<h2>Rationale</h2>
+<p>The usual way to manage the requirement for different interface or implementation is by extending the
+class hierarchy using inheritance. After all, inheritance is usually the first mechanism most folks use
+to reuse their classes. And why not? In the early going, inheritance is always a big success.</p>
+<p>At the limit, however, inheritance leads to sclerosis -- inheritance doesn't scale particularly well.
+Simple, single-object inheritance binds interface and implementation - you only have one package to
+transform into a subclass. This means that interface and implementation aspects cannot be independently
+varied without extending the class hierarchy.</p>
+<p>But class hierarchies naturally loses their inherent adaptability with size and as the number and
+variety of clients increases. Why? -- side effects, partly. The probability of change side-effects in
+clients increases with the number and variety of those clients, and correspondingly with the current
+state of the hierarchy. In a giant class hierarchy, making a small change near the top can potentially be
+very expensive. This will occasionally limit what can be reasonably done at a given level in a class
+hierarchy.</p>
+<p>The Bridge pattern mitigates class sclerosis by decoupling interfaces from implementations, and
+putting the abstraction and implementation in separate class hierarchies. This allows the interface and
+implementation classes to vary independently, and the inherent substitutability of subclasses makes the
+structure intrinsically adaptable (and hence reusable). The Bridge in all this is the relationship
+between the interface and the implementation objects that together form a self-supporting system.</p>
+<h2>A.K.A.</h2>
+"Handle And Body" and "Envelope And Letter". Those descriptive names are good - the dual-object nature
+of Bridge patterns is well conveyed, as is the tight coupling usually found between the programming
+interface and implementation objects.
+
+<h2>Visual FoxPro Samples</h2>
+<p>Here we'll look at three simple ways Bridge patterns can be built in FoxPro: First with member
+properties, second we'll do more flexible implementations using member arrays, and third using object
+composition within containers.</p>
+
+<h2>Member Property Bridge</h2>
+<p>One way to build a Bridge is as diagrammed below. Here an interface member property contains a
+reference to an implementation object.</p>
+<p><img src="/images/PTN-Br1.jpg" width="262" height="107" /></p>
+<p>Figure 1. Bridge pattern where an interface class member property points to an implementation class.
+The Bridge in this diagram is .oImp, the member property that stores a reference to an implementation
+object - that's physically what the arrow represents. The benefit is this: each side can be subclassed
+independently of the other.</p>
+<p class="clearboth">In general terms, here's how such systems are constructed in VFP. What follows is a
+simple illustrative class that provides WAIT WINDOW services.</p>
+
+{% highlight XBase linenos=table %}
+XX= CREATEOBJECT( "WaitMsgServer")
+XX.Execute("This, for now, is in a WAIT WINDOW")
+
+DEFINE CLASS WaitMsgServer AS MsgInterface
+	FUNCTION Init( txPassed)
+	*-- Load an interface object
+	THIS.aImp= CREATEOBJECT("WaitMsg")
+	ENDFUNC
+
+	FUNCTION Execute( txPassed)
+	*-- Pass the request along...
+	THIS.aImp.Execute( txPassed)
+	ENDFUNC
+ENDDEFINE
+
+DEFINE CLASS WaitMsg AS MsgImplementation
+	FUNCTION Show( txPara1)
+	WAIT WINDOW THIS.cMessage
+	ENDFUNC
+ENDDEFINE
+
+DEFINE CLASS MsgInterface AS CUSTOM
+	*-- Abstract message interface class
+	aImp= .NULL.
+	FUNCTION Execute( txPassed)
+	*-- Abstract
+	ENDFUNC
+ENDDEFINE
+
+DEFINE Class MsgImplementation AS Custom
+	*-- Abstract message implementation class
+	cMessage= ''
+	FUNCTION Execute( tcPassed)
+	THIS.cMessage=tcPassed
+	THIS.Show()
+	ENDFUNC
+	FUNCTION Show
+	*-- Abstract
+	ENDFUNC
+ENDDEFINE
+{% endhighlight %}
+
+<p>Sample 1. A simple Bridge using a member property to reference the implementation object.</p>
+<p>Another example of this sort of Bridge is found in Codebook where the cBizobj (business object) class
+uses an object of the cDataBehavior class to implement the usual table navigation and record-processing
+functions. The following diagram illustrates this.</p>
+<p><img src="/images/PTN-Br2.jpg" width="413" height="199" /></p>
+<p>Figure 2. This Bridge pattern in Codebook 3.0 hangs on an aptly named member property. Any of the
+cDataBehavior subclasses may be substituted.</p>
+
+<h2>Member Array Bridge</h2>
+<p>Starting from the Member Property Bridge, it's a short stretch to provide multiple simultaneous
+implementations by using multiple member properties or, as described below, member arrays.</p>
+<p><img src="images/Image70.gif" align="left" hspace="0" width="318" height="126" /></p>
+<p>Figure 3. A flexible Bridge: a selection of implementations stored in a member array.</p>
+<p class="clearboth">Code sample 1 is modified here to support four different types of dialogs to extend
+the legacy WAIT WINDOW capability.</p>
+
+{% highlight XBase linenos=table %}
+DEFINE CLASS WaitMsgServer AS MsgInterface
+	FUNCTION Init
+	*-- Load interface objects
+	THIS.aImp[1]= CREATEOBJECT("WaitMsg")
+	THIS.aImp[2]= CREATEOBJECT("RegularMsg")
+	THIS.aImp[3]= CREATEOBJECT("InfoMsg")
+	THIS.aImp[4]= CREATEOBJECT("WarningMsg")
+	THIS.aImp[5]= CREATEOBJECT("ErrorMsg")
+	*-- Supporting the legacy singular WaitMsg capability
+	THIS.oImp= aImp[1]
+	ENDFUNC
+	
+	FUNCTION Execute( txPassed, tnMessageType)
+	THIS.aImp[tnMessageType].Execute( txPassed)
+	ENDFUNC
+ENDDEFINE
+
+DEFINE CLASS WaitMsg AS MsgImplementation
+	FUNCTION SHOW( txPara1)
+	WAIT WINDOW THIS.cMessage
+	ENDFUNC
+ENDDEFINE
+
+DEFINE CLASS RegularMsg AS MsgBoxImplementation
+	cTitle= "My Application"
+ENDDEFINE
+
+DEFINE CLASS InfoMsg AS RegularMsg
+	nIcon= 64
+ENDDEFINE
+
+DEFINE CLASS WarningMsg AS InfoMsg
+	nIcon= 48
+ENDDEFINE
+
+DEFINE CLASS ErrorMsg AS WarningMsg
+	nIcon= 16
+	nButtons= 5
+ENDDEFINE
+
+DEFINE CLASS MsgInterface AS CUSTOM
+	*-- Abstract message interface class
+	DIMENSION aImp[4]
+	aImp[1]= .NULL.
+	aImp[2]= .NULL.
+	aImp[3]= .NULL.
+	aImp[4]= .NULL.
+	*-- Virtual
+
+	FUNCTION Execute( txPassed)
+	ENDFUNC 
+
+ENDDEFINE
+	
+DEFINE CLASS MsgBoxImplementation AS MsgImplementation
+	nIcon= 0
+	nButtons= 0
+	FUNCTION Show
+	=MessageBox( THIS.ctext, THIS.nIcon+THIS.nButtons, THIS.cTitle)
+ENDFUNC
+ENDDEFINE
+
+DEFINE Class MsgImplementation AS Custom
+	*-- Abstract message implementation class
+	cMessage= ''
+	
+	FUNCTION Execute( tcPassed)
+	THIS.cMessage=tcPassed
+	THIS.show()
+	ENDFUNC
+	
+	*-- Virtual
+	FUNCTION Show
+	ENDFUNC
+ENDDEFINE
+{% endhighlight %}
+
+<p>Sample 2. Many implementations can be connected to an interface array member property.</p>
+
+<h2>Containership Bridge</h2>
+<p>Containership implementations are similar to array member implementations. In Visual FoxPro,
+containership is superbly implemented, so containership Bridges are easy to create and manage. Useful are
+the Controls() array, the PARENT keyword, SetAll(), and AMEMBERS(,,2), which make it possible to manage
+containership nesting.</p>
+<p>The containership relationship is illustrated below, followed by an illustrative code example.</p>
+<p><img src="/images/PTN-Br3.jpg" width="242" height="89" /></p>
+<p>Figure 4. An interface container contains one or many implementations.</p>
+{% highlight XBase linenos=table %}
+DEFINE CLASS MsgServer AS MsgInterface
+	FUNCTION Init
+	*-- Load an interface object with implementations.
+	*-- Exercise for the reader: Imagine delaying
+	*-- the AddObject calls until actually needed.
+	THIS.AddObject( "msgWaitWindow","WaitMsg")
+	THIS.AddObject( "msgRegular", "RegularMsg")
+	THIS.AddObject( "msgInfo", "InfoMsg")
+	THIS.AddObject( "msgWarning", "WarningMsg")
+	THIS.AddObject( "msgError", "ErrorMsg")
+	ENDFUNC
+
+	FUNCTION Execute( tnPassed, tcMessage)
+	*? I don't recommend doing it quite like this --
+	*? This simple example assumes you know the number of the
+	*? implementation object. In a perfect but (less concise)
+	*? example, .Execute(x,y) could accept an x of type "C", as in
+	*? &lt;whatever_message_server&gt;.Execute("Warning", &lt;Message&gt;)
+	*?
+	THIS.Controls(tnPassed).Execute(tcMessage)
+	ENDFUNC
+ENDDEFINE
+
+DEFINE CLASS WaitMsg AS MsgImplementation
+	FUNCTION SHOW( txPara1)
+	WAIT WINDOW THIS.cMessage
+	ENDFUNC
+ENDDEFINE
+
+DEFINE CLASS RegularMsg AS MsgBoxImplementation
+	cTitle= "My Application"
+ENDDEFINE
+
+DEFINE CLASS InfoMsg AS RegularMsg
+	nIcon= 64
+ENDDEFINE
+
+DEFINE CLASS WarningMsg AS InfoMsg
+	nIcon= 48
+ENDDEFINE
+
+DEFINE CLASS ErrorMsg AS WarningMsg
+nIcon= 16
+nButtons= 5
+ENDDEFINE
+ DEFINE CLASS MsgInterface AS Container
+	*-- Abstract message interface class
+	*? Hardcoded dimension
+	DIMENSION aImp[4]
+	aImp[1]= .NULL.
+	aImp[2]= .NULL.
+	aImp[3]= .NULL.
+	aImp[4]= .NULL.
+	FUNCTION Execute( txPassed)
+	*-- Abstract method
+	RETURN 0
+	ENDFUNC 
+ENDDEFINE
+
+DEFINE Class MsgImplementation AS Custom
+	*-- Abstract message implementation class
+	cMessage= ''
+
+	FUNCTION Execute( tcPassed)
+	THIS.cMessage=tcPassed
+	THIS.Show()
+	ENDFUNC
+
+	FUNCTION Show
+	*-- Abstract method
+	RETURN 0
+	ENDFUNC
+ENDDEFINE
+
+DEFINE CLASS MsgBoxImplementation AS MsgImplementation
+	nIcon= 0
+	nButtons= 0
+	FUNCTION Show
+	=MessageBox( THIS.ctext, THIS.nIcon+THIS.nButtons, THIS.cTitle)
+	ENDFUNC
+ENDDEFINE
+{% endhighlight %}
+<p>Sample 3. Multiple implementations instantiated in an interface container</p>

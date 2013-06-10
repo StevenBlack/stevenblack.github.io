@@ -1,0 +1,55 @@
+---
+layout: post
+title: "VFP Design Pattern - Mediator"
+author: "Steven Black"
+type: ""
+header_text: ""
+lead_text: ""
+excerpt: ""
+category: 
+tags: []
+
+---
+
+<p>A Mediator object is a form of Observer that abstracts inter-workings of two or more objects. They are
+ communication hubs that serve to decouple objects — objects don’t need to know about each other, they just
+ need to know their Mediator. Mediator promotes loose coupling by keeping objects from referencing to each
+ other explicitly, and lets you vary their interaction independently.</p>
+
+ <p>Look for Mediator patterns where objects are decoupled and in situations when inter-object behavior
+ variation is present or expected. Mediators well serve situations where complex protocols must be managed,
+ and when centralized access points are desirable.</p>
+
+ <p>Mediator is a behavioral pattern. When we speak of Mediator, it’s a system of at least three objects
+ messaging in a star topology.</p>
+
+ <p><img src="/images/PTN-Me4.jpg" width="318" height="205" /></p>
+
+ <p>Figure 1. The Mediator provides a common connection point, centralized (and subclassable) behavior and
+ behavior management, all with a common interface. As the number of colleagues increases, the number of total
+ communication pathways is vastly reduced.</p>
+
+ <h2>Sample Mediator implementations in Visual FoxPro</h2>
+
+ <p>The horizontal splitter control in Tazmanian Traders, which comes from the tsGen class library in the VFP
+ samples, contains two shapes and two scrolling command buttons. As the handle shape is moved, or the scroll
+ buttons are clicked, messages are sent to the splitter, which then messages selected items on the form.</p>
+
+ <p>In Codebook, toolbar navigation buttons call a business object class (cBizObj) which mediates in a one-way
+ direction between the form (of class cBizObjForm) and the data behavior object (of class cDataBehavior). This
+ simplifies the programming interface — only the cBizObj class protocols need be known — and allows for the
+ easy substitution of the data behavior implementations from the cDatabehavior class. Note that several bridge
+ patterns are evident here separating programming interfaces from implementations.</p>
+
+ <ul>
+   <li>cToolbarButton and cBizObjForm</li>
+
+   <li>cBizObjForm and cBizObj</li>
+
+   <li>cBizObj and cDataBehavior</li>
+ </ul>
+
+ <p><img src="/images/PTN-Me5.jpg" width="461" height="244" /></p>
+
+ <p>Figure 2. Hitting the Next button in Codebook. The cBizObj class mediates between the form and the desired
+ behavior.</p>
