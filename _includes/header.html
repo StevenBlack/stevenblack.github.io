@@ -11,7 +11,15 @@
 					<div class="nav-collapse">
 						<ul class="nav">
 							<li class="active"><a href="/">Home</a></li>
-							<li><a href="/articles">Articles</a></li>
+							<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" href="/archives/">Articles <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									{% for post in site.posts %}
+										{% if post.title %}
+									<li><a href="{{ root_url }}{{ post.url }}">{{ post.title }}</a></li>
+										{% endif %}
+									{% endfor %}
+								</ul>
+							</li>
 							<li><a href="/downloads">Downloads</a></li>
 
 							<li class="dropdown">
