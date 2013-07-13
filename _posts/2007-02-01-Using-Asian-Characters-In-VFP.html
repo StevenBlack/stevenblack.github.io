@@ -1,0 +1,301 @@
+---
+layout: page
+title: "Using Asian Characters in a Visual FoxPro Application"
+author: "Margaret Duddy"
+permalink: /intlasia/
+
+pygments: true
+
+
+---
+<p>Multi-international applications are becoming a much more common requirement as businesses extend into the
+"world economy". Application developers find themselves faced with supporting a variety of languages for a
+single application, sometimes using a diverse collection of character sets. How to best implement an app for an
+"offshore" locale is greatly influenced by Localization issues, but integral to the entire process is the
+ability to display the correct language in whatever interface or reporting system is finally achieved. Asian
+character sets present unique requirements in this effort, and attempts to use them can sometimes cause
+unexpected results in Visual Foxpro.</p>
+
+<p>Consider the following scenario:</p>
+
+<div class="alert alert-error">
+	<p>A Visual Foxpro Developer works for a company that is expanding into an Asian market. The Developer (well
+	call him Joe) is informed that their VFP application needs to be reworked so that it is available in Japanese
+	to support that expansion effort. Joes research reveals extensive documentation about Localization issues and
+	multi-lingual applications and how to configure Windows XP to make Japanese characters available. MSDN and
+	the Help files in Visual Foxpro discuss the features of double-byte characters and code page requirements in
+	some detail.</p>
+
+	<p>Great news Joe is off and running. He reads through the documentation and literature <span>and</span>
+	follows each instruction. He ensures that Japanese is installed in Windows XP and that the "locale" in
+	Windows is set as required. Testing in Word shows that the Japanese characters are indeed available and
+	render correctly. So far, so good.</p>
+
+	<p>Joe then creates VFP tables with the correct code page and font so that they are fully compatible with
+	character set and tries to enter Japanese characters. But something seems to be wrong. He cannot get the
+	Japanese characters to store correctly in the VFP tables or display forms and reports. All attempts to enter,
+	insert or import them into the table simply stores "???" instead of the desired Kanji characters.</p>
+
+	<p>So what could be wrong? Windows says that the required language is installed. The Windows tools for
+	inserting the Japanese characters are in place and working, and the characters render perfectly in Word and
+	Outlook. The code page and font settings for the tables are correct. Is there magic switch in VFP that needs
+	to be turned on to make all of this work?</p>
+
+	<p>Re-reading the literature does not seem to help, and no amount of digging back through MSDN or the VFP
+	help files seems to shed any light on the problem. There is no mention of what to do if the "???" problem is
+	encountered. Joe queries the development community, but the response he receives simply says that he must set
+	the "locale" in Windows to Japanese. But he believes he has already done this, and it doesnt seem to make a
+	difference.</p>
+
+	<p>Joe is stumped and, sadly, eventually abandons the use of VFP for the Japanese version of the
+	application.</p>
+</div>
+
+<p>This is not, unfortunately, an unusual scenario. Many development efforts to use VFP for Asian languages
+have been aborted because of this specific problem. Since the solution is actually quite simple it is
+astounding that the details are not made clear in either the documentation freely offered by Microsoft or other
+authors.</p>
+
+<p>The problem is the result of confusing terminology in Windows XP in the Control Panel/Regional Options,
+where separate settings have very similar names. While most of the documentation about these settings does
+correctly describe how to set them, it often fails to clarify that there are several settings of similar name
+or describe the differences between them in a cohesive manner. The main emphasis is placed on setting the
+"System Locale" to the Asian language of choice to enable VFP to utilize the characters. But in Windows XP
+there are at least three separate references to a "locale" in the Regional Options.</p>
+
+<p>Two of these settings are both accessed from the General tab and reference a "locale". The setting for "Your
+locale (location)", at the top of the "General" tab, and the "System Locale" screen, accessed from the "Set
+Default" button on the General tab, are easily confused with each other. The problem further compounded by the
+title of the "Input Locales" tab, also found in Regional Settings. Are you lost yet? No wonder poor Joe got
+left in the dark.</p>
+
+<p>Once they are set correctly, VFP does a great job of storing and displaying Asian characters. The following
+is a basic outline of the Windows requirements for Windows XP. In these examples the Japanese
+language is specified, but the same process applies to other Asian languages, such as Chinese, Vietnamese and
+Korean.</p>
+
+<h2>Windows XP Requirements</h2>
+
+<ol>
+	<li>Log into windows <strong>with Administrator rights</strong>. Admin access is critical. Some options that
+	must be set to enable the use of Asian characters in Visual Foxpro will not be visible under a login that
+	does not have Administrator rights.<br />
+	</li>
+
+	<li>Open the Control Panel<br />
+	</li>
+
+	<li>Open Regional and Language Options.</li>
+
+	<li style="list-style: none">
+	  <p><img src="/images/mmd_0803g.gif" class="nofloat" /></p>
+	</li>
+
+	<li>Click on the "Languages" tab.<br />
+	</li>
+
+	<li>The top section of this page will have a section called "Text Services and Input Languages". In this
+	section, click the "Details" button.</li>
+
+	<li style="list-style: none">
+	  <p><img src="/images/mmd_0803h.gif" class="nofloat" /></p>
+	</li>
+
+	<li>The "Text Services and Input Languages" window will open. On the "Settings" tab there is a section called
+	"Installed Services". The Asian language you wish to use in VFP must be shown in this section.</li>
+
+	<li style="list-style: none">
+	  <p><img src="/images/mmd_0803i.gif" class="nofloat" /></p>
+	</li>
+
+	<li>If the desired language is not shown there, click the "Add" button to install the language into Windows.
+	When the "Add Input Language" opens, select the desired language from the drop-down and click OK. Follow the
+	system prompts as required to complete the language installation. You may need to have the Windows CD
+	available if the required files are not available on your system.</li>
+
+	<li style="list-style: none">
+	  <p><img src="/images/mmd_0803j.gif" class="nofloat" /></p>
+
+	  <p>A system restart may be required before the newly installed language is available. If not, click "Apply"
+	  then "Ok" to close the "Text Services and Input Languages" window and return to the main window under the
+	  "Languages" tab.</p>
+
+	  <p>If a system restart is required, return to Control Panel / Regional and Language Options after logging
+	  back into Windows. Be sure to login as an Administrator.</p>
+	</li>
+
+	<li>Be sure that you have returned to the main window under the Regional and Languages Options tab.</li>
+
+	<li style="list-style: none">
+	  <p><img src="/images/mmd_0803k.gif" class="nofloat" /></p>
+	</li>
+
+	<li>Click on the "Advanced" tab. If this tab is not visible, then the current login does not have sufficient
+	Administrative rights.</li>
+
+	<li style="list-style: none">
+	  <p><img src="/images/mmd_0803l.gif" class="nofloat" /></p>
+
+	  <p>The Advanced tab will display a section at the top called "Language for Non-Unicode Programs". Select
+	  the desired Asian language from the drop-down in this section. There should not be any changes required in
+	  the Code Page Conversion" section. <u><em>This is the setting that is required to be able to utilize an
+	  Asian character set in VFP</em>.</u></p>
+	</li>
+
+	<li>Click the "Apply" button (if a different language was selected in the drop-down) to save any
+	changes.<br /><br />
+	</li>
+
+	<li>Click "Ok" to close the Regional and Language Options window. A system restart may be required for these
+	settings to take effect.<br /><br /></li>
+
+	<li>All done!</li>
+</ol>
+
+<p>When these changes have been correctly applied, the Asian language should be available in Windows for all
+login types. Windows itself and Windows applications will still display in English but the option to embed
+Asian characters will be available to Word, Outlook, etc. and (magically) Visual Foxpro. A new icon will appear
+in the System Taskbar that allows users to switch between the installed languages (see the "EN" in the graphic
+below).</p>
+
+<p>The examples shown here are from Windows XP, but are very similar in Windows Vista and Windows 7.</p>
+
+<p><img src="/images/mmd_0803m2.jpg" class="nofloat" /></p>
+
+<p>To change to another language, click on the "EN" (which stands for English) and select the Asian language
+from the list (here Japanese).</p>
+
+<p><img src="/images/mmd_0803n2.jpg" class="nofloat" /></p>
+
+<p>Once the Asian language is selected, a toolbar will appear that provides various tools that can be used for
+selecting character sets and entering data in various Windows applications (including VFP). This toolbar
+provides access to Microsofts IME translator and a variety of other features to help support use of the Asian
+characters. There is ample documentation available from Microsoft about the Language Bar so it will not be
+discussed in detail here. Note: Windows XP includes an additional option in the selection list above that
+allows the language toolbar to be turned on or off.</p>
+
+<p><img src="/images/mmd_0803o2.jpg" class="nofloat" /></p>
+
+<p>An example of one of these tools is a virtual keyboard where the character set can be selected from the
+first drop down, and the font from the second drop down. These types of tools can be very handy.</p>
+
+<p><img src="/images/mmd_0803p2.jpg" class="nofloat" /></p>
+
+<h3>Windows - Watch Out:</h3>
+
+<p>After these settings in Windows are completed be aware that Asian characters may appear in a variety of
+unexpected locations even when English is set as the current "locale" language. For example, on a system where
+Japanese is installed and set as the language for non-unicode applications, Windows Explorer may show a
+Japanese character instead of a "\" in path strings even though the overall language in Windows Explorer (for
+menus, etc.) displays in English. This character usually seems to be interpreted correctly, but can be
+disconcerting.</p>
+
+<p>Also, please note that the language icon and the toolbar that accompanies it will be available even if the
+Windows "locale" settings are not sufficiently completed to use Asian characters in Visual Foxpro. Do not rely
+on the appearance of this icon as an indicator that the settings are correct.</p>
+
+<h2>Visual Foxpro Requirements</h2>
+
+<p>After the Windows settings are complete, Visual Foxpro will have the ability to correctly store and display
+Asian characters (in a table, on forms or reports, etc.). Below is a sample of a prototype screen that utilizes
+Steven Blacks INTL Toolkit to change languages on the fly. In this prototype, some objects were set to switch
+languages, while others were not.</p>
+
+<p>Here is the screen in English:</p>
+
+<p><img src="/images/mmd_0803q2.jpg" width="554" height="394" class="nofloat" /></p>
+
+<p>And here is the screen in Japanese:</p>
+
+<p><img src="/images/mmd_0803r2.jpg" class="nofloat" /></p>
+
+<p>Switching to a different language is triggered by pressing the appropriate language button on the bottom of
+the screen. Note that the headings on the grid can be changed on the fly as well.</p>
+
+<p>In VFP, there are a few basic requirements that need attention in order to get the characters rendering
+correctly, and some things to watch out for as well.</p>
+
+<h3>Basic - Code Page Requirements:</h3>
+
+<p>VFP tables that double-byte characters are to be stored in must have a code page setting that will support
+the desired character set. The default for VFP is no code page (code page = 0). For Japanese, the code page
+1252 has been found to work well and also fully supports English and other "Western" languages.</p>
+
+<h3>Basic - Font Requirements:</h3>
+
+<p>Any VFP table that will store Asian characters must have a font setting that is capable of correctly
+displaying the character set. In addition, any fields on forms or reports that will be displaying Asian
+characters must also be set to a compatible font. A couple of currently available fonts that seems to work well
+are "Tahoma" or "MS UI Gothic" - they correctly display both Asian and English characters without problem and
+are either native to Windows or installed when the Asian language is added. In the past the font "Arial
+Unicode" has also been used with success, but this font may not be available. There are most probably a wide
+variety of other fonts that will also work for this purpose.</p>
+
+<h3>Basic - Field Types:</h3>
+
+<p>It should not be necessary to use any special field type in a VFP table that stores Asian characters.
+Standard character and memo fields easily support the double-byte characters. The main limitation is that
+double-byte characters use twice as much space as ASCII characters, so the number of characters that can be
+stored in a single character field is reduced from 255 to 174.</p>
+
+<h3>Watch Out - Visual Foxpro Option Settings:</h3>
+
+<p>When the language setting under "Language for Non-Unicode Programs" in Windows is changed, some VFP options
+(under "Tools") may be changed as well. For example, if the Windows setting is Japanese, the setting for the
+"collating sequence" in VFP will most likely be automatically changed to Japanese as well. If data stored in
+the VFP table is all in an Asian language this may not be a problem, but it can be a significant issue if data
+is also stored in English (or another language).</p>
+
+<p>This would not seem to be a problem because the Options settings (under "Tools") in VFP can always be
+adjusted, right? Wrong. There is a bug in VFP when running on Windows XP or Windows 2K that affects the VFP
+Options settings when the Windows language setting is changed. In VFP the Options screen is still available and
+options can be modified as usual. The problem is that the buttons for saving changes are not visible so changes
+cannot be saved or retained as default settings (!!). This behavior has been observed in multiple versions of
+VFP (6, 7 and 8) and has been reported to Microsoft. If or when Microsoft will actually address the problem is
+anyones guess.</p>
+
+<p>As a result, environment settings may need to be managed programmatically in the application. The "collating
+sequence" setting in the example above is probably best managed in this fashion anyway since the data being
+stored has the biggest impact on the setting requirements and the setting may need to change regularly.</p>
+
+<p>There may well be other Option settings that are affected after changing the language, so it is wise to be
+prepared to manage them programmatically wherever possible .</p>
+
+<h3>Watch Out - String Functions:</h3>
+
+<p>It is important to be careful about the use of string functions when working with different character sets.
+Not all characters are interpreted in the same way when represented in different languages, so the best
+practice is to use string functions that support the double-byte character sets. In some cases these functions
+are interchangeable with the standard string functions, such as AT_C() instead of AT() or SubstrC() instead of
+Substr(), and some provide additional functionality that can be important. The function IsLeadByte(), for
+example, can be used to determine whether a string is double-byte or single-byte.</p>
+
+<p>Avoid including dates or currencies as strings in code as well. Date and currency formats may need to be
+adjusted based on the current language setting in the application. A better practice is to retrieve strings
+from tables or define them as constants so that output can be programmatically created. This will help ease the
+maintenance burden for multi-language apps as well.</p>
+
+<h3>Watch Out Multiple Asian Languages:</h3>
+
+<p>While the author has not experimented with using multiple Asian languages on a single system, it has been
+reported that Foxpro will not support more than one at any given time. Given the way VFP relies on the Windows
+settings, it would not be surprising if this were true. If multiple Asian languages are required, and they must
+run simultaneously on the same system, then VFP may not be the platform to use for the application. Reportedly
+Access can support this requirement, using SQL Server for data.</p>
+
+<h3>Cool - INTL Toolkit:</h3>
+
+<p>Keeping the code page and font requirements in mind, Steven Blacks INTL Toolkit may be used to enable the
+"swapping" of character strings and various message boxes from one language to the other so that parts of a
+single application can support multiple languages (as shown in the samples above). The basic mechanism for
+changing the language text presented is handled very well by the INTL toolkit.</p>
+
+<h2>Summary</h2>
+
+<p>Of course, after the Windows and basic VFP issues have been considered and addressed there is the overall
+matter of localizing the application to meet the needs of the culture it will be presented to. This is the most
+important task for a successful implementation and usually by far the most time consuming for any project.</p>
+
+<p>Obviously, localization is a task more easily faced once the foundation level requirement of being able to
+display the characters for the required language has been accomplished. With a little perseverance in
+configuring Windows, VFP can certainly be used as the platform to build that application.</p>

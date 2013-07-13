@@ -8,6 +8,7 @@ lead_text: ""
 excerpt: ""
 category: 
 tags: []
+pygments: true
 
 ---
 
@@ -15,19 +16,19 @@ tags: []
 
 <p>This document describes an object-oriented design pattern
 called Hooks and Anchors. Consider this a discussion document, an idea that may evolve into
-a &quot;real&quot; design pattern.&nbsp;</p>
+a &quot;real&quot; design pattern.</p>
 
 <p>Hooks and anchors are an abstract object society that I
 first designed in 1996 and used ever since. It has served me well in numerous desktop and internet
-applications.&nbsp;</p>
+applications.</p>
 
 <p>Here's how this paper goes: we start by examining the class structure of hooks and hook
 subclasses. Next we'll discuss the anchor class, which is a subclass of
-Hook.&nbsp;&nbsp;</p>
+Hook.</p>
 
 <p>That's a conceptual nuance -- why would an Anchor be a subclass of
-Hook?&nbsp; The placement of hooks and anchors under a
-common hook superclass, is explained.&nbsp;</p>
+Hook? The placement of hooks and anchors under a
+common hook superclass, is explained.</p>
 
 <p>Next well look at how particular design patterns are conducive to
 implementations involving with hooks and anchors.</p>
@@ -36,40 +37,40 @@ implementations involving with hooks and anchors.</p>
 
 <p>All object-oriented VFP frameworks can be described as skeletal
 structures
-designed for extension.&nbsp; Over time, developers grow their root framework(s)
+designed for extension. Over time, developers grow their root framework(s)
 into one or more applications, refining and extending (evolving) their
-toolset over an extended period of time.&nbsp;</p>
+toolset over an extended period of time.</p>
 
 <p>Similarly, all the root frameworks give you so-called hot spots,
 known as Hook Methods or, as Gamma and Helm call them, Template Methods.
-To varying degrees, the&nbsp; framework(s) you use also supply a
+To varying degrees, the framework(s) you use also supply a
 philosophy about usage and extension. Typically the suggested philosophy
 is: you hook the framework's hook methods to suit your implementation-specific
 needs.</p>
 
 <p>In the Hooks and Anchors design pattern, the hook is implemented with
 a hook object society, which is designed at the outset to fully
-encapsulate work of the hook method.&nbsp; The hook method, therefore,
-reduces to a <a href="PTN-Hook%20Operations.html"> hook operation</a> that delegates program flow to the society
-of hook objects.&nbsp;&nbsp;</p>
+encapsulate work of the hook method. The hook method, therefore,
+reduces to a <a href="/articles/hook-operations/">hook operation</a> that delegates program flow to the society
+of hook objects.</p>
 
 <p>In other words, at the program's critical junctures, instead of adding code
 to specifically
 named hook methods, Hook and Anchor pattern implementations use a hook class instead,
-which hides a society of hooks and anchors, placing code in a&nbsp; polymorphically-named
+which hides a society of hooks and anchors, placing code in a polymorphically-named
 action methods of fine grained hook classes.</p>
 
 <p> In the Hooks and Anchors design presented here, the hook class provides a ::Process()
-method that is called by clients.&nbsp; The ::Process() method handles pre- and
+method that is called by clients. The ::Process() method handles pre- and
 post-processing, calling a protected method named ::Execute() method wherein
 the hook's real deed is done.</p>
 
 <p><strong>Therefore</strong>, A Hooks and Anchors society is the sort of thing you call from a hot spot, usually instead of most or all the code you
 would normally place there.</p>
 
-<p>The crux of the matter is this:&nbsp; since we're talking about VFP here, the Hooks and Anchors
+<p>The crux of the matter is this: since we're talking about VFP here, the Hooks and Anchors
 society is, <em>of course</em>, natively engineered to be metadata-driven in both
-composition and execution.&nbsp;&nbsp;</p>
+composition and execution.</p>
 
 
 <h2>Class Structure</h2>
@@ -102,7 +103,7 @@ and descend from a common parent, if only for convenience.</p>
 
 <p class="clearboth"><img width=208 height=155 src="/images/clip_image006.gif"> </p>
 
-        <p><strong><em>Figure 2.</em></strong><em> First-pass generalization of
+<p><strong><em>Figure 2.</em></strong><em> First-pass generalization of
 the object micro society to a common ancestor.</em></p>
 
 <p>Into the Parent Class of Figure 2 we can now refactor
@@ -130,8 +131,6 @@ illustrated in Figure 5.</p>
 <p><em><strong>Figure 4.</strong> A
 chain of N objects linked together. Normally control passes from instances of Hook1 to Hook2 to Hook3, and
 so on, normally without any intervention from a controlling object.</em></p>
-
-<p></p>
 
 <p class="clearboth"><img width=137 height=134 src="/images/clip_image012.gif"></p>
 
@@ -578,6 +577,158 @@ conference CD, or downloadable from my website at http://stevenblack.com.</p>
 Hooks and Anchors solution framework. Approaching problems this in this way isnt for everyone, nor is
 suitable for all situations. For real hot spots, where your application can be
 expect evolution stress, it can be just the ticket.</p>
+
+<h3>Hooks and Anchors Design Pattern, Example 1</h3>
+
+<p><strong>MS Excel "Save As HTML" cleanup.</strong></p>
+
+<p>Given you've got <strong>Odious Crap HTML From MS Excel</strong> like 
+<a href="/files/CrapFromExcel.HTM" target="_blank"><em>this</em></a> (view its source), how to
+cleanse it so it's <strong>generic and clean</strong> like, say, <a href="/files/CleanHTMLFromExcel.HTM" target="_blank">this</a> (view source)?? </p>
+<p>Simple. You set up an object society like the one illustrated below, whose life and execution is controlled by HooksConfig.DBF records, listed in the table below the diagram.</p>
+<p>Complete source code here: <a href="/files/HooksAndAnchors.ZIP">HooksAndAnchors.ZIP</a></p>
+<p><strong>Given Garbage HTML, here's the hook society that cleans it...</strong></p>
+<p> <img src="/files/CleanUpCrapFromExcel.gif" /></p>
+<p><strong>....All created and invoked by this simple VFP code....</strong></p>
+{% highlight XBase linenos=table %}
+*-- This sample shows the cleansing of the
+*-- odious HTML you get from an MS Excell "Save as HTML".
+*--
+
+*-- Environment
+SET PROCEDURE TO HooksAndAnchors additive
+SET PROCEDURE TO ParserHooks additive
+LOCAL lcHTML, loChain
+
+*-- Processing
+lcHTML=FILETOSTR("crapfromexcel.htm")
+loChain=CREATEOBJECT("HookAnchor","Excel Paste","Root")
+loChain.Process( @lcHTML) &amp;&amp; clean this HTML pig!
+
+*-- Show the results
+STRTOFILE(lcHTML, "CleanHTMLFromExcel.HTM") &amp;&amp; Tada
+SHELLEXEC("CleanHTMLFromExcel.HTM")
+{% endhighlight %}
+
+<p><strong>....which is orchestrated by these records in HooksConfig.DBF.</strong></p>
+
+<table class="table table-bordered">
+<tr>
+<th>Cset</th>
+<th>Ctype</th>
+<th>Cclass</th>
+<th>Clibrary</th>
+<th>Lactive</th>
+<th>Seq</th>
+<th>Properties</th>
+</tr>
+<tr>
+<td>Excel Paste</td>
+<td>==================</td>
+<td> </td>
+<td> </td>
+<td>.F.</td>
+<td>0</td>
+<td> </td>
+</tr>
+<tr>
+<td>Excel Paste</td>
+<td>Root</td>
+<td>BodyContentsOnly</td>
+<td>ParserHooks.prg</td>
+<td>.T.</td>
+<td>10</td>
+<td> </td>
+</tr>
+<tr>
+<td>Excel Paste</td>
+<td>Root</td>
+<td>StripContents</td>
+<td>ParserHooks.prg</td>
+<td>.T.</td>
+<td>12</td>
+<td>&lt;![if,&lt;![endif]&gt;</td>
+</tr>
+<tr>
+<td>Excel Paste</td>
+<td>Root</td>
+<td>StripContents</td>
+<td>ParserHooks.prg</td>
+<td>.T.</td>
+<td>13</td>
+<td>&lt;!––,––&gt;</td>
+</tr>
+<tr>
+<td>Excel Paste</td>
+<td>Root</td>
+<td>MiscCharsRemove</td>
+<td>ParserHooks.prg</td>
+<td>.T.</td>
+<td>14</td>
+<td>x:<br />
+v:</td>
+</tr>
+<tr>
+<td>Excel Paste</td>
+<td>Root</td>
+<td>HTMLTidy</td>
+<td>ParserHooks.prg</td>
+<td>.T.</td>
+<td>20</td>
+<td> </td>
+</tr>
+<tr>
+<td>Excel Paste</td>
+<td>Root</td>
+<td>DOMAnchor</td>
+<td>HooksAndAnchors.prg</td>
+<td>.T.</td>
+<td>50</td>
+<td> </td>
+</tr>
+<tr>
+<td>Excel Paste</td>
+<td>DOMAnchor</td>
+<td>KillNodesHook</td>
+<td>ParserHooks.prg</td>
+<td>.T.</td>
+<td>50</td>
+<td>cCollQuery=//table<br />
+cKill=col</td>
+</tr>
+<tr>
+<td>Excel Paste</td>
+<td>DOMAnchor</td>
+<td>KillAttribsHook</td>
+<td>ParserHooks.prg</td>
+<td>.T.</td>
+<td>100</td>
+<td>cCollQuery=//table<br />
+cKill=bgcolor,width,cellpadding,class,str<br />
+</td>
+</tr>
+<tr>
+<td>Excel Paste</td>
+<td>DOMAnchor</td>
+<td>KillAttribsHook</td>
+<td>ParserHooks.prg</td>
+<td>.T.</td>
+<td>200</td>
+<td>cCollQuery=//td | //th<br />
+cKill=bgcolor,width,valign,class,height,num<br />
+</td>
+</tr>
+<tr>
+<td>Excel Paste</td>
+<td>DOMAnchor</td>
+<td>KillAttribsHook</td>
+<td>ParserHooks.prg</td>
+<td>.T.</td>
+<td>300</td>
+<td>cCollQuery=//tr<br />
+cKill=bgcolor,height,class</td>
+</tr>
+</table>
 
 
 <h2>Bibliography</h2>
