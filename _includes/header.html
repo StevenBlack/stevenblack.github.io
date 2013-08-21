@@ -1,48 +1,4 @@
-<header class="jumbotron subhead" id="overview">
-	<section id="navbar">
-		<div class="navbar navbar-inverse">
-			<div class="navbar-inner">
-				<div class="container" style="width: auto;">
-					<a class="navbar-btn" data-toggle="collapse" data-target=".navbar-collapse">
-						<span class="glyphicon glyphicon-bar"></span>
-						<span class="glyphicon glyphicon-bar"></span>
-						<span class="glyphicon glyphicon-bar"></span>
-					</a>
-					<div class="navbar-collapse">
-						<ul class="nav">
-							<li class="active"><a href="/">Home</a></li>
-							<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" href="/archive/">Articles <b class="caret"></b></a>
-								<ul class="dropdown-menu">
-									{% for post in site.posts %}
-										{% if post.title %}
-									<li><a href="{{ root_url }}{{ post.url }}">{{ post.title }}</a></li>
-										{% endif %}
-									{% endfor %}
-								</ul>
-							</li>
-							<li><a href="/downloads">Downloads</a></li>
-
-							<li class="dropdown">
-								<a href="/intl/" class="dropdown-toggle" data-toggle="dropdown">INTL Toolkit <b class="caret"></b></a>
-								<ul class="dropdown-menu">
-									<li><a href="/intl/">Information</a></li>
-									<li><a href="/intldocs/">Documentation</a></li>
-									<li><a href="/intlfaq/">F.A.Q.</a></li>
-									<li><a href="/intl-vfp/">VFP's International Features</a></li>
-									<li class="divider"></li>
-									<li><a href="/intlpurchase/">Purchase INTL</a></li>
-								</ul>
-							</li>
-							<li><a href="/c/">Contact</a></li>
-						</ul>
-						<!-- <form class="navbar-search pull-right" action="">
-							<input type="text" class="search-query col-md-2" placeholder="Search">
-						</form> -->
-					</div><!-- /.navbar-collapse -->
-				</div>
-			</div><!-- /navbar-inner -->
-		</div><!-- /navbar -->
-	</section>
+<header id="overview">
 	<div class="row-fluid masthead">
 		<div class="col-md-12 lead hidden-sm">
 			<div class="col-md-5 nameandlogo">
