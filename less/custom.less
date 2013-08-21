@@ -1,17 +1,16 @@
 /* custom less file */
 @import "bootstrap.less";
 
+/* For the fixed navbar */
 body {
   min-height: 2000px;
   padding-top: 70px;
 }
 
+@font-size-mini: @font-size-base * 0.75; // ~11px
+
 /* Temp screwups */
-@fontSizeMini: @font-size-base * 0.75; // ~11px
-@baseLineHeight: 26px;
-@headingsFontFamily:    inherit; // empty to use BS default, @baseFontFamily
-@headingsFontWeight:    bold;    // instead of browser default, bold
-@headingsColor:         inherit; // empty to use BS default, @textColor
+@headingsColor: inherit; // empty to use BS default, @textColor
 
 img.sblogo {
 	margin: 0 15px 5px 0;
@@ -19,19 +18,26 @@ img.sblogo {
 
 .locators { float:left;  line-height:1em; font-family:@font-family-sans-serif;}
 .locators div { display:block; float:left; background:#ccc;  height:70px;  margin-bottom:1.5em; padding:0px; float:left; }
-.locators div a { border-width:0px; color:#333; display:block; padding:10px; height:50px;}
+.locators div a { border-width:0px; color:#333; display:block; padding:10px; height:100%;}
 .locators div a:hover { background-color:maroon; color:#eee; }
 .locators div a img { float:left; margin-right:10px; }
 .ui-corner-all { -moz-border-radius: 4px/*{cornerRadius}*/; -webkit-border-radius: 4px/*{cornerRadius}*/; border-radius: 4px/*{cornerRadius}*/; }
 
+.masthead {
+	margin-bottom:1em;
+}
 
-@media(min-width:980px){
+.masthead .nameandlogo h1 {
+	line-height:1;
+}
+
+@media(min-width:@screen-md){
 	.locators {
 		font-size: @font-size-small;
 	}
 }
 
-@media(max-width:980px){
+@media(max-width:@screen-md){
 	.masthead .nameandlogo h1 {
 		font-size: 30px;
 	}
@@ -41,9 +47,9 @@ img.sblogo {
 	}
 }
 
-@media(min-width:768px){
+@media(min-width:@screen-sm){
 	.locators {
-		font-size: @fontSizeMini;
+		font-size: @font-size-mini;
 	}
 
 }
@@ -53,10 +59,10 @@ img.sblogo {
 // -------------------------
 
 h1, h2, h3, h4, h5, h6 {
-  margin: (@baseLineHeight / 2) 0;
-  font-family: @headingsFontFamily;
-  font-weight: @headingsFontWeight;
-  line-height: @baseLineHeight;
+  margin: (@line-height-base / 2) 0;
+  font-family: @headings-font-family;
+  font-weight: @headings-font-weight;
+  line-height: @headings-line-height;
   color: @headingsColor;
   text-rendering: optimizelegibility; // Fix the character spacing for headings
   small {
@@ -68,7 +74,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1,
 h2,
-h3 { line-height: @baseLineHeight * 2; }
+h3 { line-height: @line-height-base * 2; }
 
 h1 { font-size: @font-size-base * @h1Size; } // ~38px
 h2 { font-size: @font-size-base * @h2Size; } // ~32px
