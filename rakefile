@@ -1,5 +1,5 @@
 # Where our Bootstrap source is installed. Can be overridden by an environment variable.
-BOOTSTRAP_SOURCE = ENV['BOOTSTRAP_SOURCE'] || File.expand_path( "~/Dropbox/dev/css/bootstrap" )
+BOOTSTRAP_SOURCE = ENV['BOOTSTRAP_SOURCE'] || File.expand_path( "~/Dropbox/dev/css/bootstrap3" )
 
 # Where to find our custom LESS file.
 BOOTSTRAP_CUSTOM_LESS = 'bootstrap/less/custom.less'
