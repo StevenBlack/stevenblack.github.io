@@ -10,8 +10,4 @@ posts: posts
 # images
 image_default_alt: Steven Black Consulting
 
-exclude:
-- Rakefile
-- README.md
-- .git
-
+exclude: [ ".git", "Rakefile", ".editorconfig", ".gitignore", ".ruby-version", "bower.json", "composer.json", "CONTRIBUTING.md", "CNAME", "LICENSE", "Gruntfile.js", "package.json", "node_modules", "README.md", "less", "_site/font-awesome/docs/" ]
