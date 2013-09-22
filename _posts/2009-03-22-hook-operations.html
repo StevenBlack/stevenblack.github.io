@@ -154,7 +154,7 @@ them for now:</p>
 <p>Object Hooks are hooks that are fulfilled by attaching behavior objects to instances.
 See figure 1.</p>
 
-<p><img src="/images/Image27a.gif" /></p>
+<p><img src="/images/Image27a.gif" alt="" /></p>
 
 <p>Figure 1: Object hooks illustrated, here for a single Click() method. In diagram A the
 instance is not hooked and functions as normal. In diagram B the instance is hooked by a
@@ -164,7 +164,7 @@ instance.</p>
 <p>Procedural Hooks are hooks that are fulfilled procedurally. This fulfillment may be a
 straight program call, but it could also be metadata-driven. See figure 2.</p>
 
-<p><img src="/images/Image28.gif" /></p>
+<p><img src="/images/Image28.gif" alt="" /></p>
 
 <p>Figure 2: A metadata-based procedural hook illustrated. Here a call to a Hook Manager
 triggers a lookup which returns the name of a program to execute. Since hooks are used by
@@ -223,18 +223,18 @@ implementations, this leads to many possible variants. Two examples: Figure 4 sh
 case where the hook objects come from separate hook classes, and Figure 5 shows a case
 where the hook class is a superclass of the hooked class.</p>
 
-<p><img src="/images/Image29.gif" /></p>
+<p><img src="/images/Image29.gif" alt="" /></p>
 
 <p>Figure 3: What I call "self-sufficient hooks" have a structure similar to that of the
 Template Method design pattern. Here you use inheritance or instance programming to
 modify the default behavior.</p>
 <div class="clearboth"></div>
-<p><img src="/images/Image30.gif" /></p>
+<p><img src="/images/Image30.gif" alt="" /></p>
 
 <p>Figure 4: Supporting hooks are separate hook objects, here shown as separate classes
 from those they adorn.</p>
 <div class="clearboth"></div>
-<p><img src="/images/Image31.gif" /></p>
+<p><img src="/images/Image31.gif" alt="" /></p>
 
 <p>Figure 5: Hooked objects and their hooks can share the same interface, which implies
 that they can share the same class hierarchy. This is very handy from a maintenance
@@ -547,7 +547,7 @@ wired-in).</p>
 clean up these pointers. Without this, the form will never release without CLEAR ALL. In
 some versions of VFP, expect a GPF without this pointer clean-up.</p>
 
-<p><img src="/images/Image32.gif" /></p>
+<p><img src="/images/Image32.gif" alt="" /></p>
 
 <p>Figure 6: The sample provided creates this system. The combobox hook chain starts is
 composed of two behavior objects before hooking to the form and its hook. The textbox

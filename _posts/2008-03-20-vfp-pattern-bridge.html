@@ -76,7 +76,7 @@ composition within containers.</p>
 <h2>Member Property Bridge</h2>
 <p>One way to build a Bridge is as diagrammed below. Here an interface member property contains a
 reference to an implementation object.</p>
-<p><img src="/images/PTN-Br1.jpg" width="262" height="107" /></p>
+<p><img src="/images/PTN-Br1.jpg" width="262" height="107" alt="" /></p>
 <p>Figure 1. Bridge pattern where an interface class member property points to an implementation class.
 The Bridge in this diagram is .oImp, the member property that stores a reference to an implementation
 object - that's physically what the arrow represents. The benefit is this: each side can be subclassed
@@ -131,14 +131,14 @@ ENDDEFINE
 <p>Another example of this sort of Bridge is found in Codebook where the cBizobj (business object) class
 uses an object of the cDataBehavior class to implement the usual table navigation and record-processing
 functions. The following diagram illustrates this.</p>
-<p><img src="/images/PTN-Br2.jpg" width="413" height="199" /></p>
+<p><img src="/images/PTN-Br2.jpg" width="413" height="199" alt="" /></p>
 <p>Figure 2. This Bridge pattern in Codebook 3.0 hangs on an aptly named member property. Any of the
 cDataBehavior subclasses may be substituted.</p>
 
 <h2>Member Array Bridge</h2>
 <p>Starting from the Member Property Bridge, it's a short stretch to provide multiple simultaneous
 implementations by using multiple member properties or, as described below, member arrays.</p>
-<p><img src="images/Image70.gif" align="left" hspace="0" width="318" height="126" /></p>
+<p><img src="images/Image70.gif" width="318" height="126" alt="" /></p>
 <p>Figure 3. A flexible Bridge: a selection of implementations stored in a member array.</p>
 <p class="clearboth">Code sample 1 is modified here to support four different types of dialogs to extend
 the legacy WAIT WINDOW capability.</p>
@@ -229,7 +229,7 @@ containership is superbly implemented, so containership Bridges are easy to crea
 the Controls() array, the PARENT keyword, SetAll(), and AMEMBERS(,,2), which make it possible to manage
 containership nesting.</p>
 <p>The containership relationship is illustrated below, followed by an illustrative code example.</p>
-<p><img src="/images/PTN-Br3.jpg" width="242" height="89" /></p>
+<p><img src="/images/PTN-Br3.jpg" width="242" height="89" alt="" /></p>
 <p>Figure 4. An interface container contains one or many implementations.</p>
 {% highlight XBase linenos=table %}
 DEFINE CLASS MsgServer AS MsgInterface

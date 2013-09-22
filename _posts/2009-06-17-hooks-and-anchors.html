@@ -87,7 +87,7 @@ of object-oriented software: two separate classes with a one-way, 1:1
 relationship between them. In this
 case, SomeClass holds a reference to SomeHook through the SomeClass.oHook member property </p>
 
-<p class="clearboth"><img width=227 height=57 src="/images/clip_image004.gif"></p>
+<p class="clearboth"><img width=227 height=57 src="/images/clip_image004.gif" alt=""></p>
 
 <p><strong><em>Figure 1.</em></strong><em> a fundamental object micro
 society.</em></p>
@@ -101,7 +101,7 @@ refactored and generalized into the parent class. If on the other hand the class
 parent, then we can get the same effect with code duplication. For now, lets agree to keep things simple,
 and descend from a common parent, if only for convenience.</p>
 
-<p class="clearboth"><img width=208 height=155 src="/images/clip_image006.gif"> </p>
+<p class="clearboth"><img width=208 height=155 src="/images/clip_image006.gif" alt=""> </p>
 
 <p><strong><em>Figure 2.</em></strong><em> First-pass generalization of
 the object micro society to a common ancestor.</em></p>
@@ -113,7 +113,7 @@ excels at providing components for object chains, like for example the one
 illustrated in Figure 4. The key to this is the self-referential relationship
 link on the Hook Parent Class as illustrated in Figure 3.</p>
 
-<p class="clearboth"><img width=420 height=168 src="/images/clip_image008.gif"></p>
+<p class="clearboth"><img width=420 height=168 src="/images/clip_image008.gif" alt=""></p>
 
 <p><em><strong>Figure 3.</strong> At left, all the descendants of the Hook Parent Class inherit the
 self-referential relationship, and this makes them easily assembled together
@@ -126,13 +126,13 @@ execute objects sequentially, as illustrated in the class diagram in Figure 4,
 and also illustrated in the corresponding stair-shaped sequence diagram
 illustrated in Figure 5.</p>
 
-<p class="clearboth"><img width=276 height=57 src="/images/clip_image010.gif"></p>
+<p class="clearboth"><img width=276 height=57 src="/images/clip_image010.gif" alt=""></p>
 
 <p><em><strong>Figure 4.</strong> A
 chain of N objects linked together. Normally control passes from instances of Hook1 to Hook2 to Hook3, and
 so on, normally without any intervention from a controlling object.</em></p>
 
-<p class="clearboth"><img width=137 height=134 src="/images/clip_image012.gif"></p>
+<p class="clearboth"><img width=137 height=134 src="/images/clip_image012.gif" alt=""></p>
 
 <p><em><strong>Figure 5.</strong> The sequence diagram for a chain of objects exhibits a stair-shaped
 interaction pattern.</em></p>
@@ -184,7 +184,7 @@ Intent
  <tr>
   <td>
   <p><strong>Bridge</strong></p>
-  <p><img width=162 height=40 src="/images/clip_image014.gif"></p>
+  <p><img width=162 height=40 src="/images/clip_image014.gif" alt=""></p>
   </td>
   <td>
   <p>Decouple an abstraction from its implementation so that
@@ -194,7 +194,7 @@ Intent
  <tr>
   <td>
   <p><strong>Chain of Responsibility</strong></p>
-  <p><img width=186 height=30 src="/images/clip_image016.gif"></p>
+  <p><img width=186 height=30 src="/images/clip_image016.gif" alt=""></p>
   </td>
   <td>
   <p>Avoid coupling the sender of a request to its receiver by
@@ -206,7 +206,7 @@ Intent
  <tr>
   <td>
   <p><strong>Composite</strong><br>
-<img width=150 height=101 src="/images/clip_image018.gif"></p>
+<img width=150 height=101 src="/images/clip_image018.gif" alt=""></p>
   </td>
   <td>
   <p>Compose objects into tree structures to represent
@@ -230,7 +230,7 @@ Intent
  <tr>
   <td>
   <p><strong>Strategy</strong></p>
-  <p><img width=185 height=106 src="/images/clip_image022.gif"></p>
+  <p><img width=185 height=106 src="/images/clip_image022.gif" alt=""></p>
   </td>
   <td>
   <p>Define a family of algorithms, encapsulate each one, and
@@ -299,10 +299,9 @@ of Figure 5 is the fork-shaped interaction pattern, illustrated in Figure
 so-called god-object situation, where behavior is centralized in a single
 object that manipulates the other objects.</p>
 
-<p class="clearboth"><img width=137 height=127 src="/images/clip_image024.gif"></p>
+<p class="clearboth"><img width=137 height=127 src="/images/clip_image024.gif" alt=""></p>
 
-<p><em><strong>Figure 6.</strong><span>
-</span>When an object has direct control over other objects, the sequence
+<p><em><strong>Figure 6.</strong> When an object has direct control over other objects, the sequence
 diagram of the interaction exhibits a fork-shaped interaction pattern.</em></p>
 
 <p>Here are some of the situations that call for a
@@ -332,7 +331,7 @@ the Hook Anchor class, which could possesses, among other things:</p>
 	between each, test whether to stop the hook iteration.</p>
 </ul>
 
-<p class="clearboth"><img width=496 height=268 src="/images/clip_image026.gif"></p>
+<p class="clearboth"><img width=496 height=268 src="/images/clip_image026.gif" alt="" ></p>
 
 <p><em><strong>Figure 7.</strong> Extending the class hierarchy, this time introducing Anchors, which are
 designed to address the problems of free-form hook chains by providing the
@@ -481,9 +480,9 @@ hierarchy, and of the anchor branch of subclasses.</p>
 		<p><code>HookParent::SetOHook(o)</code></p>
 		</td>
 		<td>
-		<p>This method is used to build the hook chain.<span  > </code>The semantics are as follows: If This.oHook
-		is an object, then pass the passed parameter to <code>This.oHook.SetoHook(o)</code>.<span  > </code>Otherwise, assign the passed object (or an
-		object implied by the passed parameter) to <span style='font-family:"Courier New";  mso-bidi-font-family:"Times New Roman"'>This.oHook</code>.<span  > </code>In this way, given a new object to chain,
+		<p>This method is used to build the hook chain. The semantics are as follows: If This.oHook
+		is an object, then pass the passed parameter to <code>This.oHook.SetoHook(o)</code>. Otherwise, assign the passed object (or an
+		object implied by the passed parameter) to <code>This.oHook</code>. In this way, given a new object to chain,
 		an existing chain knows how to configure itself.</p>
 		</td>
 	</tr>
@@ -588,7 +587,7 @@ cleanse it so it's <strong>generic and clean</strong> like, say, <a href="/files
 <p>Simple. You set up an object society like the one illustrated below, whose life and execution is controlled by HooksConfig.DBF records, listed in the table below the diagram.</p>
 <p>Complete source code here: <a href="/files/HooksAndAnchors.ZIP">HooksAndAnchors.ZIP</a></p>
 <p><strong>Given Garbage HTML, here's the hook society that cleans it...</strong></p>
-<p> <img src="/files/CleanUpCrapFromExcel.gif" /></p>
+<p> <img src="/files/CleanUpCrapFromExcel.gif" alt="" /></p>
 <p><strong>....All created and invoked by this simple VFP code....</strong></p>
 {% highlight XBase linenos=table %}
 *-- This sample shows the cleansing of the
