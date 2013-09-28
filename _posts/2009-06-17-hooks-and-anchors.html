@@ -60,8 +60,8 @@ named hook methods, Hook and Anchor pattern implementations use a hook class ins
 which hides a society of hooks and anchors, placing code in a polymorphically-named
 action methods of fine grained hook classes.</p>
 
-<p> In the Hooks and Anchors design presented here, the hook class provides a ::Process()
-method that is called by clients. The ::Process() method handles pre- and
+<p> In the Hooks and Anchors design presented here, the hook class provides a <code>::Process()</code>
+method that is called by clients. The <code>::Process()</code> method handles pre- and
 post-processing, calling a protected method named ::Execute() method wherein
 the hook's real deed is done.</p>
 
