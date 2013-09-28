@@ -2,53 +2,28 @@
 <script src="/js/jquery.tmpl.min.js" type="text/javascript"></script>
 <script src="/js/underscore-min.js" type="text/javascript"></script>
 <script id="tmplShowItem" type="text/html">
-	<div class="ui-corner-all locator col-md-2" title="${type}">
+<div class="col-md-2">
+	<div class="ui-corner-all locator clearfix" title="${type}">
 		<a href="${url}">
 			<img src="${imgSrc}" alt="${type}">
 			<strong>${type}</strong><br />
 			{{html text}}
 		</a>
 	</div>
-</script><script id="tmplCust" type="text/html">
-	<div class="ui-corner-all locator col-md-2" title="${type}">
-		<a href="${url}">
-			<img src="${imgSrc}" alt="${text}">
-			<strong><small>${text}</small></strong>
-		</a>
-	</div>
+</div>
 </script>
 <script type="text/javascript">
 	$(function(){
 			var locators= [
 				{ "seq" : 10, "url" : "callto:+16135423293", "imgSrc" : "images/telephone.png", "type" : "(613) 542-3293", "active" : true, "text" : "(1) 613-542-3293" },
-				{ "seq" : 20, "url" : "skype:steven-black?call", "imgSrc" : "images/skype.png", "type" : "Skype", "active" : true, "text" : "steven-black" },
-				{ "seq" : 30, "url" : "mailto:steveb@stevenblack.com", "imgSrc" : "images/email.png", "type" : "Email", "active" : true, "text" : "steveb@..." },
-				{ "seq" : 40, "url" : "http://twitter.com/steveblack", "imgSrc" : "images/twitter.png", "type" : "Twitter", "active" : true, "text" : "steveblack" },
-				{ "seq" : 50, "url" : "http://github.com/StevenBlack", "imgSrc" : "images/github.png", "type" : "GitHub", "active" : true, "text" : "StevenBlack" },
-				{ "seq" : 80, "url" : "http://goo.gl/maps/V6dw", "imgSrc" : "images/globe.png", "type" : "Map", "active" : true, "text" : "Kingston, ON" }
-			];
-
-			var customers= [
-				{ "seq" : 10, "url" : "http://metalcraftmarine.com", "imgSrc" : "images/metalcraft.png", "text" : "MetalCraft Marine", "active" : true },
-				{ "seq" : 10, "url" : "http://net-learning.com", "imgSrc" : "images/netlearning2.png", "text" : "NetLearning Knoxville", "active" : true },
-				{ "seq" : 10, "url" : "http://emedicine.com", "imgSrc" : "images/emedicine.png", "text" : "eMedicine", "active" : true },
-				{ "seq" : 10, "url" : "http://www.daimler.com/", "imgSrc" : "images/dc.png", "text" : "Daimler Christler", "active" : true },
-				{ "seq" : 10, "url" : "http://nokia.com", "imgSrc" : "images/nokia.png", "text" : "Nokia Lausanne", "active" : true },
-				{ "seq" : 10, "url" : "http://www.ifrc.org/", "imgSrc" : "images/ifrc-1.png", "width": 39, "text" : "IFRCRCS Geneva", "active" : true },
-				{ "seq" : 10, "url" : "http://www.pmi.com", "imgSrc" : "images/pm2.png", "text" : "Philip Morris", "active" : true },
-				{ "seq" : 10, "url" : "http://qualcomm.com", "imgSrc" : "images/qualcomm2.png", "text" : "Qualcomm San Diego", "active" : true },
-				{ "seq" : 10, "url" : "http://3m.com", "imgSrc" : "images/3m2.png", "text" : "3M HIS", "active" : true },
-				{ "seq" : 10, "url" : "http://jj.com", "imgSrc" : "images/jj2.png", "text" : "Johnson &amp; Johnson", "active" : true },
-				{ "seq" : 10, "url" : "http://unhcr.org", "imgSrc" : "images/unhcr1.png", "text" : "UNHCR Geneva", "active" : true },
-				{ "seq" : 10, "url" : "http://northsails.com", "imgSrc" : "images/ns2.png", "text" : "North Sails", "active" : true },
-				{ "seq" : 10, "url" : "http://gc.ca", "imgSrc" : "images/canada.png", "text" : "Government of Canada", "active" : false },
-				{ "seq" : 10, "url" : "http://queensu.ca", "imgSrc" : "images/queens.png", "text" : "Queen's University", "active" : false }
+				{ "seq" : 20, "url" : "skype:steven-black?call", "imgSrc" : "images/skype.png", "type" : "Skype me", "active" : true, "text" : "steven-black" },
+				{ "seq" : 30, "url" : "mailto:steveb@stevenblack.com", "imgSrc" : "images/email.png", "type" : "Email me", "active" : true, "text" : "steveb@..." },
+				{ "seq" : 40, "url" : "http://twitter.com/steveblack", "imgSrc" : "images/twitter.png", "type" : "on Twitter", "active" : true, "text" : "steveblack" },
+				{ "seq" : 50, "url" : "http://github.com/StevenBlack", "imgSrc" : "images/github.png", "type" : "on GitHub", "active" : true, "text" : "StevenBlack" },
+				{ "seq" : 80, "url" : "http://goo.gl/maps/V6dw", "imgSrc" : "images/globe.png", "type" : "Map me", "active" : true, "text" : "Kingston, ON" }
 			];
 			$( "#tmplShowItem" ).tmpl( _.select( locators, function( itm ){ return itm.active; } ), function( itm ){return itm.seq; } ).appendTo("#locators");
-			$( "#tmplCust" ).tmpl( _.select( customers, function( itm ){ return itm.active; } ), function( itm ){return itm.seq; } ).appendTo("#customers");
-
 			locators= undefined;
-			customers= undefined;
 
 		});
 </script>
