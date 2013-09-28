@@ -258,6 +258,7 @@ input[type="submit"].btn-block,input[type="reset"].btn-block,input[type="button"
 .glyphicon-repeat:before{content:"\e030";}
 .glyphicon-refresh:before{content:"\e031";}
 .glyphicon-list-alt:before{content:"\e032";}
+.glyphicon-lock:before{content:"\e033";}
 .glyphicon-flag:before{content:"\e034";}
 .glyphicon-headphones:before{content:"\e035";}
 .glyphicon-volume-off:before{content:"\e036";}
@@ -268,7 +269,9 @@ input[type="submit"].btn-block,input[type="reset"].btn-block,input[type="button"
 .glyphicon-tag:before{content:"\e041";}
 .glyphicon-tags:before{content:"\e042";}
 .glyphicon-book:before{content:"\e043";}
+.glyphicon-bookmark:before{content:"\e044";}
 .glyphicon-print:before{content:"\e045";}
+.glyphicon-camera:before{content:"\e046";}
 .glyphicon-font:before{content:"\e047";}
 .glyphicon-bold:before{content:"\e048";}
 .glyphicon-italic:before{content:"\e049";}
@@ -322,10 +325,12 @@ input[type="submit"].btn-block,input[type="reset"].btn-block,input[type="button"
 .glyphicon-exclamation-sign:before{content:"\e101";}
 .glyphicon-gift:before{content:"\e102";}
 .glyphicon-leaf:before{content:"\e103";}
+.glyphicon-fire:before{content:"\e104";}
 .glyphicon-eye-open:before{content:"\e105";}
 .glyphicon-eye-close:before{content:"\e106";}
 .glyphicon-warning-sign:before{content:"\e107";}
 .glyphicon-plane:before{content:"\e108";}
+.glyphicon-calendar:before{content:"\e109";}
 .glyphicon-random:before{content:"\e110";}
 .glyphicon-comment:before{content:"\e111";}
 .glyphicon-magnet:before{content:"\e112";}
@@ -339,6 +344,7 @@ input[type="submit"].btn-block,input[type="reset"].btn-block,input[type="button"
 .glyphicon-resize-horizontal:before{content:"\e120";}
 .glyphicon-hdd:before{content:"\e121";}
 .glyphicon-bullhorn:before{content:"\e122";}
+.glyphicon-bell:before{content:"\e123";}
 .glyphicon-certificate:before{content:"\e124";}
 .glyphicon-thumbs-up:before{content:"\e125";}
 .glyphicon-thumbs-down:before{content:"\e126";}
@@ -351,13 +357,17 @@ input[type="submit"].btn-block,input[type="reset"].btn-block,input[type="button"
 .glyphicon-circle-arrow-up:before{content:"\e133";}
 .glyphicon-circle-arrow-down:before{content:"\e134";}
 .glyphicon-globe:before{content:"\e135";}
+.glyphicon-wrench:before{content:"\e136";}
 .glyphicon-tasks:before{content:"\e137";}
 .glyphicon-filter:before{content:"\e138";}
+.glyphicon-briefcase:before{content:"\e139";}
 .glyphicon-fullscreen:before{content:"\e140";}
 .glyphicon-dashboard:before{content:"\e141";}
+.glyphicon-paperclip:before{content:"\e142";}
 .glyphicon-heart-empty:before{content:"\e143";}
 .glyphicon-link:before{content:"\e144";}
 .glyphicon-phone:before{content:"\e145";}
+.glyphicon-pushpin:before{content:"\e146";}
 .glyphicon-usd:before{content:"\e148";}
 .glyphicon-gbp:before{content:"\e149";}
 .glyphicon-sort:before{content:"\e150";}
@@ -410,16 +420,6 @@ input[type="submit"].btn-block,input[type="reset"].btn-block,input[type="button"
 .glyphicon-cloud-upload:before{content:"\e198";}
 .glyphicon-tree-conifer:before{content:"\e199";}
 .glyphicon-tree-deciduous:before{content:"\e200";}
-.glyphicon-briefcase:before{content:"\1f4bc";}
-.glyphicon-calendar:before{content:"\1f4c5";}
-.glyphicon-pushpin:before{content:"\1f4cc";}
-.glyphicon-paperclip:before{content:"\1f4ce";}
-.glyphicon-camera:before{content:"\1f4f7";}
-.glyphicon-lock:before{content:"\1f512";}
-.glyphicon-bell:before{content:"\1f514";}
-.glyphicon-bookmark:before{content:"\1f516";}
-.glyphicon-fire:before{content:"\1f525";}
-.glyphicon-wrench:before{content:"\1f527";}
 .caret{display:inline-block;width:0;height:0;margin-left:2px;vertical-align:middle;border-top:4px solid #000000;border-right:4px solid transparent;border-left:4px solid transparent;border-bottom:0 dotted;}
 .dropdown{position:relative;}
 .dropdown-toggle:focus{outline:0;}
