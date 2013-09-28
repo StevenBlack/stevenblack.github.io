@@ -34,6 +34,10 @@ module.exports = function( grunt ) {
 						'js/affix.js'
 					],
 				dest: 'dist/js/<%= pkg.name %>.js'
+			},
+			mincss : {
+				src: [ 'css/bootstrap.min.css', 'css/font-awesome.min.css' ],
+				dest: 'css/sbc.min.css'
 			}
 		},
 
@@ -44,25 +48,34 @@ module.exports = function( grunt ) {
 			theme:     { src: [ 'less/theme.less' ], dest: 'dist/css/<%= pkg.name %>-theme.css' },
 			theme_min: { options: { compress: true }, src: [ 'less/theme.less' ], dest: 'dist/css/<%= pkg.name %>-theme.min.css' }
 		},
+
 		copy      : { fonts: { expand: true, src: [ "fonts/*" ], dest: 'dist/' }},
 		connect   : { server: { options: { port: 3000, base: '.' } } },
 		validation: { options: { reset: true }, files: { src: [ "_site/**/*.html" ] } }
 	});
 
 	// These plugins provide necessary tasks.
+	grunt.loadNpmTasks( 'grunt-html-validation' );
+
+	// not implemented in the SBC context
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
 	grunt.loadNpmTasks( 'grunt-contrib-concat' );
 	grunt.loadNpmTasks( 'grunt-contrib-connect' );
 	grunt.loadNpmTasks( 'grunt-contrib-copy' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
 	grunt.loadNpmTasks( 'grunt-contrib-watch' );
-	grunt.loadNpmTasks( 'grunt-html-validation' );
 	grunt.loadNpmTasks( 'grunt-recess' );
 	grunt.loadNpmTasks( 'browserstack-runner' );
+
 
 	// Docs HTML validation task
 	grunt.registerTask( 'validate-html', [ 'validation' ] );
 
+	// Combine files task
+	grunt.registerTask( 'concat-mincss', [ 'concat:mincss' ] );
+
+
+	// NOT YET INPLEMENTED
 	// Test task.
 	var testSubtasks = [ 'dist-css', 'jshint', 'qunit', 'validate-html' ];
 	// Only run BrowserStack tests under Travis
@@ -76,7 +89,7 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'test', testSubtasks );
 
 	// JS distribution task.
-	grunt.registerTask( 'dist-js', [ 'concat', 'uglify' ] );
+	grunt.registerTask( 'dist-js', [ 'concat:bootstrap', 'uglify' ] );
 
 	// CSS distribution task.
 	grunt.registerTask( 'dist-css', [ 'recess' ] );
