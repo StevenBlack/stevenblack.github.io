@@ -20,27 +20,26 @@ module.exports = function( grunt ) {
 		concat: {
 			bootstrap: {
 				src: [
-						'js/transition.js',
-						'js/alert.js',
-						'js/button.js',
-						'js/carousel.js',
-						'js/collapse.js',
-						'js/dropdown.js',
-						'js/modal.js',
-						'js/tooltip.js',
-						'js/popover.js',
-						'js/scrollspy.js',
-						'js/tab.js',
-						'js/affix.js'
+						'js/jquery.min.js',
+						'bootstrap/js/button.js',
+						'bootstrap/js/dropdown.js'
 					],
-				dest: 'dist/js/<%= pkg.name %>.js'
+				dest: 'js/<%= pkg.name %>.js'
 			},
 			mincss : {
 				src: [ 'css/bootstrap.min.css', 'css/font-awesome.min.css' ],
-				dest: 'css/sbc.min.css'
+				dest: 'css/<%= pkg.name %>.min.css'
 			}
 		},
-
+		uglify: {
+	      options: {
+	        report: 'min'
+	      },
+	      bootstrap: {
+	        src: ['<%= concat.bootstrap.dest %>'],
+	        dest: 'js/<%= pkg.name %>.min.js'
+	      }
+	    },
 		recess: {
 			options:   { compile: true },
 			bootstrap: { src: [ 'less/bootstrap.less' ], dest: 'dist/css/<%= pkg.name %>.css' },
@@ -56,10 +55,11 @@ module.exports = function( grunt ) {
 
 	// These plugins provide necessary tasks.
 	grunt.loadNpmTasks( 'grunt-html-validation' );
+	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
+	grunt.loadNpmTasks( 'grunt-contrib-concat' );
 
 	// not implemented in the SBC context
 	grunt.loadNpmTasks( 'grunt-contrib-clean' );
-	grunt.loadNpmTasks( 'grunt-contrib-concat' );
 	grunt.loadNpmTasks( 'grunt-contrib-connect' );
 	grunt.loadNpmTasks( 'grunt-contrib-copy' );
 	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
@@ -73,6 +73,9 @@ module.exports = function( grunt ) {
 
 	// Combine files task
 	grunt.registerTask( 'concat-mincss', [ 'concat:mincss' ] );
+
+	// Combine, minimize JS
+	grunt.registerTask( 'sbcjs', [ 'concat:bootstrap', 'uglify' ] );
 
 
 	// NOT YET INPLEMENTED
