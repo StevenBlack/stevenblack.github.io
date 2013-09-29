@@ -32,14 +32,9 @@ module.exports = function( grunt ) {
 			}
 		},
 		uglify: {
-	      options: {
-	        report: 'min'
-	      },
-	      bootstrap: {
-	        src: ['<%= concat.bootstrap.dest %>'],
-	        dest: 'js/<%= pkg.name %>.min.js'
-	      }
-	    },
+			options: { report: 'min' },
+			bootstrap: { src: ['<%= concat.bootstrap.dest %>'], dest: 'js/<%= pkg.name %>.min.js' }
+		},
 		recess: {
 			options:   { compile: true },
 			bootstrap: { src: [ 'less/bootstrap.less' ], dest: 'dist/css/<%= pkg.name %>.css' },
