@@ -27,12 +27,12 @@ module.exports = function( grunt ) {
 				dest: 'js/<%= pkg.name %>.js'
 			},
 			mincss : {
-				src: [ 'css/bootstrap.min.css', 'css/font-awesome.min.css' ],
+				src: [ 'css/<%= pkg.name %>.bootstrap.min.css', 'css/font-awesome.min.css' ],
 				dest: 'css/<%= pkg.name %>.min.css'
 			}
 		},
 		uglify: {
-			options: { report: 'min' },
+			options: { report: 'min', compress: true },
 			bootstrap: { src: ['<%= concat.bootstrap.dest %>'], dest: 'js/<%= pkg.name %>.min.js' }
 		},
 		recess: {

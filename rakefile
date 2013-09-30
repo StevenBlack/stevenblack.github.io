@@ -48,11 +48,11 @@ task :bootstrap_css do |t|
   cp 'less/custom.less', 'bootstrap/less/custom.less'
 
   puts "Compiling #{BOOTSTRAP_CUSTOM_LESS}"
-  # sh 'lessc', '--compress', BOOTSTRAP_CUSTOM_LESS, ' bootstrap/css/bootstrap.min.css'
-  syscmd = 'lessc --compress ' + BOOTSTRAP_CUSTOM_LESS + ' > bootstrap/css/bootstrap.min.css'
+  # sh 'lessc', '--compress', BOOTSTRAP_CUSTOM_LESS, ' bootstrap/css/sbc.bootstrap.min.css'
+  syscmd = 'lessc --compress ' + BOOTSTRAP_CUSTOM_LESS + ' > bootstrap/css/sbc.bootstrap.min.css'
   system syscmd
   # Now copy the generated file home.
-  cp 'bootstrap/css/bootstrap.min.css', 'css/bootstrap.min.css'
+  cp 'bootstrap/css/sbc.bootstrap.min.css', 'css/sbc.bootstrap.min.css'
   cp 'bootstrap/css/bootstrap-responsive.min.css', 'css/bootstrap-responsive.min.css'
   cp 'font-awesome/css/font-awesome.min.css', 'css/font-awesome.min.css'
 
