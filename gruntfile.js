@@ -37,13 +37,15 @@ module.exports = function( grunt ) {
 		},
 		recess: {
 			options:   { compile: true },
-			bootstrap: { src: [ 'less/bootstrap.less' ], dest: 'dist/css/<%= pkg.name %>.css' },
-			min:       { options: { compress: true }, src: [ 'less/bootstrap.less' ], dest: 'dist/css/<%= pkg.name %>.min.css' },
-			theme:     { src: [ 'less/theme.less' ], dest: 'dist/css/<%= pkg.name %>-theme.css' },
-			theme_min: { options: { compress: true }, src: [ 'less/theme.less' ], dest: 'dist/css/<%= pkg.name %>-theme.min.css' }
+			bootstrap: { src: [ 'bootstrap/less/custom.less' ], dest: 'css/<%= pkg.name %>.bootstrap.css' },
+			min:       { options: { compress: true }, src: [ 'bootstrap/less/custom.less' ], dest: 'css/<%= pkg.name %>.bootstrap.min.css' },
 		},
 
-		copy      : { fonts: { expand: true, src: [ "fonts/*" ], dest: 'dist/' }},
+		copy      : {
+			fonts: { expand: true, src: [ "fonts/*" ], dest: 'dist/' },
+			lesstweaks: { src: [ 'less/*' ], dest: 'bootstrap/less/' }
+		},
+
 		connect   : { server: { options: { port: 3000, base: '.' } } },
 		validation: { options: { reset: true }, files: { src: [ "_site/**/*.html" ] } }
 	});
@@ -69,6 +71,10 @@ module.exports = function( grunt ) {
 	// Combine files task
 	grunt.registerTask( 'concat-mincss', [ 'concat:mincss' ] );
 
+	// Compile, minimize CSS
+	grunt.registerTask( 'sbccss', [ 'copy:lesstweaks', 'recess:min', 'concat:mincss' ] );
+
+
 	// Combine, minimize JS
 	grunt.registerTask( 'sbcjs', [ 'concat:bootstrap', 'uglify' ] );
 
@@ -85,12 +91,6 @@ module.exports = function( grunt ) {
 	}
 
 	grunt.registerTask( 'test', testSubtasks );
-
-	// JS distribution task.
-	grunt.registerTask( 'dist-js', [ 'concat:bootstrap', 'uglify' ] );
-
-	// CSS distribution task.
-	grunt.registerTask( 'dist-css', [ 'recess' ] );
 
 	// Fonts distribution task.
 	grunt.registerTask( 'dist-fonts', [ 'copy' ] );
