@@ -25,6 +25,10 @@ module.exports = function( grunt ) {
 						'bootstrap/js/dropdown.js'
 					],
 				dest: 'js/<%= pkg.name %>.js'
+			}	,
+			css : {
+				src: [ 'css/<%= pkg.name %>.bootstrap.css', 'css/font-awesome.min.css' ],
+				dest: 'css/<%= pkg.name %>.css'
 			},
 			mincss : {
 				src: [ 'css/<%= pkg.name %>.bootstrap.min.css', 'css/font-awesome.min.css' ],
@@ -46,6 +50,12 @@ module.exports = function( grunt ) {
 			lesstweaks: { src: [ 'less/*' ], dest: 'bootstrap/less/' }
 		},
 
+		cssmin: {
+		    'sbc': {
+		        'src': [ 'css/<%= pkg.name %>.css' ],
+		        'dest': 'css/<%= pkg.name %>.min.css'
+		    }
+		},
 		connect   : { server: { options: { port: 3000, base: '.' } } },
 		validation: { options: { reset: true }, files: { src: [ "_site/**/*.html" ] } }
 	});
@@ -64,6 +74,9 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-recess' );
 	grunt.loadNpmTasks( 'browserstack-runner' );
 
+	// http://nodetoolbox.com/packages/grunt-yui-compressor
+	grunt.loadNpmTasks( 'grunt-yui-compressor' );
+
 
 	// Docs HTML validation task
 	grunt.registerTask( 'validate-html', [ 'validation' ] );
@@ -72,7 +85,8 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'concat-mincss', [ 'concat:mincss' ] );
 
 	// Compile, minimize CSS
-	grunt.registerTask( 'sbccss', [ 'copy:lesstweaks', 'recess:min', 'concat:mincss' ] );
+	// grunt.registerTask( 'sbccss', [ 'copy:lesstweaks', 'recess:min', 'concat:mincss' ] );
+	grunt.registerTask( 'sbccss', [ 'copy:lesstweaks', 'recess:bootstrap', 'concat:css', "cssmin:sbc" ] );
 
 
 	// Combine, minimize JS
