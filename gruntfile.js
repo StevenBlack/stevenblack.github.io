@@ -47,7 +47,7 @@ module.exports = function( grunt ) {
 
 		copy      : {
 			fonts: { expand: true, src: [ "fonts/*" ], dest: 'dist/' },
-			lesstweaks: { src: [ 'less/*' ], dest: 'bootstrap/less/' }
+			lesstweaks: { src: [ 'less/custom.less', 'less/variables.less' ], dest: 'bootstrap/less/' }
 		},
 
 		cssmin: {
