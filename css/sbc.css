@@ -2380,6 +2380,32 @@ input[type="button"].btn-block {
   width: 100%;
 }
 
+.fade {
+  opacity: 0;
+  -webkit-transition: opacity 0.15s linear;
+          transition: opacity 0.15s linear;
+}
+
+.fade.in {
+  opacity: 1;
+}
+
+.collapse {
+  display: none;
+}
+
+.collapse.in {
+  display: block;
+}
+
+.collapsing {
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  -webkit-transition: height 0.35s ease;
+          transition: height 0.35s ease;
+}
+
 @font-face {
   font-family: 'Glyphicons Halflings';
   src: url('../fonts/glyphicons-halflings-regular.eot');
@@ -4307,47 +4333,6 @@ input[type="button"].btn-block {
 .label-danger[href]:hover,
 .label-danger[href]:focus {
   background-color: #c9302c;
-}
-
-.badge {
-  display: inline-block;
-  min-width: 10px;
-  padding: 3px 7px;
-  font-size: 17px;
-  font-weight: bold;
-  line-height: 1;
-  color: #ffffff;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  background-color: #999999;
-  border-radius: 10px;
-}
-
-.badge:empty {
-  display: none;
-}
-
-a.badge:hover,
-a.badge:focus {
-  color: #ffffff;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.btn .badge {
-  position: relative;
-  top: -1px;
-}
-
-a.list-group-item.active > .badge,
-.nav-pills > .active > a > .badge {
-  color: #9c0001;
-  background-color: #ffffff;
-}
-
-.nav-pills > li > a > .badge {
-  margin-left: 3px;
 }
 
 .jumbotron {

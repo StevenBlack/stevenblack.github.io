@@ -21,7 +21,9 @@ module.exports = function( grunt ) {
 			bootstrap: {
 				src: [
 						'js/jquery.min.js',
+						'bootstrap/js/transition.js',
 						'bootstrap/js/button.js',
+						'bootstrap/js/collapse.js',
 						'bootstrap/js/dropdown.js'
 					],
 				dest: 'js/<%= pkg.name %>.js'
@@ -47,7 +49,7 @@ module.exports = function( grunt ) {
 
 		copy      : {
 			fonts: { expand: true, src: [ "fonts/*" ], dest: 'dist/' },
-			lesstweaks: { src: [ 'less/custom.less', 'less/variables.less' ], dest: 'bootstrap/less/' }
+			lesstweaks: { src: [ 'less/custom.less', 'less/variables.less' ], dest: 'bootstrap/' }
 		},
 
 		cssmin: {
