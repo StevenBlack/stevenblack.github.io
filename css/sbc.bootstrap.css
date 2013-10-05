@@ -532,22 +532,22 @@ h6 small {
 
 h1,
 .h1 {
-  font-size: 49px;
+  font-size: 40px;
 }
 
 h2,
 .h2 {
-  font-size: 40px;
+  font-size: 32px;
 }
 
 h3,
 .h3 {
-  font-size: 33px;
+  font-size: 24px;
 }
 
 h4,
 .h4 {
-  font-size: 24px;
+  font-size: 19px;
 }
 
 h5,
@@ -5393,111 +5393,6 @@ img.fullwidth {
   .locators {
     font-size: 14.25px;
   }
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0.75 0;
-  font-family: "Lora", Georgia, "Times New Roman", Times, serif;
-  font-weight: 500;
-  line-height: 1.1;
-  color: inherit;
-  text-rendering: optimizelegibility;
-}
-
-h1 small,
-h2 small,
-h3 small,
-h4 small,
-h5 small,
-h6 small {
-  font-weight: normal;
-  line-height: 1;
-  color: #999999;
-}
-
-h1 {
-  font-size: 52.25px;
-}
-
-h2 {
-  font-size: 42.75px;
-}
-
-h3 {
-  font-size: 33.25px;
-}
-
-h4 {
-  font-size: 23.75px;
-}
-
-h5 {
-  font-size: 19px;
-}
-
-h6 {
-  font-size: 16.15px;
-}
-
-h1 small {
-  font-size: 33.25px;
-}
-
-h2 small {
-  font-size: 23.75px;
-}
-
-h3 small {
-  font-size: 19px;
-}
-
-h4 small {
-  font-size: 19px;
-}
-
-article article h1 {
-  font-size: 42.75px;
-}
-
-article article h2 {
-  font-size: 33.25px;
-}
-
-article article h3 {
-  font-size: 23.75px;
-}
-
-article article h4 {
-  font-size: 19px;
-}
-
-article article h5 {
-  font-size: 16.15px;
-}
-
-article article h6 {
-  font-size: 16.15px;
-}
-
-article article h1 small {
-  font-size: 23.75px;
-}
-
-article article h2 small {
-  font-size: 19px;
-}
-
-article article h3 small {
-  font-size: 19px;
-}
-
-article article h4 small {
-  font-size: 19px;
 }
 
 .emphBlock {
