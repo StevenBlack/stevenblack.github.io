@@ -5407,3 +5407,8 @@ img.fullwidth {
 .col2nd {
   width: 75%;
 }
+
+pre,
+code {
+  white-space: pre;
+}

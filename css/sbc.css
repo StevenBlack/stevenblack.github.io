@@ -5407,6 +5407,11 @@ img.fullwidth {
 .col2nd {
   width: 75%;
 }
+
+pre,
+code {
+  white-space: pre;
+}
 /*!
  *  Font Awesome 3.0.2
  *  the iconic font designed for use with Twitter Bootstrap
