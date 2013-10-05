@@ -12,41 +12,58 @@ pygments: true
 
 ---
 
-<h2>Introduction</h2> 
+<h2>Introduction</h2>
 
-<p>This document describes an object-oriented design pattern
-called Hooks and Anchors. Consider this a discussion document, an idea that may evolve into
-a &quot;real&quot; design pattern.</p>
 
-<p>Hooks and anchors are an abstract object society that I
-first designed in 1996 and used ever since. It has served me well in numerous desktop and internet
-applications.</p>
 
-<p>Here's how this paper goes: we start by examining the class structure of hooks and hook
-subclasses. Next we'll discuss the anchor class, which is a subclass of
-Hook.</p>
+<p>
+This document describes an object-oriented design pattern
+called Hooks and Anchors. Consider this a discussion document.
+</p>
 
-<p>That's a conceptual nuance -- why would an Anchor be a subclass of
-Hook? The placement of hooks and anchors under a
-common hook superclass, is explained.</p>
+<p>
+<strong>Hooks and anchors</strong> is an object society that I
+first designed and implemented in 1996 and used ever since. 
+It has served me well in numerous desktop and internet applications.
+</p>
 
-<p>Next well look at how particular design patterns are conducive to
-implementations involving with hooks and anchors.</p>
+<p>
+Here's how this paper goes: first we start by examining the class structure of <strong>Hooks</strong> and hook
+subclasses.
+</p>
+
+<p>
+Next we'll discuss the <strong>Anchor</strong> class.  
+Anchors, as with real boat anchors, are a type of Hook.
+</p>
+
+<p>
+This is a cool conceptual nuance -- why would an Anchor be a subclass of
+Hook? The placement of hooks and anchors under a common hook superclass, is explained.
+</p>
+
+<p>
+Next we'll look at how particular design patterns are conducive to
+implementations involving with hooks and anchors.
+</p>
+
 
 <h3>Background</h3>
 
-<p>All object-oriented VFP frameworks can be described as skeletal
-structures
-designed for extension. Over time, developers grow their root framework(s)
-into one or more applications, refining and extending (evolving) their
-toolset over an extended period of time.</p>
+<p>
+Most good object-oriented frameworks can be described as skeletal
+structures designed for extension. 
+Developers evolve their base framework(s), refining and extending them over time.
+</p>
 
-<p>Similarly, all the root frameworks give you so-called hot spots,
+<p>
+Similarly, all the root frameworks give you so-called hot spots,
 known as Hook Methods or, as Gamma and Helm call them, Template Methods.
 To varying degrees, the framework(s) you use also supply a
 philosophy about usage and extension. Typically the suggested philosophy
 is: you hook the framework's hook methods to suit your implementation-specific
-needs.</p>
+needs.
+</p>
 
 <p>In the Hooks and Anchors design pattern, the hook is implemented with
 a hook object society, which is designed at the outset to fully
