@@ -5412,6 +5412,68 @@ pre,
 code {
   white-space: pre;
 }
+
+@media only screen and (min-width: 0) and (max-width: 767px) {
+  h1,
+  .h1 {
+    font-size: 32px;
+  }
+  h2,
+  .h2 {
+    font-size: 25.6px;
+  }
+  h3,
+  .h3 {
+    font-size: 19.200000000000003px;
+    font-weight: bold;
+  }
+  h4,
+  .h4 {
+    font-size: 15.200000000000001px;
+    font-weight: bold;
+  }
+  h5,
+  .h5 {
+    font-size: 15.200000000000001px;
+    font-weight: bold;
+  }
+  h6,
+  .h6 {
+    font-size: 13.600000000000001px;
+    font-weight: bold;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  h1,
+  .h1 {
+    font-size: 36px;
+  }
+  h2,
+  .h2 {
+    font-size: 28.8px;
+  }
+  h3,
+  .h3 {
+    font-size: 21.6px;
+    font-weight: bold;
+  }
+  h4,
+  .h4 {
+    font-size: 17.1px;
+    font-weight: bold;
+  }
+  h5,
+  .h5 {
+    font-size: 17.1px;
+    font-weight: bold;
+  }
+  h6,
+  .h6 {
+    font-size: 15.3px;
+    font-weight: bold;
+  }
+}
 /*!
  *  Font Awesome 3.0.2
  *  the iconic font designed for use with Twitter Bootstrap
