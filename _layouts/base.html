@@ -12,7 +12,7 @@
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 
-	<link rel="stylesheet" href="/css/sbc.min.css" />
+	<link rel="stylesheet" href="/css/sbc.min.css?{{ site.time | date_to_xmlschema }}" />
 
 	{% if page.pygments %}
 		<link rel="stylesheet" href="/css/pygments.css" />

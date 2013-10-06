@@ -5415,6 +5415,54 @@ code {
 
 @media only screen and (min-width: 0) and (max-width: 767px) {
   h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .h1,
+  .h2,
+  .h3,
+  .h4,
+  .h5,
+  .h6 {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  h1,
+  .h1 {
+    font-size: 30px;
+  }
+  h2,
+  .h2 {
+    font-size: 24px;
+  }
+  h3,
+  .h3 {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  h4,
+  .h4 {
+    font-size: 14.25px;
+    font-weight: bold;
+  }
+  h5,
+  .h5 {
+    font-size: 14.25px;
+    font-weight: bold;
+  }
+  h6,
+  .h6 {
+    font-size: 12.75px;
+    font-weight: bold;
+  }
+  .jumbotron p {
+    font-size: 21.849999999999998px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  h1,
   .h1 {
     font-size: 32px;
   }
@@ -5442,9 +5490,12 @@ code {
     font-size: 13.600000000000001px;
     font-weight: bold;
   }
+  .jumbotron p {
+    font-size: 23.75px;
+  }
 }
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
   h1,
   .h1 {
     font-size: 36px;
