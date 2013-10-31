@@ -58,6 +58,54 @@
 @import "utilities.less";
 @import "responsive-utilities.less";
 
+
+/*
+* Callouts
+*
+* Not quite alerts, but custom and helpful notes for folks reading the docs.
+* Requires a base and modifier class.
+*  class="bs-callout bs-callout-info"
+*/
+
+.bs-callout {
+    margin: 20px 0;
+    padding: 20px;
+    border-left: 3px solid #eeeeee;
+    code, .highlight {
+    }
+    h4 {
+        margin-top: 0;
+        margin-bottom: 5px;
+    }
+    p:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.bs-callout-danger {
+    background-color: #fdf7f7;
+    border-color: #eed3d7;
+    h4 {
+        color: #b94a48;
+    }
+}
+
+.bs-callout-warning {
+    background-color: #faf8f0;
+    border-color: #faebcc;
+    h4 {
+        color: #c09853;
+    }
+}
+
+.bs-callout-info {
+    background-color: #f4f8fa;
+    border-color: #bce8f1;
+    h4 {
+        color: #3a87ad;
+    }
+}
+
 /* For the fixed navbar */
 body {
   min-height: 2000px;
