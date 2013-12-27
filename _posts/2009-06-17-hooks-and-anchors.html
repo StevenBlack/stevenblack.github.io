@@ -6,7 +6,7 @@ type: ""
 header_text: ""
 lead_text: ""
 excerpt: ""
-category: 
+category:
 tags: []
 pygments: true
 
@@ -23,7 +23,7 @@ called Hooks and Anchors. Consider this a discussion document.
 
 <p>
 <strong>Hooks and anchors</strong> is an object society that I
-first designed and implemented in 1996 and used ever since. 
+first designed and implemented in 1996 and used ever since.
 It has served me well in numerous desktop and internet applications.
 </p>
 
@@ -33,7 +33,7 @@ subclasses.
 </p>
 
 <p>
-Next we'll discuss the <strong>Anchor</strong> class.  
+Next we'll discuss the <strong>Anchor</strong> class.
 Anchors, as with real boat anchors, are a type of Hook.
 </p>
 
@@ -52,7 +52,7 @@ implementations involving with hooks and anchors.
 
 <p>
 Most good object-oriented frameworks can be described as skeletal
-structures designed for extension. 
+structures designed for extension.
 Developers evolve their base framework(s), refining and extending them over time.
 </p>
 
@@ -597,7 +597,7 @@ expect evolution stress, it can be just the ticket.</p>
 
 <p><strong>MS Excel "Save As HTML" cleanup.</strong></p>
 
-<p>Given you've got <strong>Odious Crap HTML From MS Excel</strong> like 
+<p>Given you've got <strong>Odious Crap HTML From MS Excel</strong> like
 <a href="/files/CrapFromExcel.HTM" target="_blank"><em>this</em></a> (view its source), how to
 cleanse it so it's <strong>generic and clean</strong> like, say, <a href="/files/CleanHTMLFromExcel.HTM" target="_blank">this</a> (view source)?? </p>
 <p>Simple. You set up an object society like the one illustrated below, whose life and execution is controlled by HooksConfig.DBF records, listed in the table below the diagram.</p>
@@ -605,7 +605,7 @@ cleanse it so it's <strong>generic and clean</strong> like, say, <a href="/files
 <p><strong>Given Garbage HTML, here's the hook society that cleans it...</strong></p>
 <p> <img src="/files/CleanUpCrapFromExcel.gif" alt="" /></p>
 <p><strong>....All created and invoked by this simple VFP code....</strong></p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- This sample shows the cleansing of the
 *-- odious HTML you get from an MS Excell "Save as HTML".
 *--
@@ -623,7 +623,7 @@ loChain.Process( @lcHTML) &amp;&amp; clean this HTML pig!
 *-- Show the results
 STRTOFILE(lcHTML, "CleanHTMLFromExcel.HTM") &amp;&amp; Tada
 SHELLEXEC("CleanHTMLFromExcel.HTM")
-{% endhighlight %}
+</pre>
 
 <p><strong>....which is orchestrated by these records in HooksConfig.DBF.</strong></p>
 

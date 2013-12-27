@@ -77,13 +77,13 @@ pygments: true
 	In order to use INTL, your application must instantiate an INTL object. There are many ways to do this, the
 	best being to add it to _SCREEN, like this:
 </p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- Anywhere, anytime:
 *-- Instantiate INTL in _SCREEN
 *-- or anywhere you like.
 SET PROCEDURE TO INTL ADDITIVE
 _SCREEN.AddObject( "oINTL", "INTL" )
-{% endhighlight %}
+</pre>
 <hr />
 <a id="HowToLocalizeForms"></a>
 <h2>How To Localize Forms</h2>
@@ -92,7 +92,7 @@ _SCREEN.AddObject( "oINTL", "INTL" )
 method. Localize forms by passing their object references to the Localize() method of an
 INTL class object.</p>
 
-{% highlight XBase linenos=table %}
+<pre>
 *-- Configure oINTL to another language
 _SCREEN.oINTL.SetLanguage( "French" )
 *-- Instantiate a form. If the form calls INTL in
@@ -102,7 +102,7 @@ DO FORM MyForm Name MyForm
 
 *-- ...or you can localize the form on the fly.
 _SCREEN.oINTL.Localize( MyForm )
-{% endhighlight %}
+</pre>
 
 <hr />
 <a id="AutoLoc"></a>
@@ -112,13 +112,13 @@ _SCREEN.oINTL.Localize( MyForm )
 	call the <code>oINTL.Localize()</code> method in your form class hierarchy. To do so, place the following code in the <code>INIT()</code>
 	method of your form class definition.
 </p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- Don't forget to call the ParentClass!
 DODEFAULT()
 IF TYPE( "_SCREEN.oINTL" ) == "O"
 _SCREEN.oINTL.Localize( This )
 ENDIF
-{% endhighlight %}
+</pre>
 <hr />
 <a id="HowToLocalizeMenus"></a>
 <h2>How to Localize Menus</h2>
@@ -127,22 +127,22 @@ ENDIF
 	A GENMENUX driver is used to localize menus. To activate GENMENUX and its INTL.PRG
 	driver, put the following lines in your CONFIG.FPW:
 </p>
-{% highlight XBase linenos=table %}
+<pre>
 * Add these lines to CONFIG.FPW.
 *-- Configuring for INTL menus.
 _GENMENU=GENMENUX.PRG
 _MNXDRV2=INTL.PRG
 *-- End of configuration for INTL menus.
-{% endhighlight %}
+</pre>
 <p>
 	Some of these changes require a VFP restart. </p>
 <p>
 	This change will take effect the next time you start Visual FoxPro. To avoid restarting
 	FoxPro at this time, issue the following command in the command window:
 </p>
-{% highlight XBase linenos=table %}
+<pre>
 _GENMENU=HOME()+"GENMENUX.PRG"
-{% endhighlight %}
+</pre>
 <p>
 	This is all you need to change in your development environment to localize menus.
 	Henceforth generate menus as usual.
@@ -173,10 +173,10 @@ _GENMENU=HOME()+"GENMENUX.PRG"
 	To change the current localization language, use the <code>SetLanguage()</code> method. Say we want a form to be in
 	French. First set the language, then we localize the form:
 </p>
-{% highlight XBase linenos=table %}
+<pre>
 _SCREEN.oINTL.SetLanguage( "French" )
 _SCREEN.oINTL.Localize( _SCREEN.ActiveForm )
-{% endhighlight %}
+</pre>
 <hr />
 <a id="SwapOnFly"></a>
 <h2>How to Swap Languages on the Fly</h2>
@@ -185,13 +185,13 @@ _SCREEN.oINTL.Localize( _SCREEN.ActiveForm )
 	always a success in a demo ( do it even if it isn't required it's so easy ), create a mechanism in your
 	application to configure the INTL object with <code>SetLanguage()</code>, as follows.
 </p>
-{% highlight XBase linenos=table %}
+<pre>
 _SCREEN.oINTL.SetLanguage( "German" )
 FOR i=1 TO ALEN( _SCREEN.Forms ) && Localize active forms
 	_SCREEN.oINTL.Localize( _SCREEN.Forms[i] )
 ENDFOR
 DO MAIN.MPR &amp;&amp; Refresh the menu too!
-{% endhighlight %}
+</pre>
 <hr />
 <a id="HowToWorkWithLocales"></a>
 <h2>How To Work With Locales</h2>
@@ -203,7 +203,7 @@ DO MAIN.MPR &amp;&amp; Refresh the menu too!
 	In this example, I've subclassed the INTL class to change all the locale-specific settings at one go.
 	Subclassing INTL for your own needs is a great way to meet locale demands with a minimum of code and fuss.
 </p>
-{% highlight XBase linenos=table %}
+<pre>
 DEFINE CLASS MyINTL AS INTL
 FUNCTION SetLocale( tcLocale )
 
@@ -257,7 +257,7 @@ IF DODEFAULT( @tcLocale )
 
 ENDIF
 ENDDEFINE
-{% endhighlight %}
+</pre>
 <hr />
 <a id="HowtoConfigureYourMainINTLObject"></a>
 <h2>How to Configure Your Main INTL Object</h2>
@@ -265,7 +265,7 @@ ENDDEFINE
 	I recommend making a main INTL object named <code>_SCREEN.oINTL</code>. It's possible to have
 	several separate INTL objects co-exist together. Each INTL object is itself an amalgam of
 	other INTL objects called hooks or strategies. Your main INTL object is the master INTL
-	object in your environment, and whichever it happens to be, I assume here that it's called 
+	object in your environment, and whichever it happens to be, I assume here that it's called
 	<code>_SCREEN.oINTL</code>.
 <p>
 	Use the <code>SetConfig( n )</code> method to configure your main INTL
@@ -298,12 +298,12 @@ ENDDEFINE
 </table>
 <p>Configuration integers for the <code>.SetConfig()</code> method for the various INTL classes.</p>
 <p>Example: create an INTL object that localizes strings and fonts</p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- create an INTL object
 _SCREEN.AddObject( "oINTL", "INTL" )
 *-- Load the strings and font strategies.
 _SCREEN.oINTL.SetConfig( 1+ 2 )
-{% endhighlight %}
+</pre>
 <p>
 	The operative language and locale of the main INTL object are configured with the
 	<code>SetLanguage()</code> and <code>SetLocale()</code> methods.
@@ -400,7 +400,7 @@ _SCREEN.oINTL.SetConfig( 1+ 2 )
 	oINTL.GetStrategy() method to get an object reference, then use its <code>SetConfig()</code> method to
 	configure it.
 </p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- create an INTL object
 _SCREEN.AddObject( "oINTL" "INTL" )
 
@@ -414,11 +414,11 @@ loTempHandle= _SCREEN.oINTL.GetStrategy( "String" )
 *-- For the string strategy, the configuration
 *-- for Caption and StatusBarText is 5
 loTempHandle.SetConfig( 1 + 4 )
-{% endhighlight %}
+</pre>
 <p>
 	<strong>Example: create an INTL object that localizes only strings and InputMasks.</strong>
 </p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- create an INTL object
 _SCREEN.AddObject( "oINTL","INTL" )
 *-- Load the strings and data strategies.
@@ -429,8 +429,8 @@ LOCAL oTemp
 oTemp= _SCREEN.oINTL.GetStrategy( "Data" )
 *-- Input masks only.
 
-oTemp.SetConfig( 16 ) 
-{% endhighlight %}
+oTemp.SetConfig( 16 )
+</pre>
 <!--webbot bot="Include" i-checksum="62329" endspan -->
 <hr />
 <a id="HowToLocalizeStrings"></a>
@@ -485,16 +485,16 @@ oTemp.SetConfig( 16 )
 	</tr>
 </table>
 <p>So activate the string strategy as follows:</p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- cINTLString is loaded by default.
 *-- So theres usually no need to do this
 _SCREEN.oINTL.SetStrategy( "String", "cINTLString" )
-{% endhighlight %}
+</pre>
 <p>Another more cryptic way to load the String strategy is:</p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- Set configuration bit 2^0 "ON"
 _SCREEN.oINTL.SetConfing( BITSET( oINTL.GetConfing(),0))
-{% endhighlight %}
+</pre>
 <p>So there are two ways to do it.</p>
 <p>Strings can be localized by providing translations in STRINGS.DBF.</p>
 <table class="table">
@@ -516,14 +516,14 @@ _SCREEN.oINTL.SetConfing( BITSET( oINTL.GetConfing(),0))
 	bitwise-configured. You can control the string strategy object as follows:
 </p>
 <p>Example: to disable font processing for the ToolTipText property:</p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- Get a handle on the string strategy:
 oString= _SCREEN.oINTL.GetStrategy( "String" )
-{% endhighlight %}
-{% highlight XBase linenos=table %}
+</pre>
+<pre>
 *-- We want Caption ( 1 ) and StatusbarText ( 4 ) only
 oString.SetConfing( 5 )
-{% endhighlight %}
+</pre>
 <hr />
 <a id="HowToLocalizeFonts"></a>
 <h2>How To Localize Fonts</h2>
@@ -573,15 +573,15 @@ oString.SetConfing( 5 )
 	</tr>
 </table>
 <p>So activate the font strategy as follows:</p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- cINTLFont is the Font strategy class.
 _SCREEN.oINTL.SetStrategy( "Font", "cINTLFont" )
-{% endhighlight %}
+</pre>
 <p>Another more cryptic way to load the Font strategy is:</p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- Set configuration bit 2^1 "ON"
 _SCREEN.oINTL.SetConfing( BITSET( oINTL.GetConfing(),1))
-{% endhighlight %}
+</pre>
 <p>
 	So there are two ways to do it.</p>
 <p>
@@ -610,7 +610,7 @@ _SCREEN.oINTL.SetConfing( BITSET( oINTL.GetConfing(),1))
 	Example: to disable font processing for <code>DynamicFont</code> and <code>DynamicFontSize</code>, which will slightly improve the
 	font strategy performance:
 </p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- Set Font localization on
 oINTL.SetConfing( BITSET( oINTL.GetConfing(), 1))
 *-- Get a handle on the font strategy:
@@ -618,7 +618,7 @@ oFont= _SCREEN.oINTL.GetStrategy( "Font" )
 *-- We want Font and FontSize and to disable DynamicFont
 *-- and DynamicFontSize
 oFont.SetConfing( 1 )
-{% endhighlight %}
+</pre>
 <hr />
 <a id="HowToLocalizeDataSources"></a>
 <h2>How To Localize Data Sources</h2>
@@ -672,15 +672,15 @@ oFont.SetConfing( 1 )
 	</tr>
 </table>
 <p>So activate the data strategy as follows:</p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- cINTLData is the Graphics strategy class.
 _SCREEN.oINTL.SetStrategy( "Data", "cINTLData" )
-{% endhighlight %}
+</pre>
 <p>Another more cryptic way to load the Data strategy is:</p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- Set configuration bit 2^2 "ON"
 _SCREEN.oINTL.SetConfing( BITSET( oINTL.GetConfing(),2))
-{% endhighlight %}
+</pre>
 <p>So there are two ways to do it.</p>
 <p>
 	Data elements can be localized by providing translations in STRINGS.DBF. Data specifications are prefixed
@@ -701,7 +701,7 @@ _SCREEN.oINTL.SetConfing( BITSET( oINTL.GetConfing(),2))
 	bitwise-configured. You can control the picture strategy object as follows:
 </p>
 <p>Example: Localize ControlSource properties.</p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- Set Data localization on
 *-- Set 2^2 "ON"
 oINTL.SetConfing( BITSET( oINTL.GetConfing(), 2))
@@ -710,7 +710,7 @@ oData= _SCREEN.oINTL.GetStrategy( "Data" )
 *-- We want ControlSource ( 2 )
 *-- property localized.
 oPicture.SetConfing( 2 )
-{% endhighlight %}
+</pre>
 <hr />
 <a id="HowToLocalizeImages"></a>
 <h2>How To Localize Images</h2>
@@ -760,15 +760,15 @@ oPicture.SetConfing( 2 )
 	</tr>
 </table>
 <p>So activate the picture strategy as follows:</p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- cINTLPicture is the Graphics strategy class.
 _SCREEN.oINTL.SetStrategy( "Picture", "cINTLPicture" )
-{% endhighlight %}
+</pre>
 <p>Another more cryptic way to load the Picture strategy is:</p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- Set configuration bit 2^3 "ON"
 _SCREEN.oINTL.SetConfing( BITSET( oINTL.GetConfing(),3))
-{% endhighlight %}
+</pre>
 <p>So there are two ways to do it.</p>
 <p>
 	Images can be localized by providing translations in STRINGS.DBF. Picture specifications are prefixed with
@@ -793,7 +793,7 @@ _SCREEN.oINTL.SetConfing( BITSET( oINTL.GetConfing(),3))
 	is bitwise-configured. You can control the picture strategy object as follows:
 </p>
 <p>Example: Localize Picture, DownPicture, and Icon properties.</p>
-{% highlight XBase linenos=table %}
+<pre>
 *-- Set Picture localization on
 *-- Set 2^3 "ON"
 oINTL.SetConfing( BITSET( oINTL.GetConfing(), 3))
@@ -802,7 +802,7 @@ oPicture= _SCREEN.oINTL.GetStrategy( "Picture" )
 *-- We want Picture (1), DownPicture(2) and Icon (4)
 *-- properties localized. 1+2+4= 7
 oPicture.SetConfing( 7 )
-{% endhighlight %}
+</pre>
 <hr />
 <a id="HowToLocalizeCurrencies"></a>
 <h2>How To Localize Currencies</h2>
@@ -841,19 +841,19 @@ oPicture.SetConfing( 7 )
 </table>
 <p>So activate the currency strategy as follows:</p>
 <p>Use oINTL.SetConfig() or oINTL.SetStrategy() to load the Currency strategy.</p>
-{% highlight XBase linenos=table %}
+<pre>
 oINTL= _SCREEN.oINTL
 oINTL.SetStratrgy( "Currency", "cINTLCurrency" )
-{% endhighlight %}
+</pre>
 <p>
 	An alternate ( and more cryptic ) way is to use INTL's <code>SetConfig()</code> method to make INTL invoke the
 	currencystrategy as follows:
 </p>
-{% highlight XBase linenos=table %}
+<pre>
 OINTL= _SCREEN.oINTL
 *-- Set bit 2^4 "ON"
 oINTL.SetConfing( BITSET( oINTL.GetConfing(), 4))
-{% endhighlight %}
+</pre>
 <p>So there are two ways to do it.</p>
 <p>
 	The Curremcy strategy is not like the others. The INTL toolkit currency strategy is a little different from
@@ -880,7 +880,7 @@ oINTL.SetConfing( BITSET( oINTL.GetConfing(), 4))
 <p>oINTL.SetConversion() sets the exchange rate between the original and other locales.</p>
 <p>Use SetLocale() to change the currency locale.</p>
 <p>Localize as usual.</p>
-{% highlight XBase linenos=table %}
+<pre>
 oINTL= _SCREEN.oINTL
 *-- Load the currency strategy
 *-- Set 2^4 "ON"
@@ -893,7 +893,7 @@ oINTL.SetConversion( "USA", 1.33 )
 oINTL.SetLocale( "USA" )
 *-- Localize the current form
 oINTL.Localize( _SCREEN.ActiveForm )
-{% endhighlight %}
+</pre>
 <hr />
 <a id="HowtoGetRight-To-LeftLocalization"></a>
 <h2>How to Get Right-To-Left Localization</h2>
@@ -931,18 +931,18 @@ oINTL.Localize( _SCREEN.ActiveForm )
 </table>
 <p>So activate the right-to-left strategy as follows:</p>
 <p>Use <code>oINTL.SetConfig()</code> or <code>oINTL.SetStrategy()</code> to load the right-to-left strategy.</p>
-{% highlight XBase linenos=table %}
+<pre>
 oINTL= _SCREEN.oINTL
 oINTL.SetStratrgy( "RightToLeft", "cINTLRightToLeft" )
-{% endhighlight %}
+</pre>
 <p>An alternate ( and more cryptic ) way is to use INTL's <code>SetConfig()</code> method to make INTL invoke the
 	right-to-left strategy as follows:
 </p>
-{% highlight XBase linenos=table %}
+<pre>
 OINTL= _SCREEN.oINTL
 *-- Set bit 2^5 "ON"
 oINTL.SetConfing( BITSET( oINTL.GetConfing(), 5 ))
-{% endhighlight %}
+</pre>
 <p>So there are two ways to do it. When the right-to-left strategy is loaded, all your UI elements will be
 	repositioned relative to their UI containers. The object captions will read right-to-left if their rightToLeft
 	properties are true, and if you are using a Middle-Eastern or Oriental version of Windows.

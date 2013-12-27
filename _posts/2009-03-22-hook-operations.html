@@ -6,7 +6,7 @@ type: ""
 header_text: ""
 lead_text: ""
 excerpt: ""
-category: 
+category:
 tags: []
 pygments: true
 
@@ -98,13 +98,13 @@ subclassing.</p>
 The built-in click method is preceded by the hook operation THIS.PreClickHook(). The
 PreClickHook() method is a good place for users to place custom processing in subclasses
 without polluting the built-in Click behavior.</p>
-{% highlight XBase linenos=table %}
+<pre>
 FUNCTION Click
 	THIS.PreClickHook()
 	WAIT WINDOW "Built-in Click Method Starts Now"
 	* <100 lines of code>
 ENDFUNC
-{% endhighlight %}
+</pre>
 
 <p>Listing 1. A simple hook. In this example the user can either instance-program or
 subclass and place code in the PreClickHook() method. Later we'll see other alternatives
@@ -129,13 +129,13 @@ the class hierarchy, which is easier to support.</li>
 <p>Listing 2 shows how we could modify Listing 1 to engineer hooks without subclassing.
 Instead of delegating to a local method, the hook calls out to an object reference which
 can be dynamically configured.</p>
-{% highlight XBase linenos=table %}
+<pre>
 FUNCTION Click
 	oSomeObjectReference.ClickHook()
 	WAIT WINDOW "Built-in Click Method Starts Now"
 	* <100 lines of code>
 ENDFUNC
-{% endhighlight %}
+</pre>
 
 <p>Listing 2. Another simple hook. In this example the hook is implemented by reference
 to another separate object.</p>
@@ -322,14 +322,14 @@ FoxPro</p>
 <p>Listing 3 shows a simple call to a pre-process hook. This example uses the common
 convention of naming the pre-process with the prefix "pre", and similar hook operations
 are found in a number of VFP frameworks.</p>
-{% highlight XBase linenos=table %}
+<pre>
 FUNCTION Click
   *-- Pre-process hook
   THIS.PreClick()
   WAIT WINDOW "Click"
   * <100 lines of code>
 ENDFUNC
-{% endhighlight %}
+</pre>
 
 <p>Listing 3. A pre-hook followed by standard method code.</p>
 
@@ -337,14 +337,14 @@ ENDFUNC
 
 <p>Listing 4 shows a simple post-processing hook. This example uses the common convention
 of naming the pre-process with the prefix "post"</p>
-{% highlight XBase linenos=table %}
+<pre>
 FUNCTION Click
   WAIT WINDOW "Click"
   * <100 lines of code>
   *-- Post-process hook
   THIS.PostClick()
 ENDFUNC
-{% endhighlight %}
+</pre>
 
 <p>Listing 4. A post-process Click hook.</p>
 
@@ -353,14 +353,14 @@ ENDFUNC
 <p>As you may have guessed, pre and post-hooks can be combined, as shown in listing 5, in
 an attempt to achieve flexibility on both sides of the standard call. This is not
 recommended!</p>
-{% highlight XBase linenos=table %}
+<pre>
 FUNCTION Click
   THIS.oHook.PreClick()  && Pre-hook
   WAIT WINDOW "Click"
   * <100 lines of code>
   THIS.oHook.PostClick() && Post-hook
 ENDFUNC
-{% endhighlight %}
+</pre>
 
 <p>Listing 5. Pre and post-hooks surround a standard method. If you intend this method to
 be subclassed, then avoid this!</p>
@@ -376,14 +376,14 @@ invocation.</p>
 
 <p>In a generalization of Listing 3, we could substitute THIS.oHook to reference a
 specialized hook object, as illustrated in Listing 6.</p>
-{% highlight XBase linenos=table %}
+<pre>
 FUNCTION Click
   *-- Pre-process hook
   THIS.oHook.PreClick()
   WAIT WINDOW "Click"
   * <100 lines of code>
 ENDFUNC
-{% endhighlight %}
+</pre>
 
 <p>Listing 6. A pre-hook method belonging to a hook object. This gives us flexibility to
 substitute behavior objects, as well as accomplish the same thing as Listing 3 by setting
@@ -394,14 +394,14 @@ THIS.oHook=THIS.</p>
 <p>Listing 7 improves on Listings 3 and 6 because it uses a clean implementation
 heuristic: Hooks are called polymorphically. In other words, the Click() method of an
 object calls the Click() method of its hook.</p>
-{% highlight XBase linenos=table %}
+<pre>
 FUNCTION Click
   *-- Pre-process hook
   THIS.oHook.Click()
   WAIT WINDOW "Click"
   * <100 lines of code>
 ENDFUNC
-{% endhighlight %}
+</pre>
 
 <p>Listing 7. A cleaner version of Listings 3 and 6. Hook methods are called
 polymorphically.</p>
@@ -411,14 +411,14 @@ polymorphically.</p>
 <p>Listing 8 shows a flexible variant of listing 7 where the pre-processing hook's return
 value controls the standard method execution. This is a crude NODEFAULT-like
 implementation, controlled by the pre-hooks return value.</p>
-{% highlight XBase linenos=table %}
+<pre>
 FUNCTION Click
   IF THIS.oHook.Click() && Pre hook
     WAIT WINDOW "Click"
     * <100 lines of code>
   ENDIF
 ENDFUNC
-{% endhighlight %}
+</pre>
 
 <p>Listing 8. A pre-process hook method (in a separate object) controls the execution of
 the standard method.</p>
@@ -439,7 +439,7 @@ heristic:</p>
 
 <p>In this separated "pre" and "post" architecture it is much safer to subclass the event
 or the method without scope-resolution (::) entanglement.</p>
-{% highlight XBase linenos=table %}
+<pre>
 FUNCTION Click
   *-- Pre-process hook
   IF THIS.oHook.Click()
@@ -453,7 +453,7 @@ FUNCTION ClickImplementation
   *-- Post-process hook
   THIS.oHook.ClickImplementation()
 ENDFUNC
-{% endhighlight %}
+</pre>
 
 <p>Listing 9. A dramatically more flexible version of Listing 5. The pre-hook is called
 before the event code, the event code calls a method, and a post hook ends the method.
@@ -491,7 +491,7 @@ topic, which is to use procedural hooks.</p>
 
 <p>Listing 10 shows a variant of Listing 9 that decouples the hook from its
 implementation.</p>
-{% highlight XBase linenos=table %}
+<pre>
 DEFINE CLASS FullyHookedButton AS CommandButton
   FUNCTION CLICK
     IF oApp.HookMgr( PROGRAM())  && The "Pre" hook
@@ -505,7 +505,7 @@ DEFINE CLASS MyForm AS FORM
     THIS.oApp.HookMgr( PROGRAM())  && The "Post" hook
   ENDFUNC
 ENDDEFINE
-{% endhighlight %}
+</pre>
 
 <p>Listing 10, a component with a hook before calling a Click implementation method. The
 Click implementation method contains its own hook at its conclusion. Note that the hook
@@ -555,7 +555,7 @@ some versions of VFP, expect a GPF without this pointer clean-up.</p>
 composed of two behavior objects before hooking to the form and its hook. The textbox
 hook chain is similarly extended by the form and its hook object.</p>
 
-{% highlight XBase linenos=table %}
+<pre>
 *---------------------------------------------
 *-- Sample for Hook Operation design pattern
 *-- Copyright 1997 by Steven Black
@@ -596,8 +596,8 @@ oForm.SetoHook( oForm.Debug)
 oForm.SetAll("Visible", .T.)
 oForm.Show()
 Read Events
-{% endhighlight %}
-{% highlight XBase linenos=table %}
+</pre>
+<pre>
 **************************************************
 * Abstract Hook Behavior Class
 **************************************************
@@ -621,8 +621,8 @@ Define Class abstracthook As Label
   Release This
   Endproc
 
-{% endhighlight %}
-{% highlight XBase linenos=table %}
+</pre>
+<pre>
   Procedure GarbageCollect
 *-- Clean up pointers
   This.ohook= .Null.
@@ -1038,7 +1038,7 @@ Define Class txt As TextBox
   Endif
   Endproc
 Enddefine
-{% endhighlight %}
+</pre>
 
 <p>When you rightclick over the textbox, control is passed to the hook, which invokes a
 context sensitive shortcut menu. Some other things to draw from this example:</p>
