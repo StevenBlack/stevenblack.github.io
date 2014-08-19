@@ -2021,7 +2021,7 @@ textarea.input-sm {
 }
 
 .input-lg {
-  height: 53px;
+  height: 54px;
   padding: 10px 16px;
   font-size: 24px;
   line-height: 1.33;
@@ -2029,8 +2029,8 @@ textarea.input-sm {
 }
 
 select.input-lg {
-  height: 53px;
-  line-height: 53px;
+  height: 54px;
+  line-height: 54px;
 }
 
 textarea.input-lg {
