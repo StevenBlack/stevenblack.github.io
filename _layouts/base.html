@@ -1,29 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="{{ page.metadescription }}">
-	<meta name="keywords" content="{{ page.metakeywords }}">
-
-	<meta name="author" content="">
-	<!--[if lt IE 9]>
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-
-	<link rel="stylesheet" href="/css/sbc.min.css?{{ site.time | date_to_xmlschema }}" />
-
-	{% if page.pygments %}
-		<link rel="stylesheet" href="/css/pygments.css" />
-	{% endif %}
-
-	{% if page.style %}
-	 <style type="text/css">
-	     {{ page.style }}
-	 </style>
-	{% endif %}
-</head>
+{% include head.html %}
 <body class="preview" id="top" data-spy="scroll" data-target=".subnav" data-offset="80">
 	{% include navbar.html %}
 	<div class="container">
