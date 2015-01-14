@@ -2,13 +2,10 @@
 	<meta charset="utf-8">
 	<title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	{% if page.metadescription %}
-	<meta name="description" content="{{ page.metadescription }}">
-	{% endif %}
-	{% if page.metakeywords %}
-	<meta name="keywords" content="{{ page.metakeywords }}">
-	{% endif %}
-	<meta name="author" content="Steven Black">
+	<meta name="description" content="{% if page.metadescription %}{{ page.metadescription }}{% else %}{{ site.metadescription }}{% endif %}">
+	<meta name="keywords" content="{% if page.metakeywords %}{{ page.metakeywords }}{% else %}{{ site.metakeywords }}{% endif %}">
+	<meta name="author" content="{% if page.author %}{{ page.author }}{% else %}{{ site.author }}{% endif %}">
+	
 	<!--[if lt IE 9]>
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
