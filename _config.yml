@@ -1,6 +1,7 @@
 title: Steven Black Consulting
 url: http://stevenblack.com
-metakeywords: "Steven Black, Project Manager, Project Turnarounds, Web Developer, Wiki Meister, INTL, INTL Toolkit, Visual FoxPro, Object Oriented Analysis and Design, OOAD, OOP, Mentoring, Multilingual Application Development, Client/Server Databases, Project Leadership, Training, Consulting"
+author: "Steven Black"
+metakeywords: "Steven Black, Project Manager, Project Turnarounds, Web Developer, Wiki Meister, INTL, INTL Toolkit, Visual FoxPro, Mentoring, Multilingual Application Development,  Project Leadership, Training, Consulting"
 metadescription: "Website of Steven Black Consulting"
 permalink: /articles/:title/
 analytics: UA-212713-3
@@ -11,3 +12,7 @@ posts: posts
 image_default_alt: Steven Black Consulting
 
 exclude: [ ".git", "Rakefile", ".editorconfig", ".gitignore", ".ruby-version", "bower.json", "composer.json", "CONTRIBUTING.md", "CNAME", "LICENSE", "Gruntfile.js", "package.json", "node_modules", "README.md", "less", "_site/font-awesome/docs/" ]
+
+compress_html:
+  clippings: all
+  comments: ["<!-- ", " -->"]
