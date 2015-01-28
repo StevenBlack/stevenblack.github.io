@@ -1,33 +1,69 @@
-/* jshint node: true */
-
+/*!
+ * Steven Black Consulting's Gruntfile
+ * http://stevenblack.com
+ * Copyright 2014-2015 SBC
+ * Licensed under MIT (http://stevenblack.com/MIT_License.html
+ */
 module.exports = function( grunt ) {
 	"use strict";
+
+	var optionsfile = 'gruntoptions.json';
+	var _           = require('lodash');
+	var pkg         = grunt.file.readJSON( 'package.json' );
+	var options     = grunt.file.exists( optionsfile ) ? grunt.file.readJSON( optionsfile ) : {} ;
+	var settings    = _.merge( {}, pkg.defaults, options );
 
 	// Project configuration.
 	grunt.initConfig( {
 
 		// Metadata.
-		pkg: grunt.file.readJSON( 'package.json' ),
+		pkg: pkg,
+		options: options,
+		settings: settings,
 
-		// Task configuration.
-		clean: { dist: [ 'dist' ] },
-		jshint: {
-			options   : { jshintrc: 'js/.jshintrc' },
-			gruntfile : { src: 'Gruntfile.js' },
-			src       : { src: [ 'js/*.js' ] },
-			test      : { src: [ 'js/tests/unit/*.js' ] }
+		clean: {
+			'bootstrap-source': [ '<%= settings.location.bootstrap.local %>/' ],
+			'fonts': [ '<%= settings.location.deploy.fonts %>/' ],
+			'css': [ '<%= settings.location.deploy.css %>/' ],
+			'js': [ '<%= settings.location.deploy.js %>/' ]
 		},
+
+		copy: {
+			'bootstrap-source': {
+				nonull: true,
+				expand: true,
+				cwd: '<%= settings.location.bootstrap.authoritative %>/',
+				src: [ 'fonts/*', 'js/*', 'less/**' ],
+				dest: '<%= settings.location.bootstrap.local %>/'
+			},
+			'bootstrap-tweaks': {
+				src: [ 'less/*' ],
+				dest: '<%= settings.location.bootstrap.local %>/'
+			},
+			'bootstrap-fonts': {
+				expand: true,
+				flatten: true,
+				src: [ '<%= settings.location.bootstrap.local %>/fonts/*' ],
+				dest: '<%= settings.location.deploy.fonts %>/'
+			},
+			'fontawesome': {
+				expand: true,
+				flatten: true,
+				src: [ '<%= settings.location.fontawesome.local %>/fonts/*' ],
+				dest: '<%= settings.location.deploy.fonts %>/'
+			}
+		},
+
 		concat: {
-			bootstrap: {
-				src: [
-						'js/jquery.min.js',
-						'bootstrap/js/transition.js',
-						'bootstrap/js/button.js',
-						'bootstrap/js/collapse.js',
-						'bootstrap/js/dropdown.js'
-					],
-				dest: 'js/<%= pkg.name %>.js'
-			}	,
+			bootstrapjs: {
+				src: ( function() {
+						var cwd = settings.location.bootstrap.local + '/';
+						var arr = settings.task.concat.bootstrapjs.src;
+						return arr.map(function(file) { return cwd + "/" + file; });
+						}()
+				),
+				dest: '<%= settings.location.deploy.js %>/<%= settings.filename.js %>'
+			},
 			css : {
 				src: [ 'css/<%= pkg.name %>.bootstrap.css', 'css/font-awesome.min.css' ],
 				dest: 'css/<%= pkg.name %>.css'
@@ -37,100 +73,61 @@ module.exports = function( grunt ) {
 				dest: 'css/<%= pkg.name %>.min.css'
 			}
 		},
+
 		uglify: {
 			options: { report: 'min', compress: true },
-			bootstrap: { src: ['<%= concat.bootstrap.dest %>'], dest: 'js/<%= pkg.name %>.min.js' }
-		},
-		recess: {
-			options:   { compile: true },
-			bootstrap: { src: [ 'bootstrap/less/custom.less' ], dest: 'css/<%= pkg.name %>.bootstrap.css' },
-			min:       { options: { compress: true }, src: [ 'bootstrap/less/custom.less' ], dest: 'css/<%= pkg.name %>.bootstrap.min.css' },
+			bootstrap: { src: [ '<%= concat.bootstrapjs.dest %>' ], dest: '<%= settings.location.deploy.js %>/<%= settings.filename.jsmin %>' }
 		},
 
-		copy      : {
-			fonts: { expand: true, src: [ "fonts/*" ], dest: 'dist/' },
-			lesstweaks: { src: [ 'less/custom.less', 'less/variables.less' ], dest: 'bootstrap/' }
+		less: {
+			compileCore: {
+				options: {
+					strictMath: true,
+					outputSourceFiles: true
+				},
+				files: { '<%= settings.location.deploy.css %>/<%= settings.filename.css %>': '<%= settings.location.bootstrap.local %>/less/<%= settings.filename.less %>' }
+			}
 		},
 
 		cssmin: {
-		    'sbc': {
-		        'src': [ 'css/<%= pkg.name %>.css' ],
-		        'dest': 'css/<%= pkg.name %>.min.css'
-		    }
-		},
-		connect   : { server: { options: { port: 3000, base: '.' } } },
-		validation: { options: { reset: true }, files: { src: [ "_site/**/*.html" ] } }
-	});
-
-	// These plugins provide necessary tasks.
-	grunt.loadNpmTasks( 'grunt-html-validation' );
-	grunt.loadNpmTasks( 'grunt-contrib-uglify' );
-	grunt.loadNpmTasks( 'grunt-contrib-concat' );
-
-	// not implemented in the SBC context
-	grunt.loadNpmTasks( 'grunt-contrib-clean' );
-	grunt.loadNpmTasks( 'grunt-contrib-connect' );
-	grunt.loadNpmTasks( 'grunt-contrib-copy' );
-	grunt.loadNpmTasks( 'grunt-contrib-jshint' );
-	grunt.loadNpmTasks( 'grunt-contrib-watch' );
-	grunt.loadNpmTasks( 'grunt-recess' );
-	grunt.loadNpmTasks( 'browserstack-runner' );
-
-	// http://nodetoolbox.com/packages/grunt-yui-compressor
-	grunt.loadNpmTasks( 'grunt-yui-compressor' );
-
-
-	// Docs HTML validation task
-	grunt.registerTask( 'validate-html', [ 'validation' ] );
-
-	// Combine files task
-	grunt.registerTask( 'concat-mincss', [ 'concat:mincss' ] );
-
-	// Compile, minimize CSS
-	// grunt.registerTask( 'sbccss', [ 'copy:lesstweaks', 'recess:min', 'concat:mincss' ] );
-	grunt.registerTask( 'sbccss', [ 'copy:lesstweaks', 'recess:bootstrap', 'concat:css', "cssmin:sbc" ] );
-
-
-	// Combine, minimize JS
-	grunt.registerTask( 'sbcjs', [ 'concat:bootstrap', 'uglify' ] );
-
-
-	// NOT YET INPLEMENTED
-	// Test task.
-	var testSubtasks = [ 'dist-css', 'jshint', 'qunit', 'validate-html' ];
-	// Only run BrowserStack tests under Travis
-	if ( process.env.TRAVIS ) {
-		// Only run BrowserStack tests if this is a mainline commit in twbs/bootstrap, or you have your own BrowserStack key
-		if ( (process.env.TRAVIS_REPO_SLUG === 'twbs/bootstrap' && process.env.TRAVIS_PULL_REQUEST === 'false' ) || process.env.TWBS_HAVE_OWN_BROWSERSTACK_KEY ) {
-			testSubtasks.push( 'browserstack_runner' );
-		}
-	}
-
-	grunt.registerTask( 'test', testSubtasks );
-
-	// Fonts distribution task.
-	grunt.registerTask( 'dist-fonts', [ 'copy' ] );
-
-	// Full distribution task.
-	grunt.registerTask( 'dist', [ 'clean', 'dist-css', 'dist-fonts', 'dist-js' ] );
-
-	// Default task.
-	grunt.registerTask( 'default', [ 'test', 'dist', 'build-customizer' ] );
-
-	// task for building customizer
-	grunt.registerTask( 'build-customizer', 'Add scripts/less files to customizer.', function () {
-		var fs = require( 'fs' )
-
-		function getFiles( type ) {
-			var files = {}
-			fs.readdirSync( type )
-				.filter( function ( path ) { return type == 'fonts' ? true : new RegExp( '\\.' + type + '$' ).test( path ) } )
-				.forEach( function ( path ) { return files[ path ] = fs.readFileSync( type + '/' + path, 'utf8' ) } )
-				return 'var __' + type + ' = ' + JSON.stringify( files ) + '\n'
+			combine: {
+				files: {
+					'<%= settings.location.deploy.css %>/<%= settings.filename.cssmin %>': [ '<%= settings.location.deploy.css %>/<%= settings.filename.css %>', '_font-awesome/css/font-awesome.css' ]
+				}
+			}
 		}
 
-		var customize = fs.readFileSync( 'customize.html', 'utf-8' )
-		var files = getFiles( 'js' ) + getFiles( 'less' ) + getFiles( 'fonts' )
-		fs.writeFileSync( 'assets/js/raw-files.js', files )
 	});
+
+	// This one-liner replaces multiple grunt.loadNpmTasks() calls
+	// See http://www.thomasboyt.com/2013/09/01/maintainable-grunt.html
+	require('load-grunt-tasks')(grunt, { scope: 'devDependencies' });
+
+	// Bootstrap tasks
+	//    cleanup
+	grunt.registerTask( 'clean-bootstrap', [ 'clean:bootstrap-source' ] );
+	grunt.registerTask( 'clean-fonts', [ 'clean:fonts' ] );
+
+	//    constructing
+	grunt.registerTask( 'fetch-fresh-bootstrap', [ 'copy:bootstrap-source' ] );
+	grunt.registerTask( 'apply-bootstrap-tweaks', [ 'copy:bootstrap-tweaks' ] );
+	grunt.registerTask( 'update-fonts', [ 'clean-fonts', 'copy:bootstrap-fonts', 'copy:fontawesome' ] );
+	grunt.registerTask( 'bootstrap', [ 'clean-bootstrap', 'fetch-fresh-bootstrap', 'apply-bootstrap-tweaks', 'update-fonts' ] );
+
+	// Less and css tasks
+	grunt.registerTask( 'clean-css', [ 'clean:css' ] );
+	grunt.registerTask( 'less-compile', [ 'less:compileCore' ]);
+	grunt.registerTask( 'css-minify', [ 'cssmin' ]);
+	grunt.registerTask( 'css', [ 'clean-css', 'less-compile', 'css-minify']);
+
+	// js tasks
+	grunt.registerTask( 'clean-js', [ 'clean:js' ] );
+	grunt.registerTask( 'js-bootstrap', ['clean-js', 'concat:bootstrapjs']);
+	grunt.registerTask( 'js-minify', [ 'uglify:bootstrap' ]);
+	grunt.registerTask( 'js', [ 'js-bootstrap', 'js-minify' ]);
+
+	// all
+	grunt.registerTask(  'clean-all', ['clean-bootstrap', 'clean-fonts', 'clean-css', 'clean-js' ]);
+	grunt.registerTask(  'default', ['bootstrap', 'css', 'js' ]);
+
 };

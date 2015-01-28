@@ -1,42 +1,75 @@
 {
   "name": "sbc",
-  "description": "Sleek, intuitive, and powerful front-end framework for faster and easier web development.",
+  "description": "sbc.next website",
   "version": "3.0.0",
   "keywords": [
-    "bootstrap",
-    "css"
+    "Steven Black Consulting",
+    "INTL"
   ],
-  "homepage": "http://twbs.github.com/bootstrap/",
-  "author": "Twitter Inc.",
-  "scripts": {
-    "test": "grunt test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/twbs/bootstrap.git"
-  },
+  "homepage": "http://stevenblack.com",
+  "author": "Steven Black",
   "bugs": {
-    "url": "https://github.com/twbs/bootstrap/issues"
+    "url": "https://github.com/StevenBlack/bootstrap-sync/issues"
   },
-  "licenses": [
-    {
-      "type": "Apache-2.0",
-      "url": "http://www.apache.org/licenses/LICENSE-2.0"
-    }
-  ],
+  "license": {
+    "type": "MIT",
+    "url": "https://raw.githubusercontent.com/StevenBlack/bootstrap-sync/master/LICENSE-MIT"
+  },
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-connect": "~0.4.1",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-jshint": "~0.6.4",
-    "grunt-contrib-uglify": "~0.2.4",
-    "grunt-contrib-qunit": "~0.2.2",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-html-validation": "~0.1.5",
-    "grunt-jekyll": "~0.3.9",
-    "grunt-recess": "~0.4.0",
-    "browserstack-runner": "~0.0.12"
+    "grunt": "~0.4.5",
+    "grunt-contrib-clean": "~0.6.0",
+    "grunt-contrib-concat": "~0.5.0",
+    "grunt-contrib-copy": "~0.7.0",
+    "grunt-contrib-cssmin": "~0.11.0",
+    "grunt-contrib-less": "~1.0.0",
+    "grunt-contrib-uglify": "~0.7.0",
+    "grunt-git": "^0.2.14",
+    "grunt-yui-compressor": "0.3.0",
+    "load-grunt-tasks": "~2.0.0",
+    "lodash": "~2.4.1"
+  },
+  "engines": {
+    "node": "~0.10.1"
+  },
+  "defaults": {
+    "location": {
+      "bootstrap": {
+        "authoritative": "/Users/Steve/Dropbox/dev/Css/bootstrap3",
+        "local": "bootstrap",
+        "lesstweaks": "less"
+      },
+      "deploy": {
+        "css": "css",
+        "js": "js",
+        "fonts": "fonts"
+      }
+    },
+    "filename": {
+      "css": "bootstrap.css",
+      "cssmin": "bootstrap.min.css",
+      "js": "main.js",
+      "jsmin": "main.min.js",
+      "less": "bootstrap.less"
+    },
+    "task": {
+      "concat": {
+        "bootstrapjs": {
+          "src": [
+            "js/transition.js",
+            "js/alert.js",
+            "js/button.js",
+            "js/carousel.js",
+            "js/collapse.js",
+            "js/dropdown.js",
+            "js/modal.js",
+            "js/tooltip.js",
+            "js/popover.js",
+            "js/scrollspy.js",
+            "js/tab.js",
+            "js/affix.js"
+          ]
+        }
+      }
+    }
   }
 }
