@@ -1,0 +1,47 @@
+{
+	"location": {
+		"bootstrap": {
+			"authoritative": "/Users/Steve/Dropbox/dev/Css/bootstrap3",
+			"local": "bootstrap",
+			"lesstweaks": "less"
+		},
+		"fontawesome": {
+			"authoritative": "/Users/Steve/Dropbox/dev/Css/Font-Awesome",
+			"local": "_font-awesome"
+		},
+		"deploy": {
+			"css": "css",
+			"js": "js",
+			"fonts": "font"
+		}
+	},
+
+	"filename": {
+		"css": "sbc.css",
+		"cssmin": "sbc.min.css",
+		"js": "sbc.js",
+		"jsmin": "sbc.min.js",
+		"less": "custom.less"
+	},
+
+	"task" : {
+		"concat": {
+			"bootstrapjs": {
+				"src": [
+					"js/transition.js",
+					"js/alert.js",
+					"js/button.js",
+					"js/carousel.js",
+					"js/collapse.js",
+					"js/dropdown.js",
+					"js/modal.js",
+					"js/tooltip.js",
+					"js/popover.js",
+					"js/scrollspy.js",
+					"js/tab.js",
+					"js/affix.js"
+				]
+			}
+		}
+	}
+}
