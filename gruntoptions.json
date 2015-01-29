@@ -9,6 +9,10 @@
 			"authoritative": "/Users/Steve/Dropbox/dev/Css/Font-Awesome",
 			"local": "_font-awesome"
 		},
+		"sitespecific": {
+			"css": "_css",
+			"js": "_js"
+		},
 		"deploy": {
 			"css": "css",
 			"js": "js",

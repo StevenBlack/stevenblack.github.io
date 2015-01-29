@@ -51,6 +51,20 @@ module.exports = function( grunt ) {
 				flatten: true,
 				src: [ '<%= settings.location.fontawesome.local %>/fonts/*' ],
 				dest: '<%= settings.location.deploy.fonts %>/'
+			},
+			'sitespecific': {
+				'css' : {
+					expand: true,
+					flatten: true,
+					src: [ '<%= settings.location.sitespecific.css %>/*' ],
+					dest: '<%= settings.location.deploy.css %>/'
+				},
+				'js' : {
+					expand: true,
+					flatten: true,
+					src: [ '<%= settings.location.sitespecific.js %>/*' ],
+					dest: '<%= settings.location.deploy.js %>/'
+				}
 			}
 		},
 
@@ -117,17 +131,19 @@ module.exports = function( grunt ) {
 	// Less and css tasks
 	grunt.registerTask( 'clean-css', [ 'clean:css' ] );
 	grunt.registerTask( 'less-compile', [ 'less:compileCore' ]);
+    grunt.registerTask( 'sitespecificcss', [ 'copy:sitespecific:css' ]);
 	grunt.registerTask( 'css-minify', [ 'cssmin' ]);
-	grunt.registerTask( 'css', [ 'clean-css', 'less-compile', 'css-minify']);
+	grunt.registerTask( 'css', [ 'clean-css', 'less-compile', 'sitespecificcss', 'css-minify']);
 
 	// js tasks
 	grunt.registerTask( 'clean-js', [ 'clean:js' ] );
 	grunt.registerTask( 'js-bootstrap', ['clean-js', 'concat:bootstrapjs']);
+    grunt.registerTask( 'sitespecificjs', [ 'copy:sitespecific:js' ]);
 	grunt.registerTask( 'js-minify', [ 'uglify:bootstrap' ]);
-	grunt.registerTask( 'js', [ 'js-bootstrap', 'js-minify' ]);
+	grunt.registerTask( 'js', [ 'js-bootstrap', 'sitespecificjs', 'js-minify' ]);
 
 	// all
-	grunt.registerTask(  'clean-all', ['clean-bootstrap', 'clean-fonts', 'clean-css', 'clean-js' ]);
-	grunt.registerTask(  'default', ['bootstrap', 'css', 'js' ]);
+	grunt.registerTask( 'clean-all', ['clean-bootstrap', 'clean-fonts', 'clean-css', 'clean-js' ]);
+	grunt.registerTask( 'default', ['bootstrap', 'css', 'js' ]);
 
 };
