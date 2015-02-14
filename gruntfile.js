@@ -5,7 +5,7 @@
  * Licensed under MIT (http://stevenblack.com/MIT_License.html
  */
 module.exports = function( grunt ) {
-	"use strict";
+	'use strict';
 
 	var optionsfile = 'gruntoptions.json';
 	var _           = require('lodash');
@@ -36,6 +36,13 @@ module.exports = function( grunt ) {
 				src: [ 'fonts/*', 'js/*', 'less/**' ],
 				dest: '<%= settings.location.bootstrap.local %>/'
 			},
+			'fontawesome-source': {
+				nonull: true,
+				expand: true,
+				cwd: '<%= settings.location.fontawesome.authoritative %>/',
+				src: [ 'fonts/*', 'css/*', 'less/*' ],
+				dest: '<%= settings.location.fontawesome.local %>/'
+			},
 			'bootstrap-tweaks': {
 				src: [ 'less/*' ],
 				dest: '<%= settings.location.bootstrap.local %>/'
@@ -52,19 +59,17 @@ module.exports = function( grunt ) {
 				src: [ '<%= settings.location.fontawesome.local %>/fonts/*' ],
 				dest: '<%= settings.location.deploy.fonts %>/'
 			},
-			'sitespecific': {
-				'css' : {
-					expand: true,
-					flatten: true,
-					src: [ '<%= settings.location.sitespecific.css %>/*' ],
-					dest: '<%= settings.location.deploy.css %>/'
-				},
-				'js' : {
-					expand: true,
-					flatten: true,
-					src: [ '<%= settings.location.sitespecific.js %>/*' ],
-					dest: '<%= settings.location.deploy.js %>/'
-				}
+			'sitespecificjs' : {
+				expand: true,
+				flatten: true,
+				src:  '<%= settings.location.sitespecific.js %>/*' ,
+				dest: '<%= settings.location.deploy.js %>/'
+			},
+			'sitespecificcss' : {
+				expand: true,
+				flatten: true,
+				src:  '<%= settings.location.sitespecific.css %>/*' ,
+				dest: '<%= settings.location.deploy.css %>/'
 			}
 		},
 
@@ -123,24 +128,26 @@ module.exports = function( grunt ) {
 	grunt.registerTask( 'clean-fonts', [ 'clean:fonts' ] );
 
 	//    constructing
+	grunt.registerTask( 'zzz', [ 'copy:sitespecificjs' ] );
 	grunt.registerTask( 'fetch-fresh-bootstrap', [ 'copy:bootstrap-source' ] );
+	grunt.registerTask( 'fetch-fresh-fontawesome', [ 'copy:fontawesome-source' ] );
 	grunt.registerTask( 'apply-bootstrap-tweaks', [ 'copy:bootstrap-tweaks' ] );
-	grunt.registerTask( 'update-fonts', [ 'clean-fonts', 'copy:bootstrap-fonts', 'copy:fontawesome' ] );
+	grunt.registerTask( 'update-fonts', [ 'clean-fonts', 'copy:bootstrap-fonts', 'fetch-fresh-fontawesome', 'copy:fontawesome' ] );
 	grunt.registerTask( 'bootstrap', [ 'clean-bootstrap', 'fetch-fresh-bootstrap', 'apply-bootstrap-tweaks', 'update-fonts' ] );
 
 	// Less and css tasks
 	grunt.registerTask( 'clean-css', [ 'clean:css' ] );
 	grunt.registerTask( 'less-compile', [ 'less:compileCore' ]);
-    grunt.registerTask( 'sitespecificcss', [ 'copy:sitespecific:css' ]);
+    grunt.registerTask( 'sitespecificcss', [ 'copy:sitespecificcss' ]);
 	grunt.registerTask( 'css-minify', [ 'cssmin' ]);
 	grunt.registerTask( 'css', [ 'clean-css', 'less-compile', 'sitespecificcss', 'css-minify']);
 
 	// js tasks
 	grunt.registerTask( 'clean-js', [ 'clean:js' ] );
-	grunt.registerTask( 'js-bootstrap', ['clean-js', 'concat:bootstrapjs']);
-    grunt.registerTask( 'sitespecificjs', [ 'copy:sitespecific:js' ]);
+	grunt.registerTask( 'js-bootstrap', [ 'concat:bootstrapjs']);
+    grunt.registerTask( 'sitespecificjs', [ 'copy:sitespecificjs' ]);
 	grunt.registerTask( 'js-minify', [ 'uglify:bootstrap' ]);
-	grunt.registerTask( 'js', [ 'js-bootstrap', 'sitespecificjs', 'js-minify' ]);
+	grunt.registerTask( 'js', [ 'clean-js', 'sitespecificjs', 'js-bootstrap', 'js-minify' ]);
 
 	// all
 	grunt.registerTask( 'clean-all', ['clean-bootstrap', 'clean-fonts', 'clean-css', 'clean-js' ]);
