@@ -24,7 +24,7 @@ is about sending text on its way when youre done.</p>
 
 <p>To illustrate text handling in VFP, I am using the complete text of Tolstoys <em>War And Peace</em>, included on
 the conference CD as WarAndPeace.TXT, which along with thousands of works of literature, are available on the web, including
-<a href="http://altair.stmarys-ca.edu/studwork/integral/warandpe.txt">here</a> among others.</p>
+<a href ="http://altair.stmarys-ca.edu/studwork/integral/warandpe.txt">here</a> among others.</p>
 
 <p>This article was originally written using Visual FoxPro version 6, and has since been updated for VFP 7 and VFP 8.</p>
 
@@ -49,8 +49,8 @@ that work on characters also work on memos.</p>
 CREATE TABLE Ships ( Name C( 40 ), Desc M )
 INSERT INTO Ships ( Name, Desc ) VALUES ( "Exxon Valdez", "Billions unpaid!" )
 LOCAL lcShip, lcDesc
-lcShip= Ship.Name
-lcDesc= Ship.Desc
+lcShip = Ship.Name
+lcDesc = Ship.Desc
 
 * Note that it doesn't matter if the field is type Character or Memo.
 </pre>
@@ -64,9 +64,9 @@ in VFP 6. Its both useful and fast. For example, the following code executes in 
 
 <pre>
 LOCAL t1, t2, x
-t1= SECONDS()
-x= FILETOSTR( WarAndPeace.TXT )   && 3.2 mb in size
-t2= SECONDS()
+t1 = SECONDS()
+x = FILETOSTR( WarAndPeace.TXT )   && 3.2 mb in size
+t2 = SECONDS()
 ?t2-t1, seconds    && 0.140 ( seconds )
 ?len( x )   && 3271933
 </pre>
@@ -79,10 +79,10 @@ reads the entire contents of Tolstoys <em>War And Peace</em> from disk into memo
 
 <pre>
 LOCAL t1, t2, x, h
-t1= SECONDS()
-h= FOPEN( "WarAndPeace.TXT" )   && 3.2 mb in size
-x= FREAD( h, 4000000 )
-t2= SECONDS()
+t1 = SECONDS()
+h = FOPEN( "WarAndPeace.TXT" )   && 3.2 mb in size
+x = FREAD( h, 4000000 )
+t2 = SECONDS()
 ?t2-t1, "seconds"  && 0.140 seconds
 ?LEN( x )   && 3271933
 FCLOSE( h )
@@ -96,15 +96,15 @@ code reads the first 15 lines of <em>War And Peace</em> into array <code>wpLines
 LOCAL t1, t2, i, h
 LOCAL ARRAY wpLines[15]
 CLEAR
-t1= SECONDS()
-h= FOPEN( "WarAndPeace.TXT" )   && 3.2 mb in size
-FOR i= 1 TO ALEN( wpLines )
-  wpLines[i]= FGETS( h )
+t1 = SECONDS()
+h = FOPEN( "WarAndPeace.TXT" )   && 3.2 mb in size
+FOR i = 1 TO ALEN( wpLines )
+  wpLines[i] = FGETS( h )
 ENDFOR
-t2= SECONDS()
+t2 = SECONDS()
 ?t2-t1, "seconds"   && 0.000 seconds
 
-FOR i= 1 TO ALEN( wpLines )
+FOR i = 1 TO ALEN( wpLines )
   ? wpLines[i]
 ENDFOR
 FCLOSE( h )
@@ -117,11 +117,11 @@ the <code>FREAD()</code> function is used to read a range. Lets read, say, 1000 
 LOCAL t1, t2, x, h
 LOCAL ARRAY wpLines[15]
 CLEAR
-t1= SECONDS()
-h= FOPEN( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1 = SECONDS()
+h = FOPEN( "WarAndPeace.TXT" )   && 3.2 mb in size
 FSEEK( h, 1500000 )  && Move the pointer
-x=FREAD( h, 1000 )  && Read 1000 bytes
-t2= SECONDS()
+x = FREAD( h, 1000 )  && Read 1000 bytes
+t2 = SECONDS()
 ?t2-t1, "seconds"   && 0.000 seconds
 SET MEMOWIDTH TO 8000
 ?x
@@ -141,10 +141,10 @@ load it</p>
 <pre>
 LOCAL t1, t2
 CLEAR
-t1= SECONDS()
+t1 = SECONDS()
 CREATE TABLE Temp ( cLine C ( 254 ))
 APPEND FROM WarAndPeace.Txt TYPE SDF
-t2= SECONDS()
+t2 = SECONDS()
 
 ?t2-t1, "seconds"  && 1.122 seconds
 </pre>
@@ -163,10 +163,10 @@ in a string. This command is fast. Try this:</p>
 
 <pre>
 LOCAL t1, t2, x
-x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-t1= SECONDS()
+x = FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1 = SECONDS()
 ? "THE END" $ x
-t2= SECONDS()
+t2 = SECONDS()
 ?[ "THE END" $ x], t2-t1, "seconds"    && 0.180 seconds
 </pre>
 
@@ -175,10 +175,10 @@ of being case insensitive and, moreover, their return values gives you an exact 
 
 <pre>
 LOCAL t1, t2, x, lnAtPos
-x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-t1= SECONDS()
-lnAtPos=ATC( "the end", x )
-t2= SECONDS()
+x = FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1 = SECONDS()
+lnAtPos = ATC( "the end", x )
+t2 = SECONDS()
 ?lnAtPos           && 97837
 ?[ATC( "the end", x )], t2-t1, "seconds"    && 0.110 seconds
 ?SUBS( x, lnAtPos, 20 )   &&  the end of it...
@@ -190,16 +190,16 @@ code will count the number of occurrences of a variety of sub-strings in <em>War
 <pre>
 LOCAL t1, t2, x, i
 LOCAL ARRAY aStrings[5]
-aStrings[1]= "Russia"  && 775 occurences
-aStrings[2]= "Anna"    && 293 occurences
-aStrings[3]= "Czar"    && 4 occurences
-aStrings[4]= "windows" && 23 occurences
-aStrings[5]= "Pentium" && 0 occurences
-x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+aStrings[1] = "Russia"  && 775 occurences
+aStrings[2] = "Anna"    && 293 occurences
+aStrings[3] = "Czar"    && 4 occurences
+aStrings[4] = "windows" && 23 occurences
+aStrings[5] = "Pentium" && 0 occurences
+x = FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
 FOR i = 1 TO ALEN( aStrings )
-	t1= SECONDS()
+	t1 = SECONDS()
 	?OCCURS( aStrings[i], x )
-	t2= SECONDS()
+	t2 = SECONDS()
 	?[OCCURS( "]+aStrings[i]+[", x )], t2-t1, "seconds"  && 0.401 seconds avg
 ENDFOR
 </pre>
@@ -216,10 +216,10 @@ and <code>RATC()</code> ). All these functions are very fast and scale well with
 
 <pre>
 LOCAL t1, t2, x
-x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-t1= SECONDS()
+x = FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1 = SECONDS()
 ?AT( "THE END", x )   && 3271915
-t2= SECONDS()
+t2 = SECONDS()
 ?[AT( "THE END", x )], t2-t1, , "seconds"    && 0.180 seconds
 </pre>
 
@@ -228,12 +228,12 @@ of the word Russia in <em>War And Peace</em>.</p>
 
 <pre>
 LOCAL t1, t2, x, i, nOcc
-x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-FOR i= 0 TO 7
-  nOcc= i*100+1
-  t1= SECONDS()
+x = FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+FOR i = 0 TO 7
+  nOcc = i*100+1
+  t1 = SECONDS()
   ?AT( "Russia", x, nOcc  )
-  t2= SECONDS()
+  t2 = SECONDS()
   ?[AT( "Russia", x, ]+Transform( nOcc )+[ )], t2-t1  && 0.180 sec on average
 ENDFOR
 </pre>
@@ -241,7 +241,7 @@ ENDFOR
 <p>Two other functions are useful for locating strings: <code>ATLINE()</code> and <code>ATCLINE()</code>. These return the line number of the
 first occurrence of a string. </p>
 
-<div class="info">
+<div class ="info">
 	<p>
 		Note: Prior to VFP 7, functions that are sensitive to <code>SET MEMOWIDTH</code>,
 		like <code>ATLINE()</code> and <code>ATCLINE()</code>, among
@@ -257,12 +257,12 @@ and <code>MLINE()</code> functions. Like this:</p>
 <pre>
 LOCAL x, y, i, t1, t2
 SET MEMOWIDTH TO 8000
-x=FILETOSTR( home()+"Genhtml.prg" )  && 767 lines
-t1=SECONDS()
-FOR i= 1 TO MEMLINES( x )
-	y=MLINE( x, i )
+x = FILETOSTR( home()+"Genhtml.prg" )  && 767 lines
+t1 = SECONDS()
+FOR i = 1 TO MEMLINES( x )
+	y = MLINE( x, i )
 ENDFOR
-t2=SECONDS()
+t2 = SECONDS()
 ?"Using MLINE()", t2-t1, "seconds"  && 22.151 seconds
 </pre>
 
@@ -272,13 +272,13 @@ to pass the <code>_MLINE</code> system memory variable as the third parameter. L
 <pre>
 LOCAL x, y, i, t1, t2
 SET MEMOWIDTH TO 8000
-x=FILETOSTR( home()+"Genhtml.prg" )  && 767 lines
-t1=SECONDS()
-_mline=0
-FOR i= 1 TO MEMLINES( x )
-	y=MLINE( x, 1, _MLINE )
+x = FILETOSTR( home()+"Genhtml.prg" )  && 767 lines
+t1 = SECONDS()
+_mline = 0
+FOR i = 1 TO MEMLINES( x )
+	y = MLINE( x, 1, _MLINE )
 ENDFOR
-t2=SECONDS()
+t2 = SECONDS()
 ?"Using MLINE() with _MLINE", SECONDS()-z, "seconds"  && 0.451 seconds
 </pre>
 
@@ -291,13 +291,13 @@ look and perform with <code>ALINES()</code>.</p>
 <pre>
 LOCAL x, i, y, ti, t2
 LOCAL ARRAY laArray[1]
-x=FILETOSTR( home()+"Genhtml.prg" )  && 767 lines
+x = FILETOSTR( home()+"Genhtml.prg" )  && 767 lines
 
-t1=SECONDS()
-FOR i= 1 TO ALINES( laArray, x )
- y=laArray[i]
+t1 = SECONDS()
+FOR i = 1 TO ALINES( laArray, x )
+ y = laArray[i]
 ENDFOR
-t2=SECONDS()
+t2 = SECONDS()
 
 ?"Using ALINES() and traverse array:", t2-t1, "seconds"  && 0.020 seconds
 </pre>
@@ -328,14 +328,14 @@ lcString = STRTRAN( lcSource, "~", CHR( 13 )+CHR( 10 ))
 <pre>
 LOCAL x, i, y, z, k
 LOCAL ARRAY laArray[1]
-x=FILETOSTR( "WarAndPeace.TXT" )
+x = FILETOSTR( "WarAndPeace.TXT" )
 
-t1=SECONDS()
-FOR i= 1 TO ALINES( laArray, x )   && 54, 227 array elements
-	y=laArray[i]
+t1 = SECONDS()
+FOR i = 1 TO ALINES( laArray, x )   && 54, 227 array elements
+	y = laArray[i]
 ENDFOR
 
-t2=SECONDS()
+t2 = SECONDS()
 ?"Using ALINES() and traverse", t2-t1, "seconds"  && 3.395 seconds
 </pre>
 
@@ -347,10 +347,10 @@ contents to a memory variable, and were back in 3.4 seconds.</p>
 <pre>
 LOCAL x, t1, t2
 LOCAL ARRAY laArray[1]
-x=FILETOSTR( "WarAndPeace.TXT" )
-t1=SECONDS()
+x = FILETOSTR( "WarAndPeace.TXT" )
+t1 = SECONDS()
 ?ALINES( laArray, x )     && 54, 227 array elements
-t2=SECONDS()
+t2 = SECONDS()
 ?"Using ALINES() to load War and Peace", t2-t1, "seconds" && 2.203 seconds
 </pre>
 
@@ -365,7 +365,7 @@ t2=SECONDS()
 <p>Two new functions are great for word-by-word text processing. The <code>GETWORDCOUNT()</code> and <code>GETWORDNUM()</code>
 functions, return the number of words and individual words respectively.</p>
 
-<div class="info">
+<div class ="info">
 
       <p>Prior to VFP 7, use the <code>Words()</code> and <code>WordNum()</code> functions, which are available to you when you load the
       FoxTools.FLL library, return the number of words and individual words respectively.</p>
@@ -376,10 +376,10 @@ functions, return the number of words and individual words respectively.</p>
 <pre>
 LOCAL x, t1, t2
 LOCAL ARRAY laArray[1]
-x=FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
-t1=SECONDS()
+x = FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
+t1 = SECONDS()
 ?GETWORDCOUNT( x )   && 565412
-t2=SECONDS()
+t2 = SECONDS()
 
 ?"Using GETWORDCOUNT() on War and Peace", t2-t1, "seconds"  && 0.825 seconds
 </pre>
@@ -390,10 +390,10 @@ word delimiters in the second parameter. How many sentences are there in <em>War
 <pre>
 LOCAL x, t1, t2
 LOCAL ARRAY laArray[1]
-x=FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
-t1=SECONDS()
+x = FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
+t1 = SECONDS()
 ?GETWORDCOUNT( x, "." )   && ( Note the "." )    26673
-t2=SECONDS()
+t2 = SECONDS()
 
 ?"Using GETWORDCOUNT() countING sentences in W&P", t2-t1, "seconds"&& 0.803 seconds
 </pre>
@@ -403,14 +403,14 @@ What about the 500000th?</p>
 
 <pre>
 LOCAL x, t1, t2
-x=FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
-t1=SECONDS()
+x = FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
+t1 = SECONDS()
 ?GETWORDNUM( x, 666 )  && Anna
-t2=SECONDS()
+t2 = SECONDS()
 ?"Finding the 666th word in W&P", t2-t1, "seconds"  && 0.381 seconds
-t1=SECONDS()
+t1 = SECONDS()
 ?GETWORDNUM( x, 500000 )  && his
-t2=SECONDS()
+t2 = SECONDS()
 
 ?"Finding the 500000th word in W&P", t2-t1, "seconds"  && 1.001 seconds
 </pre>
@@ -420,10 +420,10 @@ to return a token from a string by specifying the delimiter. Whats the 2000th se
 
 <pre>
 LOCAL x, t1, t2
-x=FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
-t1=SECONDS()
+x = FILETOSTR( "WarAndPeace.TXT" )    && 3.2 mb in size
+t1 = SECONDS()
 ?GETWORDNUM( x, 2000, "." )
-t2=SECONDS()
+t2 = SECONDS()
 
 ?"Finding the 2000th sentence in W&P", t2-t1, "seconds"&& 0.391 seconds
 </pre>
@@ -438,11 +438,11 @@ t2=SECONDS()
 
 <pre>
 LOCAL t1, t2, x
-x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+x = FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
 ? "Words in W&P:", WORDS( x )   && 565412 words
-t1= SECONDS()
-x=STRTRAN( x, "Anna", "the McBride twins" )
-t2= SECONDS()
+t1 = SECONDS()
+x = STRTRAN( x, "Anna", "the McBride twins" )
+t2 = SECONDS()
 ? t2-t1, "seconds"    && 2.314 seconds
 
 ?Occurs( "the McBride twins", x ), "occurences"  && 293 Occurences
@@ -453,11 +453,11 @@ t2= SECONDS()
 
 <pre>
 LOCAL t1, t2, x
-x= FILETOSTR( "WarAndPeace.TXT" )      && 3.2 mb in size
+x = FILETOSTR( "WarAndPeace.TXT" )      && 3.2 mb in size
 ? "Words in W&P:", WORDS( x )      && 565412 words
-t1= SECONDS()
-x=STRTRAN( x, "Anna" )
-t2= SECONDS()
+t1 = SECONDS()
+x = STRTRAN( x, "Anna" )
+t2 = SECONDS()
 ? t2-t1, "seconds"    && 2.293 seconds
 ? "Words in W&P:", WORDS( x )  && 565168 words
 </pre>
@@ -467,10 +467,10 @@ Lets, say, change all s to ch in <em>War and Peace</em>.</p>
 
 <pre>
 LOCAL t1, t2, x
-x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-t1= SECONDS()
-x=CHRTRAN( x, "s", "ch" )
-t2= SECONDS()
+x = FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1 = SECONDS()
+x = CHRTRAN( x, "s", "ch" )
+t2 = SECONDS()
 ? t2-t1, "seconds"    && 0.521 seconds
 </pre>
 
@@ -482,14 +482,14 @@ circumstances is terrible. If you need to suppress sub-strings, use <code>STRTRA
 <h3>String Concatenation</h3>
 
 <p>VFP has tremendous concatenation speed if you use it in a particular way. Since many common tasks, like building web pages, involve building documents
-one element at a time, you should know that string expressions of the form <code>x=x+y</code> are very fast in VFP. Consider this:</p>
+one element at a time, you should know that string expressions of the form <code>x = x+y</code> are very fast in VFP. Consider this:</p>
 
 <pre>
 LOCAL t1, t2, x
-x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-t1= SECONDS()
-x= x+ "&lt;b&gt;Drink Milk!&lt;/b&gt;"
-t2= SECONDS()
+x = FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1 = SECONDS()
+x = x+ "&lt;b&gt;Drink Milk!&lt;/b&gt;"
+t2 = SECONDS()
 ? t2-t1, "seconds"    && 0.000 seconds
 </pre>
 
@@ -498,14 +498,14 @@ engine or raw output is used. For example:</p>
 
 <pre>
 LOCAL t1, t2, x, y, count
-t1= SECONDS()
+t1 = SECONDS()
 x = ""
 y = "VFP Strings are fast"
 FOR count = 1 to 10000
     x = x + y
 ENDFOR
 
-t2= SECONDS()
+t2 = SECONDS()
 ? t2-t1, "seconds"    && 0.030 seconds
 ? len( x )            && 200,000 chars
 </pre>
@@ -530,10 +530,10 @@ in most common situations.</p>
 
 <pre>
 LOCAL t1, t2, x
-x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-t1= SECONDS()
+x = FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1 = SECONDS()
 STRTOFILE( x, "Junk.txt" )
-t2= SECONDS()
+t2 = SECONDS()
 ? t2-t1, "seconds"    && 0.480 seconds
 </pre>
 
@@ -544,13 +544,13 @@ to disk. The <code>FPUTS()</code> function outputs a single line from the string
 
 <pre>
 LOCAL t1, t2, x
-x= FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
-t1= SECONDS()
-h=FCREATE( "Junk.txt" )
+x = FILETOSTR( "WarAndPeace.TXT" )   && 3.2 mb in size
+t1 = SECONDS()
+h = FCREATE( "Junk.txt" )
 FWRITE( h, x )
 FCLOSE( h )
 
-t2= SECONDS()
+t2 = SECONDS()
 
 ? t2-t1, "seconds"    && 0.451 seconds
 </pre>
@@ -565,15 +565,15 @@ using <code>ALINES()</code>, its not that onerous a task. In fact, its very slic
 LOCAL x, h, i, t1, t2
 LOCAL ARRAY laArray[1]
 
-x=FILETOSTR( "WarAndPeace.TXT" ) && 3.2 mb in size
-t1=SECONDS()
-h=FCREATE( "Junk.txt" )
-FOR i= 1 TO ALINES( laArray, x )
+x = FILETOSTR( "WarAndPeace.TXT" ) && 3.2 mb in size
+t1 = SECONDS()
+h = FCREATE( "Junk.txt" )
+FOR i = 1 TO ALINES( laArray, x )
  FPUTS( h, laArray[i] )
 ENDFOR
 FCLOSE( h )
 
-t2=SECONDS()
+t2 = SECONDS()
 ?"Total time:", t2-t1, "seconds"  && 3.595 seconds
 </pre>
 
