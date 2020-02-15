@@ -13,6 +13,31 @@ image_default_alt: Steven Black Consulting
 
 exclude: [ ".git", "Rakefile", ".editorconfig", ".gitignore", ".ruby-version", "bower.json", "composer.json", "CONTRIBUTING.md", "CNAME", "LICENSE", "Gruntfile.js", "package.json", "node_modules", "README.md", "less", "_site/font-awesome/docs/" ]
 
+exclude:
+  - Rakefile
+  - .editorconfig
+  - .gitignore
+  - .ruby-version
+  - bower.json
+  - composer.json
+  - CONTRIBUTING.md
+  - CNAME
+  - LICENSE
+  - Gruntfile.js
+  - package.json
+  - README.md
+  - less
+  - _site/font-awesome/docs/
+  - .git
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - any_additional_item # any user-specific lis
+
 compress_html:
   clippings: all
   comments: ["<!-- ", " -->"]
