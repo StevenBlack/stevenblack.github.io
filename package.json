@@ -3,17 +3,16 @@
   "description": "sbc.next website",
   "version": "3.0.0",
   "keywords": [
-    "Steven Black Consulting",
-    "INTL"
+    "Steven Black Consulting"
   ],
   "homepage": "http://stevenblack.com",
   "author": "Steven Black",
   "bugs": {
-    "url": "https://github.com/StevenBlack/bootstrap-sync/issues"
+    "url": "https://github.com/StevenBlack/stevenblack.github.io/issues"
   },
   "license": {
     "type": "MIT",
-    "url": "https://raw.githubusercontent.com/StevenBlack/bootstrap-sync/master/LICENSE-MIT"
+    "url": "https://github.com/StevenBlack/stevenblack.github.io/blob/master/MIT_License.html"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
